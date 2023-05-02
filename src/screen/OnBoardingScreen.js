@@ -2,10 +2,14 @@ import React from 'react';
 import {Center, Text, Image, Stack} from 'native-base';
 import {Btn_Primary, Btn_Icon, Btn_Outline} from '../components';
 import {Dimensions} from 'react-native';
+import {AuthContext} from '../controller/AuthContext';
+import {useContext} from 'react';
 
 const screenWidth = Dimensions.get('window').width;
 
 function OnBoardingScreen({navigation}) {
+  const {user} = useContext(AuthContext);
+  console.log(user);
   return (
     <Center flex={1} bg={'secondary.500'}>
       <Stack h={'50%'} justifyContent={'center'} px={10}>

@@ -9,7 +9,6 @@ const iconColor = customTheme.colors.neutral[50];
 
 const HeaderHome = ({navigation}) => {
   const {user} = useContext(AuthContext);
-  console.log(user);
 
   return (
     <VStack bg={'secondary.500'} px={'5%'} pt={2}>

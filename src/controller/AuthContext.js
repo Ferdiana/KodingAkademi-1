@@ -23,13 +23,15 @@ const AuthProvider = ({children}) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        'https://8b97-103-157-49-68.ngrok-free.app/login',
+        'https://9b0b-103-157-49-76.ngrok-free.app/login',
         {
           email,
           password,
         },
       );
       setUser(response.data.data);
+      console.log(response.data.data);
+      navigation.navigate('home');
       AsyncStorage.setItem('user', JSON.stringify(response.data.data));
     } catch (error) {
       console.error(error.response.data.message);
@@ -39,7 +41,7 @@ const AuthProvider = ({children}) => {
   const logout = async () => {
     try {
       await axios.delete(
-        'https://8b97-103-157-49-68.ngrok-free.app/authentications',
+        'https://9b0b-103-157-49-76.ngrok-free.app/authentications',
         {
           data: {
             refreshToken: user.refreshToken,

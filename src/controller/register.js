@@ -9,7 +9,7 @@ const register = async (
 ) => {
   try {
     const response = await axios.post(
-      'https://8b97-103-157-49-68.ngrok-free.app/register',
+      'https://9b0b-103-157-49-76.ngrok-free.app/register',
       {
         full_name,
         email,
