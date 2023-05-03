@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Text, HStack, VStack, Pressable} from 'native-base';
+import {Text, HStack, VStack, Pressable, Button} from 'native-base';
 import {customTheme} from '../../theme';
 import Icon from 'react-native-vector-icons/Feather';
 import QRComponent from '../QR/QRComponent';

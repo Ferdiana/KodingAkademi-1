@@ -13,7 +13,7 @@ import Colors from '../../theme/colors';
 
 const CategoryButton = ({title, onPress, selected}) => {
   return (
-    <Pressable onPress={onPress} mr={'12px'} my={'10px'}>
+    <Pressable onPress={onPress}>
       <Center
         bg={selected ? Colors.primary[500] : Colors.neutral[50]}
         h={'34px'}
@@ -43,8 +43,11 @@ const SearchCategory = ({onCategoryChange}) => {
   };
 
   return (
-    <HStack pl={'10px'} my={'10px'} bg={'transparent'}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <HStack my={'10px'} bg={'transparent'}>
+      <ScrollView
+        pl={'10px'}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}>
         <CategoryButton
           title="All"
           onPress={() => handleCategoryPress(null)}

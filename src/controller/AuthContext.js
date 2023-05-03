@@ -1,8 +1,8 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useState, useEffect} from 'react';
 import axios from 'axios';
-import {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {API_URL} from '@env';
 
 const AuthContext = createContext();
 
@@ -22,13 +22,10 @@ const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(
-        'https://9b0b-103-157-49-76.ngrok-free.app/login',
-        {
-          email,
-          password,
-        },
-      );
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
+        password,
+      });
       setUser(response.data.data);
       console.log(response.data.data);
       navigation.navigate('home');
@@ -40,14 +37,11 @@ const AuthProvider = ({children}) => {
 
   const logout = async () => {
     try {
-      await axios.delete(
-        'https://9b0b-103-157-49-76.ngrok-free.app/authentications',
-        {
-          data: {
-            refreshToken: user.refreshToken,
-          },
+      await axios.delete(`${API_URL}/authentications`, {
+        data: {
+          refreshToken: user.refreshToken,
         },
-      );
+      });
       setUser(null);
       AsyncStorage.removeItem('user');
     } catch (error) {

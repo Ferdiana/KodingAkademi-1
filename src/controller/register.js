@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {API_URL} from '@env';
 
 const register = async (
   full_name,
@@ -8,16 +9,13 @@ const register = async (
   confirmPassword,
 ) => {
   try {
-    const response = await axios.post(
-      'https://9b0b-103-157-49-76.ngrok-free.app/register',
-      {
-        full_name,
-        email,
-        phone_number,
-        password,
-        confirmPassword,
-      },
-    );
+    const response = await axios.post(`${API_URL}/register`, {
+      full_name,
+      email,
+      phone_number,
+      password,
+      confirmPassword,
+    });
     console.log(response.data);
   } catch (error) {
     console.log(error.response.data.message);

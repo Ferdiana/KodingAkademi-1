@@ -10,7 +10,6 @@ import MyCourse from './card/MyCourse';
 import BannerSlider from './banner/BannerSlider';
 import Article from './card/Article';
 import Promo from './card/Promo';
-import Header from './header/Header';
 import AllPromo from './card/AllPromo';
 import AllCourse from './card/AllCourse';
 import Cart from './card/Cart';
@@ -31,7 +30,6 @@ export {
   BannerSlider,
   Article,
   Promo,
-  Header,
   SearchBar,
   AllPromo,
   AllCourse,
