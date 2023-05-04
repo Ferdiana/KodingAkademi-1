@@ -1,19 +1,35 @@
+import React, {createContext, useState} from 'react';
 import axios from 'axios';
-import {AuthContext} from './AuthContext';
+import {API_KEY} from '@env';
 import {useContext} from 'react';
-import {API_URL} from '@env';
+import {AuthContext} from './AuthContext';
 
-const API_Course = async () => {
+const CoursContext = createContext();
+
+const CoursProvider = ({children}) => {
   const {user} = useContext(AuthContext);
 
-  try {
-    const response = await axios.get(`${API_URL}/user/courses`, {
-      headers: {Authorization: 'Bearer' + `${user.accessToken}`},
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error.response.data);
-  }
+  const [course, setCourse] = useState(null);
+
+  const API_Course = async () => {
+    try {
+      const response = await axios.get(`${API_KEY}/user/courses`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+      setCourse(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error(error.response.data.message);
+    }
+  };
+
+  return (
+    <CoursContext.Provider value={{course, API_Course}}>
+      {children}
+    </CoursContext.Provider>
+  );
 };
 
-export default API_Course;
+export {CoursProvider, CoursContext};

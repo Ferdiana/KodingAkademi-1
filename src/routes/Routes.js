@@ -17,6 +17,7 @@ import TransactionsScreen from '../screen/TransactionsScreen';
 import EventScreen from '../screen/EventScreen';
 import EventFinishedDetailScreen from '../screen/EventFinishedDetailScreen';
 import EventFreeDetailScreen from '../screen/EventFreeDetailScreen';
+import TestAPI from '../components/card/tescard';
 
 const Stack = createNativeStackNavigator();
 
@@ -130,6 +131,11 @@ function Routes() {
       <Stack.Screen
         name="EventFreeDetail"
         component={EventFreeDetailScreen}
+        options={{title: 'Event Detail'}}
+      />
+      <Stack.Screen
+        name="tes"
+        component={TestAPI}
         options={{title: 'Event Detail'}}
       />
     </Stack.Navigator>

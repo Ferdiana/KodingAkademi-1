@@ -12,6 +12,7 @@ const HeaderHome = ({navigation}) => {
 
   return (
     <VStack bg={'secondary.500'} px={'5%'} pt={2}>
+      <Button onPress={() => navigation.navigate('tes')}>tes</Button>
       <HStack alignItems={'center'} justifyContent={'space-between'}>
         <VStack>
           <Text color={'neutral.50'} fontSize={'xl'} fontWeight={700}>
