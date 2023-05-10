@@ -1,8 +1,8 @@
 import React from 'react';
-import {Image, Center, NativeBaseProvider} from 'native-base';
+import {Image, Center} from 'native-base';
 import Swiper from 'react-native-swiper';
 import Data from '../../data/Data';
-import {customTheme} from '../../theme';
+import Colors from '../../theme/colors';
 
 const BannerSlider = () => {
   return (
@@ -11,8 +11,8 @@ const BannerSlider = () => {
       loop={true}
       height={120}
       paginationStyle={{bottom: 5}}
-      dotColor={'#0B2347'}
-      activeDotColor={'#F9AD0A'}
+      dotColor={Colors.neutral[100]}
+      activeDotColor={Colors.neutral[900]}
       style={{overflow: 'hidden'}}>
       {Data.map(Banner => (
         <Center key={Banner.id} mx={5}>

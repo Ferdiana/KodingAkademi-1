@@ -1,7 +1,7 @@
 import {Box, Pressable, Text} from 'native-base';
 import React, {useState} from 'react';
 
-const Btn_Primary = ({onPress, text, padding, w}) => {
+const Btn_Primary = ({onPress, text, padding, w, pb}) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePressIn = () => {
@@ -20,8 +20,9 @@ const Btn_Primary = ({onPress, text, padding, w}) => {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       w={w}
-      px={padding}>
-      <Box bg={boxBgColor} borderRadius={10} p={2}>
+      px={padding}
+      pb={pb}>
+      <Box bg={boxBgColor} borderRadius={8} p={2}>
         <Text textAlign={'center'} color={'neutral.50'}>
           {text}
         </Text>

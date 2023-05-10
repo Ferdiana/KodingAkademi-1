@@ -1,13 +1,5 @@
 import React, {useState} from 'react';
-import {
-  NativeBaseProvider,
-  Center,
-  Text,
-  Stack,
-  Input,
-  Icon,
-  View,
-} from 'native-base';
+import {View} from 'native-base';
 import {Event, SearchBar} from '../components';
 
 export default function EventScreen() {
@@ -17,7 +9,7 @@ export default function EventScreen() {
     setSearchText(text);
   };
   return (
-    <View style={{flex: 1}}>
+    <View flex={1}>
       <SearchBar placeholder={'Search'} onChangeText={handleSearchTextChange} />
       <Event searchText={searchText} />
     </View>

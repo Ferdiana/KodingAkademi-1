@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Center, ScrollView, Stack, Text} from 'native-base';
+import {Center, Stack, Text} from 'native-base';
 import {AllCourse, SearchBar, SearchCategory} from '../components';
 
 function CourseScreen({navigation}) {
@@ -27,12 +27,7 @@ function CourseScreen({navigation}) {
       </Center>
       <SearchBar placeholder={'Search'} onChangeText={handleSearchTextChange} />
       <SearchCategory onCategoryChange={handleCategoryChange} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <AllCourse
-          searchText={searchText}
-          selectedCategory={selectedCategory}
-        />
-      </ScrollView>
+      <AllCourse searchText={searchText} selectedCategory={selectedCategory} />
     </Stack>
   );
 }

@@ -1,43 +1,52 @@
 import React from 'react';
 import {Box, Center, Flex, Image, Text} from 'native-base';
 import Data from '../../data/Data';
+import Colors from '../../theme/colors';
 
-const Promo = ({flexDirection, mr}) => {
-  // const today = new Date();
+const Promo = ({mr}) => {
   return (
-    <Flex flexDirection={flexDirection} mr={mr}>
+    <Flex flexDirection={'row'} mr={mr} p={'10px'}>
       {Data.map(item => {
         return (
           <Box
             key={item.id}
             w={'140px'}
-            borderWidth={1}
-            borderColor={'primary.500'}
-            borderRadius={10}
-            padding={2}
-            mr={2}>
+            h={'170px'}
+            bg={Colors.neutral[50]}
+            shadow={1}
+            borderRadius={8}
+            px={'10px'}
+            py={'5px'}
+            mr={'10px'}>
             <Center>
               <Image
                 source={{uri: `${item.image}`}}
                 alt={'img'}
                 w={'100%'}
                 h={'80px'}
-                borderRadius={10}
+                borderRadius={8}
               />
             </Center>
             <Text
-              mt={2}
-              h={'48px'}
-              fontSize={'sm'}
-              fontWeight={'700'}
-              color={'primary.500'}>
+              numberOfLines={2}
+              mt={'5px'}
+              h={'38px'}
+              fontFamily={'Inter'}
+              fontSize={'12px'}
+              fontWeight={'600'}
+              color={Colors.neutral[900]}>
               {item.title}
             </Text>
-            <Text fontSize={'sm'} fontWeight={600} color={'neutral.900'}>
+            <Text
+              fontFamily={'Inter'}
+              fontSize={'12px'}
+              fontWeight={500}
+              color={Colors.neutral[900]}>
               {item.newPrice}
             </Text>
             <Text
-              fontSize={'sm'}
+              fontFamily={'Inter'}
+              fontSize={'10px'}
               fontWeight={500}
               color={'neutral.200'}
               strikeThrough>

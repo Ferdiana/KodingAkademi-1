@@ -1,28 +1,33 @@
 import React from 'react';
 import {
+  Stack,
   HStack,
   Text,
   Checkbox,
   Image,
-  Stack,
   Center,
   Divider,
   IconButton,
+  Pressable,
 } from 'native-base';
-import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../theme/colors';
+import Icon from 'react-native-vector-icons/AntDesign';
+import Btn_Icon from '../button/Btn_Icon';
 
-const Cart = ({item, removeFromCart}) => {
+const CartCard = ({item, onSelectItem, onDeleteItem, hideCheckboxAndIcon}) => {
   return (
     <Stack bgColor={'white'}>
       <HStack py={'15px'}>
-        <Center px={'19px'}>
-          <Checkbox
-            value="test"
-            accessibilityLabel="This is a dummy checkbox"
-            colorScheme="orange"
-          />
-        </Center>
+        {!hideCheckboxAndIcon && (
+          <Center px={'19px'}>
+            <Checkbox
+              value="test"
+              accessibilityLabel="This is a dummy checkbox"
+              colorScheme="primary"
+              onChange={() => onSelectItem(item)}
+            />
+          </Center>
+        )}
         <Center pr={'15px'}>
           <Image
             source={{uri: item.image}}
@@ -36,13 +41,14 @@ const Cart = ({item, removeFromCart}) => {
           <Stack w={'200'}>
             <Text fontWeight={'bold'}>{item.title}</Text>
             <Text>{item.category}</Text>
-            <Text>Rp.{item.priceNew}</Text>
-
-            <IconButton
-              alignSelf={'flex-end'}
-              p={-10}
-              icon={<Icon name="delete" color="red" size={24} />}
-            />
+            <Text>Rp.{item.price}</Text>
+            {!hideCheckboxAndIcon && (
+              <IconButton
+                bgColor={'transparent'}
+                icon={<Icon name="delete" color="red" size={24} />}
+                onPress={() => onDeleteItem(item.id)} // Call onDeleteItem with item.id
+              />
+            )}
           </Stack>
         </Center>
       </HStack>
@@ -59,4 +65,4 @@ const Cart = ({item, removeFromCart}) => {
   );
 };
 
-export default Cart;
+export default CartCard;

@@ -16,6 +16,7 @@ const FormLogin = ({navigation}) => {
 
   const handleSubmit = async () => {
     await login(email, password);
+    // navigation.navigate('home');
 
     // navigation.replace('home');
   };

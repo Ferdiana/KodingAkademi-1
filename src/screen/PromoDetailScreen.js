@@ -7,7 +7,6 @@ import {dataCourse} from '../data/DataCourse';
 function PromoDetailScreen() {
   const route = useRoute();
   const itemId = route.params.itemId;
-  console.log('itemId', itemId);
 
   const item = dataCourse.find(item => item.id === itemId);
 

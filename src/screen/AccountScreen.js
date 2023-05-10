@@ -16,11 +16,9 @@ const AccountScreen = ({navigation}) => {
           alignItems={'center'}
           justifyContent={'space-between'}
           bg={Colors.neutral[50]}
-          h={'40px'}
+          h={'44px'}
           w={'90%'}
           borderRadius={'8px'}
-          borderWidth={1}
-          borderColor={Colors.success[50]}
           shadow={1}>
           <Text
             fontFamily={'Inter'}

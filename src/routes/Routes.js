@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OnBoardingScreen from '../screen/OnBoardingScreen';
 import BottomNavigation from './BottomNavigation';
@@ -17,11 +17,17 @@ import TransactionsScreen from '../screen/TransactionsScreen';
 import EventScreen from '../screen/EventScreen';
 import EventFinishedDetailScreen from '../screen/EventFinishedDetailScreen';
 import EventFreeDetailScreen from '../screen/EventFreeDetailScreen';
-import TestAPI from '../components/card/tescard';
+import CourseDetailScreen from '../screen/CourseDetailScreen';
+import {AuthContext} from '../controller/AuthContext';
+import CouponScreen from '../screen/CouponScreen';
+import CheckoutScreen from '../screen/CheckoutScreen';
+import Colors from '../theme/colors';
 
 const Stack = createNativeStackNavigator();
 
 function Routes() {
+  const {user} = useContext(AuthContext);
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -29,7 +35,7 @@ function Routes() {
         headerTitleAlign: 'center',
         headerStyle: {
           height: 54,
-          backgroundColor: '#FFFFFF',
+          backgroundColor: Colors.neutral[50],
         },
         headerTitleStyle: {
           fontSize: 14,
@@ -38,7 +44,31 @@ function Routes() {
           color: '#191F25',
         },
       }}>
-      <Stack.Screen
+      {/* <Stack.Screen
+        name="splash"
+        component={SplashScreen}
+        options={{
+          headerShown: false,
+        }}
+      /> */}
+      {user ? (
+        <Stack.Screen
+          name="home"
+          component={BottomNavigation}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : (
+        <Stack.Screen
+          name="OnBoarding"
+          component={OnBoardingScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )}
+      {/* <Stack.Screen
         name="OnBoarding"
         component={OnBoardingScreen}
         options={{
@@ -51,7 +81,7 @@ function Routes() {
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -121,7 +151,17 @@ function Routes() {
       <Stack.Screen
         name="Event"
         component={EventScreen}
-        options={{title: 'Transactions'}}
+        options={{
+          title: 'All Event',
+          headerStyle: {backgroundColor: Colors.secondary[50]},
+          headerTitleStyle: {
+            fontSize: 14,
+            fontFamily: 'Inter',
+            fontWeight: '700',
+            color: Colors.neutral[50],
+          },
+          headerTintColor: Colors.neutral[50],
+        }}
       />
       <Stack.Screen
         name="EventFinishedDetail"
@@ -134,10 +174,17 @@ function Routes() {
         options={{title: 'Event Detail'}}
       />
       <Stack.Screen
-        name="tes"
-        component={TestAPI}
-        options={{title: 'Event Detail'}}
+        name="CourseDetail"
+        component={CourseDetailScreen}
+        options={{title: 'Course Detail'}}
       />
+      <Stack.Screen
+        name="Coupon"
+        component={CouponScreen}
+        options={{title: 'Coupon Detail'}}
+      />
+
+      <Stack.Screen name="Checkout" component={CheckoutScreen} options={{}} />
     </Stack.Navigator>
   );
 }

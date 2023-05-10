@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {Text, ScrollView, HStack, VStack, Stack, Pressable} from 'native-base';
 import {
@@ -7,116 +8,102 @@ import {
   MyCourse,
   Promo,
 } from '../components';
+import {ImageBackground} from 'react-native';
+import Colors from '../theme/colors';
 
 function HomeScreen({navigation}) {
+  const Title = ({text1, color1, text2, color2, onPress}) => {
+    return (
+      <Stack px={5} mb={'10px'}>
+        <HStack justifyContent={'space-between'} alignItems={'center'}>
+          <Text
+            color={color1}
+            fontFamily={'Inter'}
+            fontWeight={600}
+            fontSize={'14px'}>
+            {text1}
+          </Text>
+          <Pressable onPress={onPress}>
+            <Text
+              color={'primary.500'}
+              underline
+              fontFamily={'Inter'}
+              fontWeight={600}
+              fontSize={'12px'}>
+              See all
+            </Text>
+          </Pressable>
+        </HStack>
+        <Text
+          color={color2}
+          fontFamily={'Inter'}
+          fontWeight={500}
+          fontSize={'12px'}>
+          {text2}
+        </Text>
+      </Stack>
+    );
+  };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <HeaderHome navigation={navigation} />
       <Stack space={1}>
-        <VStack space={2} py={2} bg={'neutral.50'}>
-          <HStack px={5} justifyContent={'space-between'} alignItems={'center'}>
-            <Text
-              color={'neutral.900'}
-              fontFamily={'Inter'}
-              fontWeight={700}
-              fontSize={'sm'}>
-              My Course
-            </Text>
-            <Pressable onPress={() => navigation.navigate('MyCourse')}>
-              <Text
-                color={'primary.500'}
-                underline
-                fontFamily={'Inter'}
-                fontWeight={400}
-                fontSize={'xs'}>
-                See all
-              </Text>
-            </Pressable>
-          </HStack>
+        <VStack py={'10px'} bg={Colors.neutral[50]}>
+          <Title
+            text1={'My Course'}
+            color1={Colors.neutral[900]}
+            text2={'List of courses I am currently taking or have completed.'}
+            color2={Colors.neutral[700]}
+          />
           <ScrollView
-            px={5}
+            px={'10px'}
             horizontal={true}
             showsHorizontalScrollIndicator={false}>
-            <HStack space={2}>
-              <MyCourse flexDirection={'row'} mr={7} />
-            </HStack>
+            <MyCourse mr={'18px'} />
           </ScrollView>
         </VStack>
-        <VStack space={2} py={2} bg={'neutral.50'}>
-          <HStack px={5} justifyContent={'space-between'} alignItems={'center'}>
-            <Text
-              color={'neutral.900'}
-              fontFamily={'Inter'}
-              fontWeight={700}
-              fontSize={'sm'}>
-              Latest Events
-            </Text>
-            <Pressable onPress={() => navigation.navigate('Event')}>
-              <Text
-                color={'primary.500'}
-                underline
-                fontFamily={'Inter'}
-                fontWeight={400}
-                fontSize={'xs'}>
-                See all
-              </Text>
-            </Pressable>
-          </HStack>
-          <BannerSlider />
-        </VStack>
-        <VStack space={2} py={2} bg={'neutral.50'}>
-          <HStack px={5} justifyContent={'space-between'} alignItems={'center'}>
-            <Text
-              color={'neutral.900'}
-              fontFamily={'Inter'}
-              fontWeight={700}
-              fontSize={'sm'}>
-              Article
-            </Text>
-            <Pressable onPress={() => navigation.navigate('Article')}>
-              <Text
-                color={'primary.500'}
-                underline
-                fontFamily={'Inter'}
-                fontWeight={400}
-                fontSize={'xs'}>
-                See all
-              </Text>
-            </Pressable>
-          </HStack>
+        <Stack py={'10px'} bg={Colors.neutral[50]}>
+          <ImageBackground
+            source={require('../assets/image/bg.png')}
+            resizeMode="cover">
+            <VStack py={'10px'}>
+              <Title
+                onPress={() => navigation.navigate('Event')}
+                text1={'Latest Events'}
+                color1={Colors.neutral[50]}
+                text2={'Check out exciting and interesting events for you!'}
+                color2={Colors.neutral[50]}
+              />
+              <BannerSlider />
+            </VStack>
+          </ImageBackground>
+        </Stack>
+        <VStack py={'10px'} bg={Colors.neutral[50]}>
+          <Title
+            text1={'Article'}
+            color1={Colors.neutral[900]}
+            text2={"Let's read the article to increase your knowledge!"}
+            color2={Colors.neutral[700]}
+          />
           <ScrollView
-            px={5}
+            px={'10px'}
             horizontal={true}
             showsHorizontalScrollIndicator={false}>
-            <HStack space={2}>
-              <Article flexDirection={'row'} mr={7} />
-            </HStack>
+            <Article mr={'18px'} />
           </ScrollView>
         </VStack>
-        <VStack space={2} py={2} bg={'neutral.50'}>
-          <VStack px={5}>
-            <Text
-              color={'neutral.900'}
-              fontFamily={'Inter'}
-              fontWeight={700}
-              fontSize={'sm'}>
-              Course Promo
-            </Text>
-            <Text
-              color={'neutral.900'}
-              fontFamily={'Inter'}
-              fontWeight={400}
-              fontSize={'xs'}>
-              Learning promo, limited time. Grab it fast!
-            </Text>
-          </VStack>
+        <VStack py={'10px'} bg={Colors.secondary[300]}>
+          <Title
+            text1={'Course Promo'}
+            color1={Colors.neutral[50]}
+            text2={'Learning promo, limited time. Grab it fast!'}
+            color2={Colors.neutral[50]}
+          />
           <ScrollView
-            px={5}
+            px={'10px'}
             horizontal={true}
             showsHorizontalScrollIndicator={false}>
-            <HStack space={2}>
-              <Promo flexDirection={'row'} mr={7} />
-            </HStack>
+            <Promo mr={'18px'} />
           </ScrollView>
         </VStack>
       </Stack>

@@ -3,6 +3,7 @@ import QRComponent from '../components/QR/QRComponent';
 import {Avatar, Center, Text, Stack} from 'native-base';
 import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
+import Colors from '../theme/colors';
 
 const QRDetailScreen = () => {
   const {user} = useContext(AuthContext);
@@ -10,23 +11,35 @@ const QRDetailScreen = () => {
   const initial = username.charAt(0).toUpperCase();
 
   return (
-    <Center my={5}>
-      <Stack space={2} alignItems={'center'} mb={10}>
-        <Avatar size={'74px'} bg={'primary.50'}>
-          <Text fontFamily={'Inter'} fontWeight={600} fontSize={'36px'}>
+    <Stack alignItems={'center'} flex={1} bg={Colors.neutral[50]} py={'10px'}>
+      <Stack alignItems={'center'} mb={'40px'}>
+        <Avatar size={'74px'} bg={Colors.secondary[300]}>
+          <Text
+            fontFamily={'Inter'}
+            fontWeight={600}
+            fontSize={'36px'}
+            color={Colors.neutral[50]}>
             {initial}
           </Text>
         </Avatar>
-        <Text fontFamily={'Inter'} fontWeight={600} fontSize={'20px'}>
+        <Text
+          mt={'10px'}
+          color={Colors.neutral[700]}
+          fontFamily={'Inter'}
+          fontWeight={600}
+          fontSize={'20px'}>
           {user.full_name}
         </Text>
       </Stack>
-      <Stack bg={'primary.50'} p={3} borderRadius={8}>
+      <Stack
+        borderWidth={4}
+        borderColor={Colors.secondary[300]}
+        borderRadius={8}>
         <Stack background={'neutral.50'} p={2} borderRadius={8}>
           <QRComponent size={200} />
         </Stack>
       </Stack>
-    </Center>
+    </Stack>
   );
 };
 export default QRDetailScreen;

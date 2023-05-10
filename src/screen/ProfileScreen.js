@@ -3,6 +3,8 @@ import React, {useContext} from 'react';
 import {Text, Stack, Box, ZStack, Avatar, HStack, Pressable} from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {ImageBackground} from 'react-native';
+import Colors from '../theme/colors';
 
 function ProfileScreen({navigation}) {
   const ButtonProfile = ({text, borderColor, icon, onPress}) => {
@@ -15,8 +17,6 @@ function ProfileScreen({navigation}) {
           bg={'neutral.50'}
           h={'50px'}
           borderRadius={'8px'}
-          borderWidth={1}
-          borderColor={borderColor}
           shadow={1}>
           <Icon name={icon} size={24} color={'#191F25'} />
           <Text
@@ -34,16 +34,6 @@ function ProfileScreen({navigation}) {
   const {logout} = useContext(AuthContext);
 
   const handleSubmit = async () => {
-    // Alert.alert(
-    //   'Logout',
-    //   'Are you sure you want to logout?',
-    //   [
-    //     {text: 'Cancel', style: 'cancel'},
-    //     {text: 'OK', onPress: () => navigation.replace('OnBoarding')},
-    //   ],
-    //   {cancelable: false},
-    // );
-    navigation.replace('OnBoarding');
     await logout();
   };
 
@@ -52,14 +42,18 @@ function ProfileScreen({navigation}) {
   const initial = username.charAt(0).toUpperCase();
   return (
     <Stack bg={'neutral.50'} flex={1}>
-      <Box bg={'secondary.50'} w={'full'} h={'160px'} />
+      <ImageBackground
+        source={require('../assets/image/bg.png')}
+        resizeMode="cover">
+        <Box w={'full'} h={'160px'} />
+      </ImageBackground>
       <ZStack w={'full'} justifyContent={'center'} alignItems={'center'}>
         <Box w={'100%'} px={'38px'}>
           <Stack
             bg={'neutral.50'}
             h={'155px'}
             borderRadius={8}
-            shadow={1}
+            shadow={4}
             alignItems={'center'}
             justifyContent={'center'}>
             <Text
@@ -83,10 +77,14 @@ function ProfileScreen({navigation}) {
           <Avatar
             mb={'155px'}
             size={'74px'}
-            bg={'primary.50'}
+            bg={Colors.secondary[50]}
             borderWidth={4}
             borderColor={'neutral.50'}>
-            <Text fontFamily={'Inter'} fontWeight={600} fontSize={'36px'}>
+            <Text
+              fontFamily={'Inter'}
+              fontWeight={600}
+              fontSize={'36px'}
+              color={Colors.neutral[50]}>
               {initial}
             </Text>
           </Avatar>
@@ -97,26 +95,18 @@ function ProfileScreen({navigation}) {
           onPress={() => navigation.navigate('Account')}
           text={'Account'}
           icon={'person'}
-          borderColor={'#97E7A8'}
         />
         <ButtonProfile
           onPress={() => navigation.navigate('MyCourse')}
           text={'My Course'}
           icon={'menu-book'}
-          borderColor={'primary.50'}
         />
         <ButtonProfile
           onPress={() => navigation.navigate('Transactions')}
           text={'Transactions'}
           icon={'receipt-long'}
-          borderColor={'#A7C5F1'}
         />
-        <ButtonProfile
-          onPress={handleSubmit}
-          text={'Logout'}
-          icon={'logout'}
-          borderColor={'#F1A7AE'}
-        />
+        <ButtonProfile onPress={handleSubmit} text={'Logout'} icon={'logout'} />
       </Stack>
     </Stack>
     // <Center flex={1}>

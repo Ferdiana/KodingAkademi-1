@@ -1,41 +1,45 @@
-import {
-  Box,
-  Pressable,
-  ScrollView,
-  Text,
-  Flex,
-  HStack,
-  Center,
-} from 'native-base';
-import React, {useState} from 'react';
-import {categories} from '../../data/DataCourse';
+import {Pressable, ScrollView, Text, Flex, Center} from 'native-base';
+import React, {useContext, useEffect, useState} from 'react';
 import Colors from '../../theme/colors';
+import {AuthContext} from '../../controller/AuthContext';
+import {API_Course} from '../../controller/API_Course';
 
-const CategoryButton = ({title, onPress, selected}) => {
-  return (
-    <Pressable onPress={onPress}>
-      <Center
-        bg={selected ? Colors.primary[500] : Colors.neutral[50]}
-        h={'34px'}
-        px={'10px'}
-        borderWidth={selected ? '0' : '1'}
-        borderColor={Colors.neutral[300]}
-        borderRadius={'30px'}>
-        <Text
-          fontFamily={'Inter'}
-          fontSize={12}
-          fontWeight={600}
-          color={selected ? Colors.neutral[50] : Colors.neutral[300]}
-          textAlign="center">
-          {title}
-        </Text>
-      </Center>
-    </Pressable>
-  );
-};
+const CategoryButton = ({title, onPress, selected, pr, pl}) => (
+  <Pressable onPress={onPress} pl={pl} pr={pr}>
+    <Center
+      bg={selected ? Colors.primary[500] : Colors.neutral[50]}
+      h={'34px'}
+      px={'20px'}
+      py={'8px'}
+      borderWidth={selected ? '0' : '1'}
+      borderColor={Colors.neutral[300]}
+      borderRadius={'30px'}>
+      <Text
+        fontFamily={'Inter'}
+        fontSize={12}
+        fontWeight={600}
+        color={selected ? Colors.neutral[50] : Colors.neutral[300]}
+        textAlign="center">
+        {title}
+      </Text>
+    </Center>
+  </Pressable>
+);
 
 const SearchCategory = ({onCategoryChange}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const {user} = useContext(AuthContext);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      if (user.accessToken) {
+        const coursesData = await API_Course(user.accessToken);
+        setCourses(coursesData);
+      }
+    };
+    loadCourses();
+  }, [user.accessToken]);
 
   const handleCategoryPress = category => {
     setSelectedCategory(category);
@@ -43,26 +47,28 @@ const SearchCategory = ({onCategoryChange}) => {
   };
 
   return (
-    <HStack my={'10px'} bg={'transparent'}>
-      <ScrollView
-        pl={'10px'}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}>
+    <Flex flexDirection="row" my={'8px'}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <CategoryButton
+          pl={'12px'}
+          pr={'12px'}
           title="All"
           onPress={() => handleCategoryPress(null)}
-          selected={!selectedCategory}
+          selected={selectedCategory === null}
         />
-        {categories.map((category, index) => (
-          <CategoryButton
-            key={index}
-            title={category}
-            onPress={() => handleCategoryPress(category)}
-            selected={category === selectedCategory}
-          />
-        ))}
+        {courses.map(item => {
+          return (
+            <CategoryButton
+              pr={'12px'}
+              key={item.id}
+              title={item.category.name}
+              onPress={() => handleCategoryPress(item)}
+              selected={selectedCategory && selectedCategory.id === item.id}
+            />
+          );
+        })}
       </ScrollView>
-    </HStack>
+    </Flex>
   );
 };
 

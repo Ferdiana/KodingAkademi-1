@@ -9,7 +9,7 @@ function PromoScreen({navigation}) {
     setSearchText(text);
   };
   return (
-    <Stack bg={'neutral.50'}>
+    <Stack bg={'neutral.50'} flex={1}>
       <Center bg={'secondary.50'} h={'42px'}>
         <Text
           color={'neutral.50'}

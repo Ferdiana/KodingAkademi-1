@@ -9,13 +9,16 @@ const register = async (
   confirmPassword,
 ) => {
   try {
-    const response = await axios.post(`${API_KEY}/register`, {
-      full_name,
-      email,
-      phone_number,
-      password,
-      confirmPassword,
-    });
+    const response = await axios.post(
+      'https://2358-103-157-49-64.ngrok-free.app/register',
+      {
+        full_name,
+        email,
+        phone_number,
+        password,
+        confirmPassword,
+      },
+    );
     console.log(response.data);
   } catch (error) {
     console.log(error.response.data.message);

@@ -1,47 +1,49 @@
 import React from 'react';
 import {Box, Center, Flex, Image, Text} from 'native-base';
 import Data from '../../data/Data';
+import Colors from '../../theme/colors';
 
-const Article = ({flexDirection, mr}) => {
-  // const today = new Date();
+const Article = ({mr}) => {
   return (
-    <Flex flexDirection={flexDirection} mr={mr}>
-      {Data.map(Article => {
-        // const courseDate = new Date(Article);s
-        // const isActive = courseDate > today;
+    <Flex flexDirection={'row'} mr={mr} p={'10px'}>
+      {Data.map(item => {
         return (
           <Box
-            key={Article.id}
+            key={item.id}
             w={'140px'}
-            bg={'primary.500'}
-            borderRadius={10}
-            padding={2}
-            // opacity={isActive ? 0.4 : 1}
-            // pointerEvents={isActive ? 'auto' : 'none'}
-            mr={2}>
+            h={'170px'}
+            px={'10px'}
+            pt={'5px'}
+            mr={2}
+            bg={Colors.neutral[50]}
+            borderRadius={8}
+            shadow={1}>
             <Center>
               <Image
-                source={{uri: `${Article.image}`}}
+                source={{uri: `${item.image}`}}
                 alt={'img'}
                 w={'100%'}
-                h={'80px'}
-                borderRadius={10}
+                h={'84px'}
+                borderRadius={8}
               />
             </Center>
             <Text
-              mt={2}
-              h={'48px'}
-              fontSize={'sm'}
-              fontWeight={700}
-              color={'neutral.50'}>
-              {Article.title}
+              numberOfLines={2}
+              mt={'5px'}
+              h={'38px'}
+              fontFamily={'Inter'}
+              fontSize={'12px'}
+              fontWeight={600}
+              color={Colors.neutral[900]}>
+              {item.title}
             </Text>
             <Text
+              mt={'5px'}
               fontFamily={'Inter'}
-              fontWeight={200}
-              fontSize={'2xs'}
-              color={'neutral.50'}>
-              {Article.date}
+              fontWeight={300}
+              fontSize={'10px'}
+              color={Colors.neutral[900]}>
+              {item.date}
             </Text>
           </Box>
         );
