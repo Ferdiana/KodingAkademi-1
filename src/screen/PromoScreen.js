@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Center, Stack, Text} from 'native-base';
 import {AllPromo, SearchBar} from '../components';
+import Colors from '../theme/colors';
 
 function PromoScreen({navigation}) {
   const [searchText, setSearchText] = useState('');
@@ -19,7 +20,12 @@ function PromoScreen({navigation}) {
           All Promo
         </Text>
       </Center>
-      <SearchBar placeholder={'Search'} onChangeText={handleSearchTextChange} />
+      <SearchBar
+        pb={'20px'}
+        bg={Colors.secondary[50]}
+        placeholder={'Search'}
+        onChangeText={handleSearchTextChange}
+      />
       <AllPromo navigation={navigation} searchText={searchText} />
     </Stack>
   );

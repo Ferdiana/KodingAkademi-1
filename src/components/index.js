@@ -13,9 +13,12 @@ import Promo from './card/Promo';
 import AllPromo from './card/AllPromo';
 import AllCourse from './card/AllCourse';
 import Cart from './card/Cart';
-import Event from './card/Event';
 import SearchBar from './search/SearchBar';
 import SearchCategory from './search/SearchCategory';
+import AllArticle from './card/AllArticle';
+import AllEvent from './card/AllEvent';
+import AllMyCourse from './card/AllMyCourse';
+import AttendedEvent from './card/AttendedEvent';
 
 export {
   FormLogin,
@@ -33,7 +36,10 @@ export {
   SearchBar,
   AllPromo,
   AllCourse,
+  AllMyCourse,
   Cart,
-  Event,
+  AllEvent,
+  AttendedEvent,
   SearchCategory,
+  AllArticle,
 };

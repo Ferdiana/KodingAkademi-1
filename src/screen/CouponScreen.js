@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  NativeBaseProvider,
   Center,
   Text,
   Stack,
@@ -12,33 +11,28 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {dataCoupon} from '../data/Cupon';
 import Colors from '../theme/colors';
-
 const CouponScreen = ({route}) => {
-  const navigation = useNavigation();
-  const {totalPrice, callback} = route.params;
+  const {selectedItems} = route.params;
   const [selectedCoupon, setSelectedCoupon] = useState(null);
-  const [discountedPrice, setDiscountedPrice] = useState(totalPrice);
 
-  const handleTotalCoupon = () => {
-    const selected = dataCoupon.find(coupon => coupon.id === selectedCoupon);
-    if (selected) {
-      return selected.discount;
-    }
-    return 0;
-  };
+  const navigation = useNavigation();
 
   const handleApplyCoupon = () => {
-    const selected = dataCoupon.find(coupon => coupon.id === selectedCoupon);
-    if (selected) {
-      const discount = selected.discount;
-      const discountedTotalPrice = totalPrice - discount;
-      setDiscountedPrice(discountedTotalPrice);
-    } else {
-      setDiscountedPrice(totalPrice);
-    }
-  };
+    const appliedCoupon = dataCoupon.find(item => item.id === selectedCoupon);
 
-  const totalDiscount = handleTotalCoupon();
+    const appliedCouponDiscount = appliedCoupon ? appliedCoupon.discount : 0;
+
+    const updatedSelectedItems = selectedItems.map(item =>
+      item.selected ? {...item, selected: true} : item,
+    );
+
+    navigation.navigate('Cart', {
+      selectedItems: updatedSelectedItems,
+      couponDiscount: appliedCouponDiscount,
+    });
+
+    setSelectedCoupon(appliedCoupon ? appliedCoupon.id : null);
+  };
 
   return (
     <Stack flex={1} bg={Colors.neutral[50]}>
@@ -84,6 +78,7 @@ const CouponScreen = ({route}) => {
           ))}
         </Stack>
       </ScrollView>
+
       <Stack
         justifyContent={'flex-end'}
         pb={'10px'}
@@ -97,7 +92,13 @@ const CouponScreen = ({route}) => {
               Total Discount
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
-              Rp. {discountedPrice}
+              <Text>
+                Rp.
+                {selectedCoupon !== null
+                  ? dataCoupon.find(item => item.id === selectedCoupon)
+                      ?.discount
+                  : 0}
+              </Text>
             </Text>
           </Stack>
           <Stack>

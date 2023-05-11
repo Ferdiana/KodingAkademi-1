@@ -22,6 +22,12 @@ import {AuthContext} from '../controller/AuthContext';
 import CouponScreen from '../screen/CouponScreen';
 import CheckoutScreen from '../screen/CheckoutScreen';
 import Colors from '../theme/colors';
+import PromoScreen from '../screen/PromoScreen';
+import ArticleDetailScreen from '../screen/ArticleDetailScreen';
+import MyCourseDetailScreen from '../screen/MyCourseDetailScreen';
+import PaymentScreen from '../screen/PaymentScreen';
+import AttendedEventScreen from '../screen/AttendedEventScreen';
+import AttendedEventDetailScreen from '../screen/AttendedEventDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -99,7 +105,10 @@ function Routes() {
       <Stack.Screen
         name="Article"
         component={ArticleScreen}
-        options={{title: 'All Article'}}
+        options={{
+          title: 'All Article',
+          headerStyle: {backgroundColor: Colors.neutral[100]},
+        }}
       />
       <Stack.Screen
         name="ForgotPass"
@@ -153,14 +162,6 @@ function Routes() {
         component={EventScreen}
         options={{
           title: 'All Event',
-          headerStyle: {backgroundColor: Colors.secondary[50]},
-          headerTitleStyle: {
-            fontSize: 14,
-            fontFamily: 'Inter',
-            fontWeight: '700',
-            color: Colors.neutral[50],
-          },
-          headerTintColor: Colors.neutral[50],
         }}
       />
       <Stack.Screen
@@ -183,8 +184,37 @@ function Routes() {
         component={CouponScreen}
         options={{title: 'Coupon Detail'}}
       />
-
+      <Stack.Screen
+        name="Promo"
+        component={PromoScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Checkout" component={CheckoutScreen} options={{}} />
+      <Stack.Screen
+        name="ArticleDetail"
+        component={ArticleDetailScreen}
+        options={{title: 'Article Detail'}}
+      />
+      <Stack.Screen
+        name="MyCourseDetail"
+        component={MyCourseDetailScreen}
+        options={{title: 'My Course Detail'}}
+      />
+      <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{title: 'Complete Payment'}}
+      />
+      <Stack.Screen
+        name="AttendedEvent"
+        component={AttendedEventScreen}
+        options={{title: 'Attended Events'}}
+      />
+      <Stack.Screen
+        name="AttendedEventDetail"
+        component={AttendedEventDetailScreen}
+        options={{title: 'Attended Events'}}
+      />
     </Stack.Navigator>
   );
 }

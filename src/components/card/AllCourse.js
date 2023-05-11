@@ -51,7 +51,7 @@ const AllCourse = ({searchText, selectedCategory}) => {
           p={'8px'}
           borderRadius={10}
           mr={2}>
-          <HStack h={'100px'}>
+          <HStack h={'103px'} space={'5px'}>
             <Image
               source={{uri: `${item.img_url}`}}
               alt={'img'}
@@ -60,7 +60,7 @@ const AllCourse = ({searchText, selectedCategory}) => {
               resizeMode="center"
               borderRadius={10}
             />
-            <Stack w={'70%'} px={'5px'} justifyContent={'space-between'}>
+            <Stack w={'70%'} justifyContent={'space-between'}>
               <Text
                 numberOfLines={1}
                 letterSpacing={'0.5px'}

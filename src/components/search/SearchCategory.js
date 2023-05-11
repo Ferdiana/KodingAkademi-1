@@ -47,11 +47,11 @@ const SearchCategory = ({onCategoryChange}) => {
   };
 
   return (
-    <Flex flexDirection="row" my={'8px'}>
+    <Flex flexDirection="row">
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <CategoryButton
-          pl={'12px'}
-          pr={'12px'}
+          pl={'18px'}
+          pr={'18px'}
           title="All"
           onPress={() => handleCategoryPress(null)}
           selected={selectedCategory === null}

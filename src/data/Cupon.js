@@ -6,7 +6,7 @@ export const dataCoupon = [
   },
   {
     id: 2,
-    discount: 10000,
+    discount: 500000,
     dateLeft: '5 Day',
   },
   {

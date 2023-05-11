@@ -50,6 +50,7 @@ function HomeScreen({navigation}) {
       <Stack space={1}>
         <VStack py={'10px'} bg={Colors.neutral[50]}>
           <Title
+            onPress={() => navigation.navigate('MyCourse')}
             text1={'My Course'}
             color1={Colors.neutral[900]}
             text2={'List of courses I am currently taking or have completed.'}
@@ -80,6 +81,7 @@ function HomeScreen({navigation}) {
         </Stack>
         <VStack py={'10px'} bg={Colors.neutral[50]}>
           <Title
+            onPress={() => navigation.navigate('Article')}
             text1={'Article'}
             color1={Colors.neutral[900]}
             text2={"Let's read the article to increase your knowledge!"}
@@ -94,6 +96,7 @@ function HomeScreen({navigation}) {
         </VStack>
         <VStack py={'10px'} bg={Colors.secondary[300]}>
           <Title
+            onPress={() => navigation.navigate('Promo')}
             text1={'Course Promo'}
             color1={Colors.neutral[50]}
             text2={'Learning promo, limited time. Grab it fast!'}

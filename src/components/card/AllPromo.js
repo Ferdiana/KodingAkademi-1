@@ -3,7 +3,6 @@ import {Box, Text, Image, Stack, Pressable, View} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {FlatGrid} from 'react-native-super-grid';
 import Colors from '../../theme/colors';
-import {dataCourse} from '../../data/DataCourse';
 import {useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
 import {useContext} from 'react';

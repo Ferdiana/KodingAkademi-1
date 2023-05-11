@@ -21,7 +21,12 @@ const Btn_Secondary = ({onPress, text, padding, w}) => {
       onPressOut={handlePressOut}
       w={w}
       px={padding}>
-      <Box bg={boxBgColor} borderRadius={10} p={2}>
+      <Box
+        bg={boxBgColor}
+        h={'46px'}
+        borderRadius={8}
+        p={2}
+        justifyContent={'center'}>
         <Text textAlign={'center'}>{text}</Text>
       </Box>
     </Pressable>

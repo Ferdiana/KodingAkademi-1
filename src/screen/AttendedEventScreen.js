@@ -1,29 +1,24 @@
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import {
-  AllCourse,
-  AllMyCourse,
-  MyCourse,
-  SearchBar,
-  SearchCategory,
-} from '../components';
+import {AttendedEvent, SearchBar, SearchCategory} from '../components';
 import Colors from '../theme/colors';
 
-const MyCourseScreen = () => {
+const AttendedEventScreen = () => {
   const [searchText, setSearchText] = useState('');
 
   const handleSearchTextChange = text => {
     setSearchText(text);
   };
   return (
-    <Stack space={'12px'} flex={1} bg={Colors.neutral[50]}>
+    <Stack space={'10px'} flex={1} bg={Colors.neutral[50]}>
       <SearchBar
-        placeholder={'Search my course...'}
+        shadow={1}
+        placeholder={'Search attended events...'}
         onChangeText={handleSearchTextChange}
       />
       <SearchCategory />
-      <AllMyCourse searchText={searchText} />
+      <AttendedEvent searchText={searchText} />
     </Stack>
   );
 };
-export default MyCourseScreen;
+export default AttendedEventScreen;

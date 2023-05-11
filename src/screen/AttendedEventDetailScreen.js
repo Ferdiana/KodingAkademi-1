@@ -1,20 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {Stack, Text, Box, Image, HStack, ScrollView, Center} from 'native-base';
+import {Box, Center, HStack, Image, ScrollView, Stack, Text} from 'native-base';
+import React, {useState} from 'react';
+import Colors from '../theme/colors';
 import {useRoute} from '@react-navigation/native';
 import {dataEvent} from '../data/DataEvent';
-import Colors from '../theme/colors';
-import {Btn_Primary} from '../components';
-import {useState} from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
+import {Btn_Primary} from '../components';
 
-function EventFreeDetailScreen() {
+const AttendedEventDetailScreen = () => {
   const [selectedValue, setSelectedValue] = useState('');
   const route = useRoute();
-  const itemId = route.params.itemId;
+  const {id} = route.params;
 
-  const detailItem = dataEvent.find(item => item.id === itemId);
-
+  const AttendedEvent = dataEvent.find(item => item.id === id);
   const options = [
     {label: 'Option 1', value: 1},
     {label: 'Option 2', value: 2},
@@ -28,7 +26,7 @@ function EventFreeDetailScreen() {
         <Center w={'full'} h={'324px'} my={'10px'}>
           <Image
             borderRadius={8}
-            source={{uri: detailItem.image}}
+            source={{uri: AttendedEvent.image}}
             alt="img_event"
             h={'100%'}
             width={'100%'}
@@ -36,10 +34,10 @@ function EventFreeDetailScreen() {
         </Center>
         <Stack space={'5px'} py={'10px'}>
           <Text fontFamily={'Inter'} fontSize={'20px'} fontWeight={600}>
-            {detailItem.title}
+            {AttendedEvent.title}
           </Text>
           <Text fontFamily={'Inter'} fontSize={'16px'} fontWeight={500}>
-            {detailItem.price}
+            {AttendedEvent.price}
           </Text>
           <Text fontFamily={'Inter'} fontSize={'14px'} fontWeight={500}>
             Description
@@ -49,7 +47,7 @@ function EventFreeDetailScreen() {
             fontSize={'12px'}
             fontWeight={300}
             textAlign={'justify'}>
-            {detailItem.description}
+            {AttendedEvent.description}
           </Text>
           <HStack>
             <Box w={'50%'} pr={'10px'} mr={'10px'}>
@@ -61,7 +59,7 @@ function EventFreeDetailScreen() {
                 fontSize={'12px'}
                 fontWeight={300}
                 textAlign={'justify'}>
-                {detailItem.description}
+                {AttendedEvent.description}
               </Text>
             </Box>
             <Box>
@@ -73,7 +71,7 @@ function EventFreeDetailScreen() {
                 fontSize={'12px'}
                 fontWeight={300}
                 textAlign={'justify'}>
-                {detailItem.quota} participants
+                {AttendedEvent.quota} participants
               </Text>
             </Box>
           </HStack>
@@ -90,6 +88,7 @@ function EventFreeDetailScreen() {
                 paddingHorizontal: 12,
               }}
               fontFamily="Inter"
+              disable
               data={options}
               valueField="value"
               placeholder={'Select an options'}
@@ -100,9 +99,8 @@ function EventFreeDetailScreen() {
           </Stack>
         </Stack>
       </ScrollView>
-      <Btn_Primary text={'Add to cart'} pb={'8px'} />
+      <Btn_Primary text={'Add to cart'} pb={'8px'} disabled={true} />
     </Stack>
   );
-}
-
-export default EventFreeDetailScreen;
+};
+export default AttendedEventDetailScreen;

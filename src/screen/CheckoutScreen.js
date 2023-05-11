@@ -1,52 +1,43 @@
-import React, {useState} from 'react';
-
-import {
-  Center,
-  Text,
-  Stack,
-  FlatList,
-  ScrollView,
-  Divider,
-  Select,
-  HStack,
-  Button,
-} from 'native-base';
+import React from 'react';
+import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
-
 const CheckoutScreen = ({route, navigation}) => {
-  const {selectedItems, totalPrice} = route.params;
+  const {selectedItems, totalPrice, discountedPrice, couponDiscount} =
+    route.params;
 
   return (
     <Stack flex={1}>
-      <ScrollView>
-        <Stack bgColor={'white'} px={'19'}>
-          <Stack>
-            {selectedItems.map(item => (
-              <CartCard key={item.id} item={item} hideCheckboxAndIcon />
-            ))}
-          </Stack>
+      <Stack flex={1} space={1}>
+        <Stack space={1}>
+          {selectedItems.map(item => (
+            <CartCard
+              WImage={'40%'}
+              WText={'60%'}
+              key={item.id}
+              item={item}
+              hideCheckboxAndIcon
+            />
+          ))}
         </Stack>
-      </ScrollView>
-
-      <Stack py={'5px'} bgColor={'white'} px={'19'}>
-        <HStack justifyContent={'space-between'}>
-          <Text>Subtotal (1 items) </Text>
-          <Text>Rp3.000.000 </Text>
-        </HStack>
-        <HStack justifyContent={'space-between'}>
-          <Text>Coupon </Text>
-          <Text>-Rp100.000</Text>
-        </HStack>
-        <HStack justifyContent={'space-between'}>
-          <Text>Total Order </Text>
-          <Text>Rp. {totalPrice} </Text>
-        </HStack>
+        <Stack flex={1} py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
+          <HStack justifyContent={'space-between'}>
+            <Text>Subtotal (1 items) </Text>
+            <Text>Rp. {totalPrice} </Text>
+          </HStack>
+          {couponDiscount !== 0 && (
+            <HStack justifyContent={'space-between'}>
+              <Text>Coupon</Text>
+              <Text>- Rp. {couponDiscount}</Text>
+            </HStack>
+          )}
+          <HStack justifyContent={'space-between'}>
+            <Text>Total Order </Text>
+            <Text>Rp. {discountedPrice}</Text>
+          </HStack>
+        </Stack>
       </Stack>
-
       <Stack
         justifyContent={'flex-end'}
         pb={'10px'}
@@ -54,7 +45,7 @@ const CheckoutScreen = ({route, navigation}) => {
         h={'150'}
         px={'18'}
         bgColor={Colors.secondary[100]}>
-        <TouchableOpacity>
+        <Pressable>
           <HStack
             h={44}
             bgColor={'white'}
@@ -63,17 +54,21 @@ const CheckoutScreen = ({route, navigation}) => {
             justifyContent={'space-between'}
             alignItems={'center'}
             px={18}>
-            <Text>Apply Coupon</Text>
+            {couponDiscount ? (
+              <Text>You get Rp {couponDiscount} promo</Text>
+            ) : (
+              <Text>Apply Coupon</Text>
+            )}
             <Icon name="down" color="black" size={24} />
           </HStack>
-        </TouchableOpacity>
+        </Pressable>
         <HStack justifyContent={'space-between'}>
           <Stack>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
               Total Price
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
-              Rp. {totalPrice}
+              Rp. {discountedPrice}
             </Text>
           </Stack>
           <Stack>
@@ -81,7 +76,9 @@ const CheckoutScreen = ({route, navigation}) => {
               py={'3'}
               px={'42'}
               bgColor={Colors.primary[500]}
-              onPress={() => navigation.goBack()}>
+              onPress={() =>
+                navigation.navigate('Payment', {total: discountedPrice})
+              }>
               <Text color={'white'}>Pay Now</Text>
             </Button>
           </Stack>

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Center, Stack, Text} from 'native-base';
+import {Box, Center, Stack, Text} from 'native-base';
 import {AllCourse, SearchBar, SearchCategory} from '../components';
+import Colors from '../theme/colors';
 
 function CourseScreen({navigation}) {
   const [searchText, setSearchText] = useState('');
@@ -25,7 +26,13 @@ function CourseScreen({navigation}) {
           All Course
         </Text>
       </Center>
-      <SearchBar placeholder={'Search'} onChangeText={handleSearchTextChange} />
+      <SearchBar
+        pb={'20px'}
+        bg={Colors.secondary[50]}
+        placeholder={'Search'}
+        onChangeText={handleSearchTextChange}
+      />
+      <Box my={'5px'} />
       <SearchCategory onCategoryChange={handleCategoryChange} />
       <AllCourse searchText={searchText} selectedCategory={selectedCategory} />
     </Stack>

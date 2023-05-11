@@ -22,6 +22,7 @@ const Btn_Icon = ({onPress, text, padding, source, size, w, borderWidth}) => {
       w={w}
       px={padding}>
       <HStack
+        h={'46px'}
         borderWidth={borderWidth}
         borderColor={'neutral.900'}
         bg={boxBgColor}

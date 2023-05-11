@@ -32,7 +32,6 @@ const CourseDetailScreen = ({route}) => {
     loadCourseDetail(); // panggil fungsi untuk memuat detail course
   }, [route.params, user.accessToken]); // tambahkan 'route.params' ke dalam dependency array
 
-  const source = {html: courseDetail.description};
   const {width} = useWindowDimensions();
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>

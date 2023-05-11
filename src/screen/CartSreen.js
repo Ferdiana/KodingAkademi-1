@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {Text, Stack, ScrollView, HStack, Button} from 'native-base';
-import {TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
-
-const CartScreen = ({route}) => {
+const CartScreen = ({route, navigation}) => {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -19,7 +16,8 @@ const CartScreen = ({route}) => {
     },
     {
       id: 2,
-      title: 'Arduino Intermediate',
+      title:
+        'Arduino Intermediate Arduino IntermediateArduino IntermediateArduino IntermediateArduino Intermediate',
       category: 'Robotic',
       image: 'https://picsum.photos/200/302',
       description:
@@ -28,6 +26,15 @@ const CartScreen = ({route}) => {
     },
   ]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const {couponDiscount} = route.params || 0;
+  // const [updatedSelectedItems, setUpdatedSelectedItems] = useState([]);
+
+  useEffect(() => {
+    if (route.params && route.params.selectedItems) {
+      setSelectedItems(route.params.selectedItems);
+      // setUpdatedSelectedItems(route.params.selectedItems);
+    }
+  }, [route.params]);
 
   const handleSelectItem = item => {
     const isSelected = selectedItems.some(
@@ -39,10 +46,15 @@ const CartScreen = ({route}) => {
         prevItems.filter(selectedItem => selectedItem.id !== item.id),
       );
     } else {
-      setSelectedItems(prevItems => [...prevItems, item]);
+      setSelectedItems(prevItems => [
+        ...prevItems,
+        {
+          ...item,
+          selected: true,
+        },
+      ]);
     }
   };
-
   const handleDeleteItem = itemId => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
     setSelectedItems(prevItems => prevItems.filter(item => item.id !== itemId));
@@ -51,36 +63,42 @@ const CartScreen = ({route}) => {
   const renderCartItems = () => {
     return cartItems.map(item => (
       <CartCard
+        WImage={'30%'}
+        WText={'60%'}
         key={item.id}
         item={item}
         onSelectItem={handleSelectItem}
         onDeleteItem={handleDeleteItem}
+        selected={selectedItems.some(
+          selectedItem => selectedItem.id === item.id,
+        )}
       />
     ));
   };
 
-  const navigation = useNavigation();
-
   const handleCheckout = () => {
-    navigation.navigate('Checkout', {selectedItems, totalPrice: totalPrice()});
+    navigation.navigate('Checkout', {
+      selectedItems,
+      totalPrice,
+      discountedPrice,
+      couponDiscount,
+    });
   };
 
   const handleClick = () => {
-    navigation.navigate('Coupon', {totalPrice: totalPrice()});
+    navigation.navigate('Coupon', {
+      selectedItems,
+    });
   };
 
-  const totalPrice = () => {
-    const totalPrice = selectedItems.reduce(
-      (total, item) => total + item.price,
-      0,
-    );
-    return totalPrice;
-  };
+  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price, 0);
+
+  const discountedPrice = totalPrice - couponDiscount;
 
   return (
-    <Stack flex={1} bg={Colors.neutral[50]}>
+    <Stack flex={1}>
       <ScrollView>
-        <Stack>
+        <Stack space={1}>
           {renderCartItems()}
           {cartItems.length === 0 && (
             <Stack>
@@ -89,14 +107,13 @@ const CartScreen = ({route}) => {
           )}
         </Stack>
       </ScrollView>
-
       <Stack
         pb={'10px'}
         w={'full'}
         h={'150'}
         px={'18'}
         bgColor={Colors.secondary[100]}>
-        <TouchableOpacity onPress={handleClick}>
+        <Pressable onPress={handleClick}>
           <HStack
             h={44}
             bgColor={'white'}
@@ -105,17 +122,28 @@ const CartScreen = ({route}) => {
             justifyContent={'space-between'}
             alignItems={'center'}
             px={18}>
-            <Text>Apply Coupon</Text>
+            {couponDiscount ? (
+              <Text>You get Rp {couponDiscount} promo</Text>
+            ) : (
+              <Text>Apply Coupon</Text>
+            )}
             <Icon name="down" color="black" size={24} />
           </HStack>
-        </TouchableOpacity>
+        </Pressable>
         <HStack justifyContent={'space-between'}>
           <Stack>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
               Total
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
-              Rp. {totalPrice()}
+              <Text fontWeight={'bold'} fontSize={16} color={'white'}>
+                Rp.
+                {isNaN(discountedPrice)
+                  ? totalPrice
+                  : discountedPrice < 0
+                  ? 0
+                  : discountedPrice}
+              </Text>
             </Text>
           </Stack>
           <Stack>

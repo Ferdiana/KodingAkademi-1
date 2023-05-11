@@ -102,6 +102,11 @@ function ProfileScreen({navigation}) {
           icon={'menu-book'}
         />
         <ButtonProfile
+          onPress={() => navigation.navigate('AttendedEvent')}
+          text={'Attended Events'}
+          icon={'event'}
+        />
+        <ButtonProfile
           onPress={() => navigation.navigate('Transactions')}
           text={'Transactions'}
           icon={'receipt-long'}

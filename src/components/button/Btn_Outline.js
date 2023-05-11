@@ -23,11 +23,13 @@ const Btn_Outline = ({onPress, text, padding, w}) => {
       w={w}
       px={padding}>
       <Box
-        borderRadius={10}
-        p={2}
+        bg={boxBgColor}
+        h={'46px'}
+        borderRadius={8}
         borderWidth={1}
+        p={2}
         borderColor={borderColor}
-        bg={boxBgColor}>
+        justifyContent={'center'}>
         <Text textAlign={'center'} color={'primary.500'}>
           {text}
         </Text>
