@@ -12,16 +12,26 @@ import {useNavigation} from '@react-navigation/native';
 import Colors from '../../theme/colors';
 import {dataEvent} from '../../data/DataEvent';
 
-const AttendedEvent = ({searchText}) => {
+const AttendedEvent = ({searchText, selectedCategory}) => {
   const navigation = useNavigation();
 
   const handleClick = id => {
     navigation.navigate('AttendedEventDetail', {id});
   };
 
-  const filteredData = dataEvent.filter(item =>
-    item.title.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const filteredData = dataEvent
+    .filter(item =>
+      selectedCategory ? item.category === selectedCategory : true,
+    )
+    .filter(item =>
+      searchText
+        ? item.title.toLowerCase().includes(searchText.toLowerCase())
+        : true,
+    );
+
+  // const filteredData = dataEvent.filter(item =>
+  //   item.title.toLowerCase().includes(searchText.toLowerCase()),
+  // );
 
   const renderItem = ({item}) => {
     return (
@@ -75,6 +85,7 @@ const AttendedEvent = ({searchText}) => {
                   fontWeight={600}
                   color={Colors.primary[500]}>
                   {item.status}
+                  {item.register}
                 </Text>
               </HStack>
             </Stack>

@@ -19,6 +19,9 @@ export default function SearchBar({
         placeholder={placeholder}
         placeholderTextColor={'neutral.700'}
         borderRadius={10}
+        backgroundColor={'neutral.50'}
+        onChangeText={onChangeText}
+        w={'full'}
         InputLeftElement={
           <Icon
             as={<MaterialIcons name="search" />}
@@ -27,9 +30,6 @@ export default function SearchBar({
             color="black"
           />
         }
-        backgroundColor={'neutral.50'}
-        onChangeText={onChangeText}
-        w={'full'}
       />
     </Stack>
   );

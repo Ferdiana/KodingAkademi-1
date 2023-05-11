@@ -24,11 +24,11 @@ export default function AllEvent({searchText}) {
   const sections = [
     {
       title: 'Upcoming Events',
-      data: filteredData.filter(item => item.category === 'upcoming'),
+      data: filteredData.filter(item => item.category === 'Upcoming'),
     },
     {
       title: 'Successful Events',
-      data: filteredData.filter(item => item.category === 'successful'),
+      data: filteredData.filter(item => item.category === 'Successful'),
     },
   ];
 

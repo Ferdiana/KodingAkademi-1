@@ -18,10 +18,10 @@ const MyCourseScreen = () => {
   return (
     <Stack space={'12px'} flex={1} bg={Colors.neutral[50]}>
       <SearchBar
+        shadow={1}
         placeholder={'Search my course...'}
         onChangeText={handleSearchTextChange}
       />
-      <SearchCategory />
       <AllMyCourse searchText={searchText} />
     </Stack>
   );

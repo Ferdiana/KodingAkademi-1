@@ -33,7 +33,6 @@ function CourseScreen({navigation}) {
         onChangeText={handleSearchTextChange}
       />
       <Box my={'5px'} />
-      <SearchCategory onCategoryChange={handleCategoryChange} />
       <AllCourse searchText={searchText} selectedCategory={selectedCategory} />
     </Stack>
   );
