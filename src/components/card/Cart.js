@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  Stack,
-  HStack,
-  Text,
-  Checkbox,
-  Image,
-  Center,
-  Divider,
-  IconButton,
-  Pressable,
-} from 'native-base';
+import {Stack, HStack, Text, Checkbox, Image, Pressable} from 'native-base';
 import Colors from '../../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 

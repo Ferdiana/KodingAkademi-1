@@ -27,12 +27,13 @@ const CartScreen = ({route, navigation}) => {
   ]);
   const [selectedItems, setSelectedItems] = useState([]);
   const {couponDiscount} = route.params || 0;
-  // const [updatedSelectedItems, setUpdatedSelectedItems] = useState([]);
+  const [updatedSelectedItems, setUpdatedSelectedItems] = useState([]);
+  const numSelectedItems = selectedItems.length;
 
   useEffect(() => {
     if (route.params && route.params.selectedItems) {
       setSelectedItems(route.params.selectedItems);
-      // setUpdatedSelectedItems(route.params.selectedItems);
+      setUpdatedSelectedItems(route.params.selectedItems);
     }
   }, [route.params]);
 
@@ -82,12 +83,18 @@ const CartScreen = ({route, navigation}) => {
       totalPrice,
       discountedPrice,
       couponDiscount,
+      numSelectedItems,
     });
   };
 
   const handleClick = () => {
     navigation.navigate('Coupon', {
+      fromScreen: 'Cart',
       selectedItems,
+      totalPrice,
+      discountedPrice,
+      couponDiscount,
+      numSelectedItems,
     });
   };
 

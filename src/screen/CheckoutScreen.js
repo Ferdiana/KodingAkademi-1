@@ -4,8 +4,24 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
 const CheckoutScreen = ({route, navigation}) => {
-  const {selectedItems, totalPrice, discountedPrice, couponDiscount} =
-    route.params;
+  const {
+    selectedItems,
+    totalPrice,
+    discountedPrice,
+    couponDiscount,
+    numSelectedItems,
+  } = route.params;
+
+  const handleClick = () => {
+    navigation.navigate('Coupon', {
+      fromScreen: 'Checkout',
+      selectedItems,
+      totalPrice,
+      discountedPrice,
+      couponDiscount,
+      numSelectedItems,
+    });
+  };
 
   return (
     <Stack flex={1}>
@@ -23,13 +39,13 @@ const CheckoutScreen = ({route, navigation}) => {
         </Stack>
         <Stack flex={1} py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
           <HStack justifyContent={'space-between'}>
-            <Text>Subtotal (1 items) </Text>
+            <Text>Subtotal ({numSelectedItems} items) </Text>
             <Text>Rp. {totalPrice} </Text>
           </HStack>
           {couponDiscount !== 0 && (
             <HStack justifyContent={'space-between'}>
               <Text>Coupon</Text>
-              <Text>- Rp. {couponDiscount}</Text>
+              <Text color={'red.500'}>- Rp. {couponDiscount}</Text>
             </HStack>
           )}
           <HStack justifyContent={'space-between'}>
@@ -45,7 +61,7 @@ const CheckoutScreen = ({route, navigation}) => {
         h={'150'}
         px={'18'}
         bgColor={Colors.secondary[100]}>
-        <Pressable>
+        <Pressable onPress={handleClick}>
           <HStack
             h={44}
             bgColor={'white'}

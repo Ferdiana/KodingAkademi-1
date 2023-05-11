@@ -12,24 +12,48 @@ import {useNavigation} from '@react-navigation/native';
 import {dataCoupon} from '../data/Cupon';
 import Colors from '../theme/colors';
 const CouponScreen = ({route}) => {
-  const {selectedItems} = route.params;
+  const {
+    selectedItems,
+    totalPrice,
+    discountedPrice,
+    numSelectedItems,
+    fromScreen,
+  } = route.params;
+  const [couponDiscount, setCouponDiscount] = useState(0);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
   const navigation = useNavigation();
 
+  const handleSelectCoupon = coupon => {
+    setSelectedCoupon(coupon);
+  };
+
   const handleApplyCoupon = () => {
     const appliedCoupon = dataCoupon.find(item => item.id === selectedCoupon);
-
     const appliedCouponDiscount = appliedCoupon ? appliedCoupon.discount : 0;
-
+    const updatedDiscountedPrice = totalPrice - appliedCouponDiscount;
     const updatedSelectedItems = selectedItems.map(item =>
       item.selected ? {...item, selected: true} : item,
     );
-
-    navigation.navigate('Cart', {
-      selectedItems: updatedSelectedItems,
-      couponDiscount: appliedCouponDiscount,
-    });
+    if (fromScreen === 'Cart') {
+      navigation.navigate('Cart', {
+        selectedItems: updatedSelectedItems,
+        couponDiscount: appliedCouponDiscount,
+        totalPrice: totalPrice,
+        numSelectedItems: numSelectedItems,
+        discountedPrice:
+          updatedDiscountedPrice < 0 ? 0 : updatedDiscountedPrice,
+      });
+    } else {
+      navigation.navigate('Checkout', {
+        selectedItems: updatedSelectedItems,
+        couponDiscount: appliedCouponDiscount,
+        totalPrice: totalPrice,
+        numSelectedItems: numSelectedItems,
+        discountedPrice:
+          updatedDiscountedPrice < 0 ? 0 : updatedDiscountedPrice,
+      });
+    }
 
     setSelectedCoupon(appliedCoupon ? appliedCoupon.id : null);
   };
