@@ -1,12 +1,6 @@
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import {
-  AllCourse,
-  AllMyCourse,
-  MyCourse,
-  SearchBar,
-  SearchCategory,
-} from '../components';
+import {AllMyCourse, SearchBar} from '../components';
 import Colors from '../theme/colors';
 
 const MyCourseScreen = () => {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Center, Stack, Text} from 'native-base';
-import {AllCourse, SearchBar, SearchCategory} from '../components';
+import {AllCourse, SearchBar} from '../components';
 import Colors from '../theme/colors';
 
 function CourseScreen({navigation}) {
@@ -9,10 +9,6 @@ function CourseScreen({navigation}) {
 
   const handleSearchTextChange = text => {
     setSearchText(text);
-  };
-
-  const handleCategoryChange = category => {
-    setSelectedCategory(category);
   };
 
   return (

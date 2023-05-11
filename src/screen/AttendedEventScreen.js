@@ -1,4 +1,4 @@
-import {ScrollView, Stack} from 'native-base';
+import {Stack} from 'native-base';
 import React, {useState} from 'react';
 import {AttendedEvent, SearchBar, SearchCategory} from '../components';
 import Colors from '../theme/colors';

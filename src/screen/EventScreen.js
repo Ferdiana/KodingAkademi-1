@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View} from 'native-base';
+import {View} from 'native-base';
 import SearchBar from '../components/search/SearchBar';
 import Colors from '../theme/colors';
 import {AllEvent} from '../components';

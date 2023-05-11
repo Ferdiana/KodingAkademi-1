@@ -1,10 +1,9 @@
+/* eslint-disable no-shadow */
 import React, {createContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {API_URL} from '@env';
-import {Box, Center, Image, Spinner, Text, ZStack} from 'native-base';
-import Colors from '../theme/colors';
+import {Center, Image} from 'native-base';
 
 const AuthContext = createContext();
 
