@@ -1,100 +1,159 @@
-import React from 'react';
-import {Image, Text, Stack, HStack, View, Pressable, Box} from 'native-base';
+/* eslint-disable no-unused-vars */
+import React, {useState, useContext, useEffect} from 'react';
+import {
+  Image,
+  Text,
+  Stack,
+  HStack,
+  View,
+  Pressable,
+  Box,
+  FlatList,
+} from 'native-base';
+import HTMLContentView from 'react-native-htmlview';
 import {SectionGrid} from 'react-native-super-grid';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../theme/colors';
-import {dataEvent} from '../../data/DataEvent';
+import {AuthContext} from '../../controller/AuthContext';
+import {API_Events} from '../../controller/API_Events';
 
 export default function AllEvent({searchText}) {
+  const [events, setEvents] = useState([]);
+  const [eventDate, setEventDate] = useState([]);
+  const {user} = useContext(AuthContext);
   const navigation = useNavigation();
 
-  const handleClick = id => {
-    const selectedEvent = dataEvent.find(item => item.id === id);
-    if (selectedEvent.category === 'successful') {
-      navigation.navigate('EventFinishedDetail', {itemId: id});
-    } else {
-      navigation.navigate('EventFreeDetail', {itemId: id});
-    }
+  useEffect(() => {
+    const loadEvents = async () => {
+      if (user.accessToken) {
+        const eventsData = await API_Events(user.accessToken);
+        const eventDates = eventsData.flatMap(event => event.event_dates);
+        const sortedEvents = eventsData.sort((a, b) => {
+          const dateA = new Date(a.event_dates[0].date);
+          const dateB = new Date(b.event_dates[0].date);
+          return dateB - dateA;
+        });
+        setEvents(sortedEvents);
+        setEventDate(eventDates);
+      }
+    };
+    loadEvents();
+  }, [user.accessToken]);
+
+  const handlePress = id => {
+    navigation.navigate('EventDetail', {id});
   };
 
-  const filteredData = dataEvent.filter(item =>
-    item.title.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
-  const sections = [
-    {
-      title: 'Upcoming Events',
-      data: filteredData.filter(item => item.category === 'Upcoming'),
-    },
-    {
-      title: 'Successful Events',
-      data: filteredData.filter(item => item.category === 'Successful'),
-    },
-  ];
+    return `${year}-${month}-${day}`;
+  };
+
+  const convertedOptions = eventDate.map(option => {
+    const formattedDate = formatDate(option.date);
+    return {date: formattedDate};
+  });
+
+  const currentDate = new Date();
+
+  const isDatePassed = dateString => {
+    const date = new Date(dateString);
+    return date < currentDate;
+  };
+
+  const renderTextStatus = dates => {
+    const hasUpcomingEvent = dates.some(
+      date => new Date(date.date) > currentDate,
+    );
+    return hasUpcomingEvent ? 'Upcoming' : 'Finished';
+  };
+
+  const filteredData = events.filter(item =>
+    item.name.toLowerCase().includes(searchText.toLowerCase()),
+  );
 
   const numResults = filteredData.length;
   const showSectionHeader = searchText;
 
   const renderItem = ({item}) => {
+    const statusText = renderTextStatus(item.event_dates);
     return (
-      <Pressable onPress={() => handleClick(item.id)} my={'5px'} px={'18px'}>
+      <Pressable my={'5px'} onPress={() => handlePress(item.id)}>
         <Stack
+          borderWidth={1}
+          borderColor={Colors.neutral[300]}
           w={'100%'}
-          borderRadius={8}
-          space={'8px'}
-          shadow={1}
-          bg={Colors.neutral[50]}>
-          <HStack h={'103px'} space={'8px'} p={'8px'}>
-            <Box w={'40%'}>
-              <Image
-                borderRadius={8}
-                h={'100%'}
-                w={'100%'}
-                source={{uri: `${item.image}`}}
-                alt="image_article"
-              />
-            </Box>
-            <Stack w={'60%'} justifyContent={'space-evenly'} pr={'8px'}>
+          p={'8px'}
+          borderRadius={10}
+          mr={2}>
+          <HStack h={'103px'} space={'5px'} pr={'8px'}>
+            <Image
+              source={{uri: `${item.img_url}`}}
+              alt={'img'}
+              w={'35%'}
+              h={'100%'}
+              resizeMode="center"
+              borderRadius={10}
+            />
+            <Stack w={'65%'} justifyContent={'space-between'}>
               <Text
-                numberOfLines={2}
+                numberOfLines={1}
+                letterSpacing={'0.5px'}
                 fontFamily={'Inter'}
-                fontSize={'12px'}
+                fontSize={'14px'}
                 fontWeight={600}
                 color={Colors.neutral[900]}>
-                {item.title}
+                {item.name}
               </Text>
               <Text
-                numberOfLines={2}
+                color={Colors.neutral[900]}
                 fontFamily={'Inter'}
                 fontSize={'10px'}
-                fontWeight={500}
-                color={Colors.neutral[900]}>
-                {item.date}
+                fontWeight={400}>
+                {(() => {
+                  const eventDates = item.event_dates.map(eventDate =>
+                    formatDate(eventDate.date),
+                  );
+                  const uniqueDates = [...new Set(eventDates)]; // Menghapus tanggal yang duplikat
+                  const filteredDates = uniqueDates.filter(date =>
+                    convertedOptions.some(option => option.date === date),
+                  );
+
+                  if (filteredDates.length > 1) {
+                    const startDate = filteredDates[0];
+                    const endDate = filteredDates[filteredDates.length - 1];
+                    return `${startDate} - ${endDate}`;
+                  } else {
+                    return filteredDates[0];
+                  }
+                })()}
               </Text>
-              <Text
-                numberOfLines={2}
-                fontFamily={'Inter'}
-                fontSize={'10px'}
-                fontWeight={300}
-                textAlign={'justify'}
-                color={Colors.neutral[900]}>
-                {item.description}
-              </Text>
-              <HStack justifyContent={'space-between'} pr={'8px'}>
+              <Stack h={'54px'} overflow={'hidden'} my={-1}>
+                <HTMLContentView
+                  value={item.description}
+                  stylesheet={{
+                    p: {textAlign: 'justify', color: Colors.neutral[900]},
+                  }}
+                />
+              </Stack>
+              <HStack justifyContent={'space-between'}>
                 <Text
+                  color={Colors.primary[500]}
                   fontFamily={'Inter'}
                   fontSize={'12px'}
-                  fontWeight={600}
-                  color={Colors.primary[500]}>
-                  {item.dateLeft}
-                  {item.status}
+                  fontWeight={600}>
+                  {statusText}
                 </Text>
                 <Text
+                  color={Colors.primary[500]}
                   fontFamily={'Inter'}
                   fontSize={'12px'}
-                  fontWeight={600}
-                  color={Colors.primary[500]}>
-                  {item.quota ? `Quota: ${item.quota}` : ''}
+                  fontWeight={600}>
+                  quota: {item.participants}/{item.quota}
                 </Text>
               </HStack>
             </Stack>
@@ -104,46 +163,12 @@ export default function AllEvent({searchText}) {
     );
   };
 
-  const renderSectionHeader = ({section}) => {
-    if (showSectionHeader) {
-      return null;
-    }
-    return (
-      <View px={'18px'}>
-        <Text fontFamily={'Inter'} fontSize={'14px'} fontWeight={'600'}>
-          {section.title}
-        </Text>
-        {section.title === 'Upcoming Events' && (
-          <Text fontFamily={'Inter'} fontWeight={400} fontSize={'12px'}>
-            Stay tuned for our exciting lineup of upcoming events
-          </Text>
-        )}
-      </View>
-    );
-  };
-
   return (
-    <Stack flex={1}>
-      {searchText && (
-        <Stack px={'18px'}>
-          <Text fontSize={14} fontWeight={'900'}>
-            Search results for{' '}
-            <Text color={Colors.primary[500]}>"{searchText}"</Text> in event
-          </Text>
-          <Text>
-            {numResults} {numResults > 1 ? 'results' : 'result'} found
-          </Text>
-        </Stack>
-      )}
-      <SectionGrid
-        itemDimension={400}
-        spacing={0}
-        sections={sections}
-        dataEvent={dataEvent}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-      />
-    </Stack>
+    <FlatList
+      px={'18px'}
+      data={filteredData}
+      renderItem={renderItem}
+      keyExtractor={item => item.id.toString()}
+    />
   );
 }

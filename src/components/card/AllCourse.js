@@ -1,17 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  FlatList,
-  HStack,
-  Image,
-  Pressable,
-  Stack,
-  Text,
-  View,
-} from 'native-base';
+import {FlatList, HStack, Image, Pressable, Stack, Text} from 'native-base';
 import Colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../../controller/AuthContext';
 import {API_Course} from '../../controller/API_Course';
+import HTMLContentView from 'react-native-htmlview';
+import {StyleSheet} from 'react-native';
 
 const AllCourse = ({searchText, selectedCategory}) => {
   const [courses, setCourses] = useState([]);
@@ -70,16 +64,9 @@ const AllCourse = ({searchText, selectedCategory}) => {
                 color={Colors.neutral[900]}>
                 {item.name}
               </Text>
-              <Text
-                numberOfLines={3}
-                lineHeight={'18px'}
-                letterSpacing={'0.5px'}
-                fontFamily={'Inter'}
-                fontSize={'12px'}
-                fontWeight={200}
-                color={Colors.neutral[800]}>
-                {item.description}
-              </Text>
+              <Stack h={'54px'} overflow={'hidden'}>
+                <HTMLContentView value={item.description} stylesheet={styles} />
+              </Stack>
               <HStack justifyContent={'space-between'}>
                 <Text
                   fontFamily={'Inter'}
@@ -105,5 +92,11 @@ const AllCourse = ({searchText, selectedCategory}) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  p: {
+    textAlign: 'justify',
+  },
+});
 
 export default AllCourse;

@@ -28,6 +28,7 @@ import MyCourseDetailScreen from '../screen/MyCourseDetailScreen';
 import PaymentScreen from '../screen/PaymentScreen';
 import AttendedEventScreen from '../screen/AttendedEventScreen';
 import AttendedEventDetailScreen from '../screen/AttendedEventDetailScreen';
+import EventDetailScreen from '../screen/EventDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -214,6 +215,11 @@ function Routes() {
         name="AttendedEventDetail"
         component={AttendedEventDetailScreen}
         options={{title: 'Attended Events'}}
+      />
+      <Stack.Screen
+        name="EventDetail"
+        component={EventDetailScreen}
+        options={{title: 'Event Detail'}}
       />
     </Stack.Navigator>
   );

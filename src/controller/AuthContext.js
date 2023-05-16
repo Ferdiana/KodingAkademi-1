@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {Center, Image} from 'native-base';
+import {API_URL} from '@env';
 
 const AuthContext = createContext();
 
@@ -29,13 +30,10 @@ const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(
-        'https://2358-103-157-49-64.ngrok-free.app/login',
-        {
-          email,
-          password,
-        },
-      );
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
+        password,
+      });
       const user = response.data.data;
       setUser(user);
       AsyncStorage.setItem('user', JSON.stringify(user));
@@ -50,14 +48,11 @@ const AuthProvider = ({children}) => {
       if (!user?.refreshToken) {
         throw new Error('Refresh token not found.');
       }
-      await axios.delete(
-        'https://2358-103-157-49-64.ngrok-free.app/authentications',
-        {
-          data: {
-            refreshToken: user.refreshToken,
-          },
+      await axios.delete(`${API_URL}/authentications`, {
+        data: {
+          refreshToken: user.refreshToken,
         },
-      );
+      });
       setUser(null);
       AsyncStorage.removeItem('user');
       navigation.navigate('OnBoarding');

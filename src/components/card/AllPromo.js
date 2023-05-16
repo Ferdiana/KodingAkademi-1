@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Text, Image, Stack, Pressable, View} from 'native-base';
+import {Box, Text, Image, Stack, Pressable} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {FlatGrid} from 'react-native-super-grid';
 import Colors from '../../theme/colors';
@@ -7,7 +7,7 @@ import {useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
 import {useContext} from 'react';
 import {useEffect} from 'react';
-import {API_Course} from '../../controller/API_Course';
+import API_Promo from '../../controller/API_Promo';
 
 const AllPromo = ({searchText}) => {
   const [courses, setCourses] = useState([]);
@@ -17,15 +17,15 @@ const AllPromo = ({searchText}) => {
   useEffect(() => {
     const loadCourses = async () => {
       if (user.accessToken) {
-        const coursesData = await API_Course(user.accessToken);
+        const coursesData = await API_Promo(user.accessToken);
         setCourses(coursesData);
       }
     };
     loadCourses();
   }, [user.accessToken]);
 
-  const handleClick = id => {
-    navigation.navigate('PromoDetail', {itemId: id});
+  const handlePress = id => {
+    navigation.navigate('PromoDetail', {id});
   };
 
   const filteredData = courses.filter(item =>
@@ -35,7 +35,6 @@ const AllPromo = ({searchText}) => {
   return (
     <FlatGrid
       showsVerticalScrollIndicator={false}
-      itemDimension={150}
       data={filteredData}
       spacing={10}
       keyExtractor={item => item.id}
@@ -44,7 +43,7 @@ const AllPromo = ({searchText}) => {
           return null;
         }
         return (
-          <Pressable onPress={() => handleClick(item.id)} mt={1}>
+          <Pressable onPress={() => handlePress(item.id)}>
             <Stack
               bgColor={'white'}
               p={2}

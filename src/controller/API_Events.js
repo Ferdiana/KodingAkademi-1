@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {API_URL} from '@env';
 
-const API_Course = async accessToken => {
+const API_Events = async accessToken => {
   try {
-    const response = await axios.get(`${API_URL}/user/courses`, {
+    const response = await axios.get(`${API_URL}/user/events`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -15,9 +15,9 @@ const API_Course = async accessToken => {
   }
 };
 
-const API_DetailCourse = async (id, accessToken) => {
+const API_DetailEvents = async (id, accessToken) => {
   try {
-    const response = await axios.get(`${API_URL}/user/courses/${id}`, {
+    const response = await axios.get(`${API_URL}/user/events/${id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -29,4 +29,4 @@ const API_DetailCourse = async (id, accessToken) => {
   }
 };
 
-export {API_Course, API_DetailCourse};
+export {API_Events, API_DetailEvents};
