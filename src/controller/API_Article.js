@@ -8,7 +8,7 @@ const API_Article = async accessToken => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error.response.data);
     return [];
@@ -22,7 +22,7 @@ const API_ArticleLimit = async accessToken => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error.response.data);
     return [];
@@ -36,7 +36,7 @@ const API_ArticleDetail = async (id, accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error.response.data);
     return null;

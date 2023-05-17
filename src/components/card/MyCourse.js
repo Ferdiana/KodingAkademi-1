@@ -1,20 +1,44 @@
-import React from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Box, Center, Flex, Image, Pressable, Text} from 'native-base';
-import Data from '../../data/Data';
 import Colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
+import {API_MyCourse} from '../../controller/API_MyCourse';
+import {AuthContext} from '../../controller/AuthContext';
 
 const MyCourse = ({mr}) => {
+  const [myCourse, setMyCourse] = useState([]);
+  const {user} = useContext(AuthContext);
   const navigation = useNavigation();
 
-  const handleArticlePress = id => {
-    navigation.navigate('MyCourseDetail', {id});
+  useEffect(() => {
+    const loadMyCourse = async () => {
+      if (user.accessToken) {
+        const articleData = await API_MyCourse(user.accessToken);
+        setMyCourse(articleData);
+      }
+    };
+    loadMyCourse();
+  }, [user.accessToken]);
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const handlePress = id => {
+    navigation.navigate('CourseDetail', {id});
   };
   return (
     <Flex flexDirection={'row'} mr={mr} p={'10px'}>
-      {Data.map(item => {
+      {myCourse.map(item => {
+        const formattedDate = formatDate(item.expired_date);
+
         return (
-          <Pressable key={item.id} onPress={() => handleArticlePress(item.id)}>
+          <Pressable key={item.id} onPress={() => handlePress(item.id)}>
             <Box
               key={item.id}
               w={'140px'}
@@ -27,7 +51,7 @@ const MyCourse = ({mr}) => {
               shadow={1}>
               <Center>
                 <Image
-                  source={{uri: `${item.image}`}}
+                  source={{uri: `${item.img_url}`}}
                   alt={'img'}
                   w={'100%'}
                   h={'84px'}
@@ -42,7 +66,7 @@ const MyCourse = ({mr}) => {
                 fontSize={'12px'}
                 fontWeight={600}
                 color={Colors.neutral[900]}>
-                {item.title}
+                {item.name}
               </Text>
               <Text
                 mt={'5px'}
@@ -51,7 +75,7 @@ const MyCourse = ({mr}) => {
                 fontSize={'10px'}
                 color={Colors.neutral[900]}>
                 Until {''}
-                {item.date}
+                {formattedDate}
               </Text>
             </Box>
           </Pressable>

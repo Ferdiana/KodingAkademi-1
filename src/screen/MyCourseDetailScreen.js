@@ -1,15 +1,26 @@
+import React, {useContext, useState, useEffect} from 'react';
 import {Center, Image, ScrollView, Stack, Text} from 'native-base';
-import React from 'react';
 import Colors from '../theme/colors';
-import {useRoute} from '@react-navigation/native';
-import Data from '../data/Data';
 import {Btn_Primary} from '../components';
+import {API_MyCourseDetail} from '../controller/API_MyCourse';
+import {AuthContext} from '../controller/AuthContext';
 
-const MyCourseDetailScreen = () => {
-  const route = useRoute();
-  const {id} = route.params;
+const MyCourseDetailScreen = ({route}) => {
+  const {user} = useContext(AuthContext);
+  const [MyCourse, setMyCourseDetail] = useState({});
 
-  const MyCourse = Data.find(item => item.id === id);
+  useEffect(() => {
+    const {id} = route.params;
+    const loadMyCourseDetail = async () => {
+      const response = await API_MyCourseDetail(id, user.accessToken);
+      if (response) {
+        setMyCourseDetail(response);
+      }
+      console.log(response);
+    };
+
+    loadMyCourseDetail();
+  }, [route.params, user.accessToken]);
 
   return (
     <Stack flex={1} bg={Colors.neutral[50]} px={'18px'}>
@@ -19,7 +30,7 @@ const MyCourseDetailScreen = () => {
             borderRadius={8}
             h={'100%'}
             w={'100%'}
-            source={{uri: `${MyCourse.image}`}}
+            source={{uri: `${MyCourse.img}`}}
             alt="img_MyCourse"
           />
         </Center>

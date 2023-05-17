@@ -18,7 +18,7 @@ const Article = ({mr}) => {
     const loadArticle = async () => {
       if (user.accessToken) {
         const articleData = await API_ArticleLimit(user.accessToken);
-        setArticle(articleData.articles);
+        setArticle(articleData);
       }
     };
     loadArticle();

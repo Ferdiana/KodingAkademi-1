@@ -20,7 +20,7 @@ const HeaderHome = ({navigation}) => {
           <HStack alignItems={'center'} justifyContent={'space-between'}>
             <VStack>
               <Text color={'neutral.50'} fontSize={'xl'} fontWeight={700}>
-                Hello,{user.full_name}
+                Hello, {user.full_name}
               </Text>
               <Text color={'neutral.50'} fontSize={'md'}>
                 What do you want to learn?

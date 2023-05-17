@@ -20,7 +20,7 @@ const ArticleDetailScreen = ({route}) => {
     const loadArticleDetail = async () => {
       const response = await API_ArticleDetail(id, user.accessToken);
       if (response) {
-        setArticleDetail(response.article);
+        setArticleDetail(response);
       }
     };
 

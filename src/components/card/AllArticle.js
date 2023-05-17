@@ -27,7 +27,7 @@ const AllArticle = ({searchText}) => {
     const loadArticle = async () => {
       if (user.accessToken) {
         const articleData = await API_Article(user.accessToken);
-        setArticle(articleData.articles);
+        setArticle(articleData);
       }
     };
     loadArticle();
