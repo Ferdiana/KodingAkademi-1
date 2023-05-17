@@ -4,7 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {Center, Image} from 'native-base';
-import {API_URL} from '@env';
+import {API_URL, API_KEY} from '@env';
 
 const AuthContext = createContext();
 
@@ -30,7 +30,7 @@ const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await axios.post(`${API_KEY}/login`, {
         email,
         password,
       });
@@ -48,7 +48,7 @@ const AuthProvider = ({children}) => {
       if (!user?.refreshToken) {
         throw new Error('Refresh token not found.');
       }
-      await axios.delete(`${API_URL}/authentications`, {
+      await axios.delete(`${API_KEY}/authentications`, {
         data: {
           refreshToken: user.refreshToken,
         },

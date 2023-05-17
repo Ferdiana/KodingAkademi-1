@@ -76,9 +76,6 @@ export default function AllEvent({searchText}) {
     item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 
-  const numResults = filteredData.length;
-  const showSectionHeader = searchText;
-
   const renderItem = ({item}) => {
     const statusText = renderTextStatus(item.event_dates);
     return (
@@ -122,7 +119,6 @@ export default function AllEvent({searchText}) {
                   const filteredDates = uniqueDates.filter(date =>
                     convertedOptions.some(option => option.date === date),
                   );
-
                   if (filteredDates.length > 1) {
                     const startDate = filteredDates[0];
                     const endDate = filteredDates[filteredDates.length - 1];
@@ -165,6 +161,7 @@ export default function AllEvent({searchText}) {
 
   return (
     <FlatList
+      pt={'5px'}
       px={'18px'}
       data={filteredData}
       renderItem={renderItem}

@@ -19,7 +19,7 @@ const ArticleScreen = ({navigation}) => {
         onChangeText={handleSearchTextChange}
       />
       <Text
-        pb={'10px'}
+        py={'10px'}
         px={'18px'}
         fontFamily={'Inter'}
         fontSize={'14px'}

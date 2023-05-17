@@ -3,9 +3,35 @@ import {Box, Center, Flex, Image, Pressable, Text} from 'native-base';
 import Data from '../../data/Data';
 import Colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
+import {useEffect} from 'react';
+import {API_ArticleLimit} from '../../controller/API_Article';
+import {useState} from 'react';
+import {AuthContext} from '../../controller/AuthContext';
+import {useContext} from 'react';
 
 const Article = ({mr}) => {
+  const [article, setArticle] = useState([]);
+  const {user} = useContext(AuthContext);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const loadArticle = async () => {
+      if (user.accessToken) {
+        const articleData = await API_ArticleLimit(user.accessToken);
+        setArticle(articleData.articles);
+      }
+    };
+    loadArticle();
+  }, [user.accessToken]);
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
 
   const handleArticlePress = id => {
     navigation.navigate('ArticleDetail', {id});
@@ -13,7 +39,8 @@ const Article = ({mr}) => {
 
   return (
     <Flex flexDirection={'row'} mr={mr} p={'10px'}>
-      {Data.map(item => {
+      {article.map(item => {
+        const formattedDate = formatDate(item.createdAt);
         return (
           <Pressable key={item.id} onPress={() => handleArticlePress(item.id)}>
             <Box
@@ -27,7 +54,7 @@ const Article = ({mr}) => {
               shadow={1}>
               <Center>
                 <Image
-                  source={{uri: `${item.image}`}}
+                  source={{uri: `${item.img_url}`}}
                   alt={'img'}
                   w={'100%'}
                   h={'84px'}
@@ -50,7 +77,7 @@ const Article = ({mr}) => {
                 fontWeight={300}
                 fontSize={'10px'}
                 color={Colors.neutral[900]}>
-                {item.date}
+                {formattedDate}
               </Text>
             </Box>
           </Pressable>

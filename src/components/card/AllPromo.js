@@ -7,7 +7,7 @@ import {useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
 import {useContext} from 'react';
 import {useEffect} from 'react';
-import API_Promo from '../../controller/API_Promo';
+import {API_Promo} from '../../controller/API_Promo';
 
 const AllPromo = ({searchText}) => {
   const [courses, setCourses] = useState([]);
@@ -82,7 +82,7 @@ const AllPromo = ({searchText}) => {
                   fontWeight={400}
                   textDecorationLine={'line-through'}
                   color={Colors.neutral[200]}>
-                  {`Rp${item.discount_price.toLocaleString('id-ID')}`}
+                  {`Rp${item.price.toLocaleString('id-ID')}`}
                 </Text>
               </Box>
             </Stack>
