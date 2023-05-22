@@ -4,7 +4,7 @@ import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
-import {API_GetCart} from '../controller/API_Cart';
+import {API_DeleteCart, API_GetCart} from '../controller/API_Cart';
 
 const CartScreen = ({route, navigation}) => {
   const [cartItems, setCartItems] = useState([]);
@@ -55,11 +55,25 @@ const CartScreen = ({route, navigation}) => {
     setCanCheckout(!isSelected);
   };
 
-  const handleDeleteItem = itemId => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
-    setSelectedItems(prevItems => prevItems.filter(item => item.id !== itemId));
-    setCanCheckout(selectedItems.length > 1);
+  const handleDeleteItem = async itemId => {
+    try {
+      await API_DeleteCart(user.accessToken, [itemId]);
+      setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+      setSelectedItems(prevItems =>
+        prevItems.filter(item => item.id !== itemId),
+      );
+      setCanCheckout(selectedItems.length > 1);
+    } catch (error) {
+      console.error(error);
+      // Handle error state or display error message to the user
+    }
   };
+
+  // const handleDeleteItem = itemId => {
+  //   setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+  //   setSelectedItems(prevItems => prevItems.filter(item => item.id !== itemId));
+  //   setCanCheckout(selectedItems.length > 1);
+  // };
 
   const handlePress = (id, discount_price) => {
     if (id.startsWith('course')) {

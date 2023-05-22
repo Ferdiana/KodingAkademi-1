@@ -7,7 +7,7 @@ import Btn_Primary from '../components/button/Btn_Primary';
 import {StyleSheet} from 'react-native';
 import HTMLContentView from 'react-native-htmlview';
 import {API_DetailCourse} from '../controller/API_Course';
-import {API_GetCart} from '../controller/API_Cart';
+import {API_AddCart, API_GetCart} from '../controller/API_Cart';
 import {API_MyCourse} from '../controller/API_MyCourse';
 
 const PromoDetailScreen = ({route}) => {
@@ -44,6 +44,15 @@ const PromoDetailScreen = ({route}) => {
     checkIfInCart();
     checkIfInMyCourse();
   }, [route.params, user.accessToken]);
+
+  const handleAddToCart = async () => {
+    try {
+      await API_AddCart(user.accessToken, courseDetail.id);
+      console.log('sukses');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
@@ -94,6 +103,7 @@ const PromoDetailScreen = ({route}) => {
         </Stack>
       </ScrollView>
       <Btn_Primary
+        onPress={handleAddToCart}
         text={'Add to cart'}
         padding={'18px'}
         pb={'8px'}
