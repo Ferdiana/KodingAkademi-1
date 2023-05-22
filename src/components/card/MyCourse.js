@@ -8,7 +8,7 @@ import {AuthContext} from '../../controller/AuthContext';
 const MyCourse = ({mr}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Menggunakan useNavigation dari react-navigation
 
   useEffect(() => {
     const loadMyCourse = async () => {
@@ -29,16 +29,22 @@ const MyCourse = ({mr}) => {
     return `${year}-${month}-${day}`;
   };
 
-  const handlePress = id => {
-    navigation.navigate('CourseDetail', {id});
+  const handlePress = (id, discount_price) => {
+    if (discount_price === null) {
+      navigation.navigate('CourseDetail', {id, discount_price});
+    } else {
+      navigation.navigate('PromoDetail', {id, discount_price});
+    }
   };
+
   return (
     <Flex flexDirection={'row'} mr={mr} p={'10px'}>
       {myCourse.map(item => {
         const formattedDate = formatDate(item.expired_date);
-
         return (
-          <Pressable key={item.id} onPress={() => handlePress(item.id)}>
+          <Pressable
+            key={item.id}
+            onPress={() => handlePress(item.id, item.discount_price)}>
             <Box
               key={item.id}
               w={'140px'}
@@ -74,8 +80,7 @@ const MyCourse = ({mr}) => {
                 fontWeight={300}
                 fontSize={'10px'}
                 color={Colors.neutral[900]}>
-                Until {''}
-                {formattedDate}
+                Until {formattedDate}
               </Text>
             </Box>
           </Pressable>

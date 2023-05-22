@@ -12,45 +12,43 @@ const CheckoutScreen = ({route, navigation}) => {
     numSelectedItems,
   } = route.params;
 
-  const handleClick = () => {
-    navigation.navigate('Coupon', {
-      fromScreen: 'Checkout',
-      selectedItems,
-      totalPrice,
-      discountedPrice,
-      couponDiscount,
-      numSelectedItems,
-    });
-  };
-
   return (
     <Stack flex={1}>
       <Stack flex={1} space={1}>
-        <Stack space={1}>
-          {selectedItems.map(item => (
-            <CartCard
-              WImage={'40%'}
-              WText={'60%'}
-              key={item.id}
-              item={item}
-              hideCheckboxAndIcon
-            />
-          ))}
-        </Stack>
-        <Stack flex={1} py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
+        <ScrollView>
+          <Stack space={1} h={'85%'}>
+            {selectedItems.map(item => (
+              <CartCard
+                WImage={'40%'}
+                WText={'60%'}
+                key={item.id}
+                item={item}
+                hideCheckboxAndIcon
+              />
+            ))}
+          </Stack>
+        </ScrollView>
+        <Stack h={'15%'} py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
           <HStack justifyContent={'space-between'}>
             <Text>Subtotal ({numSelectedItems} items) </Text>
-            <Text>Rp. {totalPrice} </Text>
+            <Text>{`Rp${totalPrice.toLocaleString('id-ID')}`}</Text>
           </HStack>
-          {couponDiscount !== 0 && (
-            <HStack justifyContent={'space-between'}>
-              <Text>Coupon</Text>
-              <Text color={'red.500'}>- Rp. {couponDiscount}</Text>
-            </HStack>
-          )}
+          <HStack justifyContent={'space-between'}>
+            <Text>Coupon</Text>
+            <Text color={'red.500'}>
+              -{' '}
+              {couponDiscount !== null && couponDiscount !== undefined
+                ? `Rp${couponDiscount.toLocaleString('id-ID')}`
+                : 'Rp0'}
+            </Text>
+          </HStack>
           <HStack justifyContent={'space-between'}>
             <Text>Total Order </Text>
-            <Text>Rp. {discountedPrice}</Text>
+            <Text>
+              {discountedPrice !== 0
+                ? `Rp${discountedPrice.toLocaleString('id-ID')}`
+                : 'Rp0'}
+            </Text>
           </HStack>
         </Stack>
       </Stack>
@@ -61,7 +59,7 @@ const CheckoutScreen = ({route, navigation}) => {
         h={'150'}
         px={'18'}
         bgColor={Colors.secondary[100]}>
-        <Pressable onPress={handleClick}>
+        <Pressable>
           <HStack
             h={44}
             bgColor={'white'}
@@ -71,11 +69,12 @@ const CheckoutScreen = ({route, navigation}) => {
             alignItems={'center'}
             px={18}>
             {couponDiscount ? (
-              <Text>You get Rp {couponDiscount} promo</Text>
+              <Text>
+                You get {`Rp${couponDiscount.toLocaleString('id-ID')}`} promo
+              </Text>
             ) : (
               <Text>Apply Coupon</Text>
             )}
-            <Icon name="down" color="black" size={24} />
           </HStack>
         </Pressable>
         <HStack justifyContent={'space-between'}>
@@ -84,7 +83,7 @@ const CheckoutScreen = ({route, navigation}) => {
               Total Price
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
-              Rp. {discountedPrice}
+              {`Rp${discountedPrice.toLocaleString('id-ID')}`}
             </Text>
           </Stack>
           <Stack>

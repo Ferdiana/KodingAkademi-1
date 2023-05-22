@@ -6,10 +6,14 @@ import Btn_Primary from '../components/button/Btn_Primary';
 import {StyleSheet} from 'react-native';
 import HTMLContentView from 'react-native-htmlview';
 import {API_DetailCourse} from '../controller/API_Course';
+import {API_GetCart} from '../controller/API_Cart';
+import {API_MyCourse} from '../controller/API_MyCourse';
 
-const CourseDetailScreen = ({route, maxLines}) => {
+const CourseDetailScreen = ({route}) => {
   const {user} = useContext(AuthContext);
   const [courseDetail, setCourseDetail] = useState({});
+  const [isInCart, setIsInCart] = useState(false);
+  const [isInMyCourse, setIsInMyCourse] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
@@ -19,8 +23,24 @@ const CourseDetailScreen = ({route, maxLines}) => {
         setCourseDetail(response);
       }
     };
+    const checkIfInCart = async () => {
+      if (user.accessToken) {
+        const cartItems = await API_GetCart(user.accessToken);
+        const response = cartItems.cart_items.some(item => item.id === id);
+        setIsInCart(response);
+      }
+    };
+    const checkIfInMyCourse = async () => {
+      if (user.accessToken) {
+        const MyCourseItem = await API_MyCourse(user.accessToken);
+        const response = MyCourseItem.some(item => item.id === id);
+        setIsInMyCourse(response);
+      }
+    };
 
     loadCourseDetail();
+    checkIfInCart();
+    checkIfInMyCourse();
   }, [route.params, user.accessToken]);
 
   return (
@@ -59,7 +79,12 @@ const CourseDetailScreen = ({route, maxLines}) => {
           />
         </Stack>
       </ScrollView>
-      <Btn_Primary text={'Add to cart'} padding={'18px'} pb={'8px'} />
+      <Btn_Primary
+        text={'Add to cart'}
+        padding={'18px'}
+        pb={'8px'}
+        disabled={isInMyCourse || isInCart}
+      />
     </Stack>
   );
 };

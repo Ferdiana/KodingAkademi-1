@@ -129,7 +129,7 @@ function Routes() {
         name="PromoDetail"
         component={PromoDetailScreen}
         options={() => ({
-          title: 'Course Detail',
+          title: 'Promo Detail',
         })}
       />
       <Stack.Screen

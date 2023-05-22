@@ -27,6 +27,17 @@ const ArticleDetailScreen = ({route}) => {
     loadArticleDetail();
   }, [route.params, user.accessToken]);
 
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const formattedDate = formatDate(ArticleDetail.createdAt);
+
   return (
     <Stack flex={1} bg={Colors.neutral[50]} px={'18px'}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -48,7 +59,7 @@ const ArticleDetailScreen = ({route}) => {
             {ArticleDetail.title}
           </Text>
           <Text fontFamily={'Inter'} fontSize={'12px'} fontWeight={500}>
-            {ArticleDetail.createdAt}
+            {formattedDate}
           </Text>
           <HTMLContentView
             numberOfLines={2}

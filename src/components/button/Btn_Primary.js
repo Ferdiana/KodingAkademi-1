@@ -1,7 +1,7 @@
 import {Box, Pressable, Text} from 'native-base';
 import React, {useState} from 'react';
 
-const Btn_Primary = ({onPress, text, padding, w, pb, disabled}) => {
+const Btn_Primary = ({onPress, text, padding, w, pb, disabled, d}) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePressIn = () => {

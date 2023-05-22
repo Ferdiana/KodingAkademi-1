@@ -1,39 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
+import {AuthContext} from '../controller/AuthContext';
+import {API_GetCart} from '../controller/API_Cart';
+
 const CartScreen = ({route, navigation}) => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      title: 'Basic Coding Test',
-      category: 'Coding',
-      image: 'https://picsum.photos/200/301',
-      description:
-        'Basic coding is an introductory for kids to learn about programming in a fun and enjoyable way.',
-      price: 500000,
-    },
-    {
-      id: 2,
-      title:
-        'Arduino Intermediate Arduino IntermediateArduino IntermediateArduino IntermediateArduino Intermediate',
-      category: 'Robotic',
-      image: 'https://picsum.photos/200/302',
-      description:
-        'Basic coding is an introductory for kids to learn about programming in a fun and enjoyable way.',
-      price: 1500000,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const {couponDiscount} = route.params || 0;
   const [updatedSelectedItems, setUpdatedSelectedItems] = useState([]);
+  const [canCheckout, setCanCheckout] = useState(false);
   const numSelectedItems = selectedItems.length;
+  const {user} = useContext(AuthContext);
+
+  useEffect(() => {
+    const loadCart = async () => {
+      if (user.accessToken) {
+        const coursesData = await API_GetCart(user.accessToken);
+        setCartItems(coursesData.cart_items);
+      }
+    };
+    loadCart();
+  }, [user.accessToken]);
 
   useEffect(() => {
     if (route.params && route.params.selectedItems) {
       setSelectedItems(route.params.selectedItems);
       setUpdatedSelectedItems(route.params.selectedItems);
+      setCanCheckout(route.params.selectedItems.length > 0);
     }
   }, [route.params]);
 
@@ -55,36 +51,38 @@ const CartScreen = ({route, navigation}) => {
         },
       ]);
     }
+
+    setCanCheckout(!isSelected);
   };
+
   const handleDeleteItem = itemId => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
     setSelectedItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    setCanCheckout(selectedItems.length > 1);
   };
 
-  const renderCartItems = () => {
-    return cartItems.map(item => (
-      <CartCard
-        WImage={'30%'}
-        WText={'60%'}
-        key={item.id}
-        item={item}
-        onSelectItem={handleSelectItem}
-        onDeleteItem={handleDeleteItem}
-        selected={selectedItems.some(
-          selectedItem => selectedItem.id === item.id,
-        )}
-      />
-    ));
+  const handlePress = (id, discount_price) => {
+    if (id.startsWith('course')) {
+      if (discount_price !== null) {
+        navigation.navigate('PromoDetail', {id, discount_price});
+      } else {
+        navigation.navigate('CourseDetail', {id, discount_price});
+      }
+    } else if (id.startsWith('event')) {
+      navigation.navigate('EventDetail', {id});
+    }
   };
 
   const handleCheckout = () => {
-    navigation.navigate('Checkout', {
-      selectedItems,
-      totalPrice,
-      discountedPrice,
-      couponDiscount,
-      numSelectedItems,
-    });
+    if (canCheckout) {
+      navigation.navigate('Checkout', {
+        selectedItems,
+        totalPrice,
+        discountedPrice,
+        couponDiscount,
+        numSelectedItems,
+      });
+    }
   };
 
   const handleClick = () => {
@@ -98,7 +96,28 @@ const CartScreen = ({route, navigation}) => {
     });
   };
 
-  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price, 0);
+  const renderCartItems = () => {
+    return cartItems.map(item => (
+      <CartCard
+        onPress={() => handlePress(item.id, item.discount_price)}
+        WImage={'30%'}
+        WText={'60%'}
+        key={item.id}
+        item={item}
+        onSelectItem={handleSelectItem}
+        onDeleteItem={handleDeleteItem}
+        selected={selectedItems.some(
+          selectedItem => selectedItem.id === item.id,
+        )}
+      />
+    ));
+  };
+
+  const totalPrice = selectedItems.reduce((acc, item) => {
+    const price =
+      item.discount_price !== null ? item.discount_price : item.price;
+    return acc + price;
+  }, 0);
 
   const discountedPrice = totalPrice - couponDiscount;
 
@@ -108,7 +127,7 @@ const CartScreen = ({route, navigation}) => {
         <Stack space={1}>
           {renderCartItems()}
           {cartItems.length === 0 && (
-            <Stack>
+            <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
               <Text>Your cart is empty</Text>
             </Stack>
           )}
@@ -120,21 +139,26 @@ const CartScreen = ({route, navigation}) => {
         h={'150'}
         px={'18'}
         bgColor={Colors.secondary[100]}>
-        <Pressable onPress={handleClick}>
+        <Pressable onPress={handleClick} disabled={!canCheckout}>
           <HStack
             h={44}
-            bgColor={'white'}
+            bgColor={canCheckout ? Colors.neutral[50] : Colors.neutral[200]}
             my={25}
             borderRadius={'10'}
             justifyContent={'space-between'}
             alignItems={'center'}
             px={18}>
             {couponDiscount ? (
-              <Text>You get Rp {couponDiscount} promo</Text>
+              <Text>
+                You get {`Rp${couponDiscount.toLocaleString('id-ID')}`} promo
+              </Text>
             ) : (
-              <Text>Apply Coupon</Text>
+              <Text
+                color={canCheckout ? Colors.neutral[900] : Colors.neutral[500]}>
+                Apply Coupon
+              </Text>
             )}
-            <Icon name="down" color="black" size={24} />
+            <Icon name="right" color="black" size={24} />
           </HStack>
         </Pressable>
         <HStack justifyContent={'space-between'}>
@@ -144,12 +168,11 @@ const CartScreen = ({route, navigation}) => {
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
               <Text fontWeight={'bold'} fontSize={16} color={'white'}>
-                Rp.
                 {isNaN(discountedPrice)
-                  ? totalPrice
+                  ? `Rp${totalPrice.toLocaleString('id-ID')}`
                   : discountedPrice < 0
-                  ? 0
-                  : discountedPrice}
+                  ? 'Rp0'
+                  : `Rp${discountedPrice.toLocaleString('id-ID')}`}
               </Text>
             </Text>
           </Stack>
@@ -157,9 +180,14 @@ const CartScreen = ({route, navigation}) => {
             <Button
               py={'3'}
               px={'42'}
-              bgColor={Colors.primary[500]}
-              onPress={handleCheckout}>
-              <Text color={'white'}>Checkout</Text>
+              bgColor={canCheckout ? Colors.primary[500] : Colors.primary[900]} // Mengubah warna button sesuai kondisi canCheckout
+              onPress={handleCheckout}
+              disabled={!canCheckout} // Menonaktifkan button jika tidak dapat melakukan checkout
+            >
+              <Text
+                color={canCheckout ? Colors.neutral[50] : Colors.neutral[200]}>
+                Checkout
+              </Text>
             </Button>
           </Stack>
         </HStack>

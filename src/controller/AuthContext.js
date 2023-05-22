@@ -30,7 +30,7 @@ const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_KEY}/login`, {
+      const response = await axios.post('http://192.168.1.17:3000/login', {
         email,
         password,
       });
@@ -48,7 +48,7 @@ const AuthProvider = ({children}) => {
       if (!user?.refreshToken) {
         throw new Error('Refresh token not found.');
       }
-      await axios.delete(`${API_KEY}/authentications`, {
+      await axios.delete('http://192.168.1.17:3000/authentications', {
         data: {
           refreshToken: user.refreshToken,
         },

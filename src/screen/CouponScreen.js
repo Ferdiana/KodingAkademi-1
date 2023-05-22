@@ -60,7 +60,7 @@ const CouponScreen = ({route}) => {
 
   return (
     <Stack flex={1} bg={Colors.neutral[50]}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Stack bgColor={'white'} px={'19'}>
           <Text fontWeight={'bold'} fontSize={20}>
             Choose an available coupon
@@ -93,7 +93,9 @@ const CouponScreen = ({route}) => {
                       : 'gray.200'
                   }>
                   <Stack w={'full'} px={'19px'}>
-                    <Text>Rp.{item.discount} discount</Text>
+                    <Text>
+                      {`Rp${item.discount.toLocaleString('id-ID')}`} discount
+                    </Text>
                     <Text>Ends in {item.dateLeft}</Text>
                   </Stack>
                 </Center>
@@ -102,7 +104,6 @@ const CouponScreen = ({route}) => {
           ))}
         </Stack>
       </ScrollView>
-
       <Stack
         justifyContent={'flex-end'}
         pb={'10px'}
@@ -117,11 +118,12 @@ const CouponScreen = ({route}) => {
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
               <Text>
-                Rp.
+                Rp
                 {selectedCoupon !== null
-                  ? dataCoupon.find(item => item.id === selectedCoupon)
-                      ?.discount
-                  : 0}
+                  ? dataCoupon
+                      .find(item => item.id === selectedCoupon)
+                      ?.discount.toLocaleString('id-ID')
+                  : '0'}
               </Text>
             </Text>
           </Stack>

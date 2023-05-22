@@ -7,12 +7,14 @@ import {StyleSheet} from 'react-native';
 import HTMLContentView from 'react-native-htmlview';
 import {Dropdown} from 'react-native-element-dropdown';
 import {API_DetailEvents} from '../controller/API_Events';
+import {API_GetCart} from '../controller/API_Cart';
 
 const EventDetailScreen = ({route}) => {
   const [selectedValue, setSelectedValue] = useState('');
   const {user} = useContext(AuthContext);
   const [eventDetail, setEventDetail] = useState({});
   const [dropdownOption, setDropdownOption] = useState([]);
+  const [isInCart, setIsInCart] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
@@ -23,8 +25,16 @@ const EventDetailScreen = ({route}) => {
         setDropdownOption(response.event_dates);
       }
     };
+    const checkIfInCart = async () => {
+      if (user.accessToken) {
+        const cartItems = await API_GetCart(user.accessToken);
+        const isInCart = cartItems.cart_items.some(item => item.id === id);
+        setIsInCart(isInCart);
+      }
+    };
 
     loadEventsDetail();
+    checkIfInCart();
   }, [route.params, user.accessToken]);
   const formatDate = dateString => {
     const date = new Date(dateString);
@@ -99,7 +109,12 @@ const EventDetailScreen = ({route}) => {
           </Stack>
         </Stack>
       </ScrollView>
-      <Btn_Primary text={'Add to cart'} padding={'18px'} pb={'8px'} />
+      <Btn_Primary
+        disabled={isInCart}
+        text={'Add to cart'}
+        padding={'18px'}
+        pb={'8px'}
+      />
     </Stack>
   );
 };
