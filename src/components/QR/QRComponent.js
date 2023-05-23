@@ -7,7 +7,7 @@ const QRComponent = ({size}) => {
 
   return (
     <QRCode
-      value={JSON.stringify(user.full_name)}
+      value={user.qr_code}
       size={size}
       color="black"
       backgroundColor="white"

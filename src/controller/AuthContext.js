@@ -4,7 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {Center, Image} from 'native-base';
-import {API_URL, API_KEY} from '@env';
+import {API_URL} from '@env';
 
 const AuthContext = createContext();
 
@@ -30,10 +30,13 @@ const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://192.168.1.17:3000/login', {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        'https://kodingapp.refillaja.id/login',
+        {
+          email,
+          password,
+        },
+      );
       const user = response.data.data;
       setUser(user);
       AsyncStorage.setItem('user', JSON.stringify(user));
@@ -48,7 +51,7 @@ const AuthProvider = ({children}) => {
       if (!user?.refreshToken) {
         throw new Error('Refresh token not found.');
       }
-      await axios.delete('http://192.168.1.17:3000/authentications', {
+      await axios.delete('https://kodingapp.refillaja.id/authentications', {
         data: {
           refreshToken: user.refreshToken,
         },

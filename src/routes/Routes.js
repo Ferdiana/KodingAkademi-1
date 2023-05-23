@@ -128,9 +128,9 @@ function Routes() {
       <Stack.Screen
         name="PromoDetail"
         component={PromoDetailScreen}
-        options={() => ({
+        options={{
           title: 'Promo Detail',
-        })}
+        }}
       />
       <Stack.Screen
         name="QRDetail"

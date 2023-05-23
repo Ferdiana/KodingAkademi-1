@@ -4,7 +4,7 @@ import {API_URL, API_KEY} from '@env';
 const API_MyCourse = async accessToken => {
   try {
     const response = await axios.get(
-      'http://192.168.1.17:3000/user/user-products/courses',
+      'https://kodingapp.refillaja.id/user/user-products/courses',
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
