@@ -1,19 +1,74 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {Text, HStack, VStack, Stack, Pressable} from 'native-base';
+import {Text, HStack, VStack, Stack, Pressable, ZStack} from 'native-base';
 import {
   Article,
   BannerSlider,
-  HeaderHome,
   MyCourse,
   Promo,
+  QRComponent,
 } from '../components';
-import {ImageBackground, ScrollView, RefreshControl} from 'react-native';
+import {ImageBackground, ScrollView} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import Colors from '../theme/colors';
 import {useState} from 'react';
+import {API_GetCart} from '../controller/API_Cart';
+import {useContext} from 'react';
+import {AuthContext} from '../controller/AuthContext';
+import {useEffect} from 'react';
+import {API_MyCourse} from '../controller/API_MyCourse';
+import {useIsFocused} from '@react-navigation/native';
 
 function HomeScreen({navigation}) {
+  const {user} = useContext(AuthContext);
+  const [myCourse, setMyCourse] = useState([]);
+  const [expiredDate, setExpiredDate] = useState(null);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [refreshPage, setRefreshPage] = useState(false);
+
+  useEffect(() => {
+    const loadMyCourse = async () => {
+      if (user.accessToken) {
+        const response = await API_MyCourse(user.accessToken);
+        setMyCourse(response);
+      }
+    };
+    loadMyCourse();
+  }, [user.accessToken]);
+
+  useEffect(() => {
+    const loadCart = async () => {
+      if (user.accessToken) {
+        const coursesData = await API_GetCart(user.accessToken);
+        const count = coursesData.cart_items.length;
+        setCartItemCount(count);
+      }
+    };
+    loadCart();
+  }, [user.accessToken]);
+
+  useEffect(() => {
+    if (myCourse.length > 0) {
+      let newestDate = new Date(myCourse[0].expired_date);
+      for (let i = 1; i < myCourse.length; i++) {
+        const currentDate = new Date(myCourse[i].expired_date);
+        if (currentDate > newestDate) {
+          newestDate = currentDate;
+        }
+      }
+      setExpiredDate(newestDate);
+    }
+  }, [myCourse]);
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const expired_date = formatDate(expiredDate);
 
   const Title = ({text1, color1, text2, color2, onPress}) => {
     return (
@@ -49,7 +104,80 @@ function HomeScreen({navigation}) {
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <HeaderHome navigation={navigation} cartItemCount={cartItemCount} />
+      <VStack>
+        <ImageBackground
+          source={require('../assets/image/bg.png')}
+          resizeMode="cover">
+          <VStack px={'5%'} pt={'8px'}>
+            <HStack alignItems={'center'} justifyContent={'space-between'}>
+              <VStack>
+                <Text color={'neutral.50'} fontSize={'18px'} fontWeight={700}>
+                  Hello, {user.full_name}
+                </Text>
+                <Text color={'neutral.50'} fontSize={'14px'}>
+                  What do you want to learn?
+                </Text>
+              </VStack>
+              <Pressable onPress={() => navigation.navigate('Cart')}>
+                <Icon
+                  name="shopping-cart"
+                  color={Colors.neutral[50]}
+                  size={24}
+                />
+                {cartItemCount > 0 && (
+                  <ZStack
+                    position="absolute"
+                    top={'-8px'}
+                    right={'-8px'}
+                    bg="primary.500"
+                    alignItems="center"
+                    borderRadius={100}
+                    width={'18px'}
+                    height={'18px'}>
+                    <Text
+                      fontFamily={'Inter'}
+                      color="white"
+                      fontSize={12}
+                      fontWeight="semibold">
+                      {cartItemCount}
+                    </Text>
+                  </ZStack>
+                )}
+              </Pressable>
+            </HStack>
+            <Pressable onPress={() => navigation.navigate('QRDetail')}>
+              <HStack
+                my={'12px'}
+                bg={'neutral.50'}
+                px={5}
+                py={2}
+                borderRadius={10}
+                space={4}
+                alignItems={'center'}>
+                <QRComponent size={80} />
+                <VStack space={1}>
+                  <Text fontFamily={'Inter'} fontSize={'14px'}>
+                    Status: {''}
+                    <Text
+                      color={
+                        expiredDate && expiredDate < new Date()
+                          ? 'red.500'
+                          : 'primary.500'
+                      }>
+                      {expiredDate && expiredDate < new Date()
+                        ? 'Expired'
+                        : 'Active'}
+                    </Text>
+                  </Text>
+                  <Text fontFamily={'Inter'} fontSize={'12px'}>
+                    Expired Date: {expired_date}
+                  </Text>
+                </VStack>
+              </HStack>
+            </Pressable>
+          </VStack>
+        </ImageBackground>
+      </VStack>
       <Stack space={1}>
         <VStack py={'10px'} bg={Colors.neutral[50]}>
           <Title

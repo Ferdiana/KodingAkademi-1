@@ -4,7 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {Center, Image} from 'native-base';
-import {API_URL} from '@env';
+import {API_GetCart} from './API_Cart';
 
 const AuthContext = createContext();
 

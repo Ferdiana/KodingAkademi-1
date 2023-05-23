@@ -8,7 +8,7 @@ import {API_MyCourse} from '../../controller/API_MyCourse';
 import Colors from '../../theme/colors';
 import {API_GetCart} from '../../controller/API_Cart';
 
-const HeaderHome = ({navigation, refreshing}) => {
+const HeaderHome = ({navigation, refreshing, onRefresh}) => {
   const {user} = useContext(AuthContext);
   const [myCourse, setMyCourse] = useState([]);
   const [expiredDate, setExpiredDate] = useState(null);

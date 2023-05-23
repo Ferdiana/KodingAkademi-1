@@ -21,7 +21,6 @@ import Icon from 'react-native-vector-icons/Feather';
 
 const CourseDetailScreen = ({route, navigation}) => {
   const {user} = useContext(AuthContext);
-  const {setRefreshCart} = useContext(AuthContext);
   const [courseDetail, setCourseDetail] = useState({});
   const [isInCart, setIsInCart] = useState(false);
   const [isInMyCourse, setIsInMyCourse] = useState(false);
@@ -69,11 +68,16 @@ const CourseDetailScreen = ({route, navigation}) => {
       await API_AddCart(user.accessToken, courseDetail.id);
       console.log('sukses');
       setRefreshPage(!refreshPage);
-      setRefreshCart(true);
     } catch (error) {
       console.error(error);
     }
   };
+  React.useEffect(() => {
+    const focusHandler = navigation.addListener('focus', () => {
+      setRefreshPage(!refreshPage);
+    });
+    return focusHandler;
+  }, [navigation, refreshPage]);
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>

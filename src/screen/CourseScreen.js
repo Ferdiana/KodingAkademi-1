@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Center, Stack, Text} from 'native-base';
 import {AllCourse, SearchBar} from '../components';
 import Colors from '../theme/colors';
+import {useFocusEffect} from '@react-navigation/native';
 
 function CourseScreen({navigation}) {
   const [searchText, setSearchText] = useState('');
