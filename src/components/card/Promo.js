@@ -21,7 +21,7 @@ const Promo = ({mr}) => {
   }, [user.accessToken]);
 
   const handlePress = id => {
-    navigation.navigate('PromoDetail', {id});
+    navigation.navigate('CourseDetail', {id});
   };
   return (
     <Flex flexDirection={'row'} mr={mr} p={'10px'}>

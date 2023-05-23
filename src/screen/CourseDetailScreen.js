@@ -1,5 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, Stack, Center, Image, ScrollView} from 'native-base';
+import {
+  Text,
+  Stack,
+  Center,
+  Image,
+  ScrollView,
+  HStack,
+  Pressable,
+  ZStack,
+} from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Colors from '../theme/colors';
 import Btn_Primary from '../components/button/Btn_Primary';
@@ -8,12 +17,16 @@ import HTMLContentView from 'react-native-htmlview';
 import {API_DetailCourse} from '../controller/API_Course';
 import {API_AddCart, API_GetCart} from '../controller/API_Cart';
 import {API_MyCourse} from '../controller/API_MyCourse';
+import Icon from 'react-native-vector-icons/Feather';
 
-const CourseDetailScreen = ({route}) => {
+const CourseDetailScreen = ({route, navigation}) => {
   const {user} = useContext(AuthContext);
+  const {setRefreshCart} = useContext(AuthContext);
   const [courseDetail, setCourseDetail] = useState({});
   const [isInCart, setIsInCart] = useState(false);
   const [isInMyCourse, setIsInMyCourse] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
 
   useEffect(() => {
     const {id} = route.params;
@@ -37,16 +50,26 @@ const CourseDetailScreen = ({route}) => {
         setIsInMyCourse(response);
       }
     };
+    const checkNumberOfCart = async () => {
+      if (user.accessToken) {
+        const coursesData = await API_GetCart(user.accessToken);
+        const count = coursesData.cart_items.length;
+        setCartItemCount(count);
+      }
+    };
 
     loadCourseDetail();
     checkIfInCart();
     checkIfInMyCourse();
-  }, [route.params, user.accessToken]);
+    checkNumberOfCart();
+  }, [route.params, user.accessToken, refreshPage]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async id => {
     try {
       await API_AddCart(user.accessToken, courseDetail.id);
       console.log('sukses');
+      setRefreshPage(!refreshPage);
+      setRefreshCart(true);
     } catch (error) {
       console.error(error);
     }
@@ -68,13 +91,40 @@ const CourseDetailScreen = ({route}) => {
           <Text fontFamily={'Inter'} fontWeight={600} fontSize={'20px'}>
             {courseDetail.name}
           </Text>
-          <Text fontFamily={'Inter'} fontWeight={500} fontSize={'16px'}>
-            {`Rp${
-              courseDetail.price
-                ? courseDetail.price.toLocaleString('id-ID')
-                : ''
-            }`}
-          </Text>
+          <Stack>
+            {courseDetail.discount_price ? (
+              <>
+                <Text fontFamily={'Inter'} fontWeight={500} fontSize={'16px'}>
+                  {`Rp${
+                    courseDetail.price && courseDetail.discount_price
+                      ? courseDetail.discount_price.toLocaleString('id-ID')
+                      : ''
+                  }`}
+                </Text>
+                <Text
+                  fontFamily={'Inter'}
+                  fontWeight={500}
+                  fontSize={'14px'}
+                  strikeThrough={true}
+                  color={Colors.neutral[500]}>
+                  {`Rp${
+                    courseDetail.price
+                      ? courseDetail.price.toLocaleString('id-ID')
+                      : ''
+                  }`}
+                </Text>
+              </>
+            ) : (
+              <Text
+                fontFamily={'Inter'}
+                fontWeight={500}
+                fontSize={'16px'}>{`Rp${
+                courseDetail.price
+                  ? courseDetail.price.toLocaleString('id-ID')
+                  : ''
+              }`}</Text>
+            )}
+          </Stack>
           <Text
             fontFamily={'Inter'}
             fontWeight={500}
@@ -88,13 +138,49 @@ const CourseDetailScreen = ({route}) => {
           />
         </Stack>
       </ScrollView>
-      <Btn_Primary
-        onPress={handleAddToCart}
-        text={'Add to cart'}
-        padding={'18px'}
-        pb={'8px'}
-        disabled={isInMyCourse || isInCart}
-      />
+      <HStack
+        px={'18px'}
+        py={'8px'}
+        alignItems={'center'}
+        space={'8px'}
+        justifyContent={'space-between'}>
+        <Pressable onPress={() => navigation.navigate('Cart')}>
+          <Stack
+            w={'46px'}
+            h={'46px'}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <Icon name="shopping-cart" color={Colors.neutral[900]} size={28} />
+            {cartItemCount > 0 && (
+              <ZStack
+                position="absolute"
+                top={'0'}
+                right={'0'}
+                bg="primary.500"
+                alignItems="center"
+                borderRadius={100}
+                width={'18px'}
+                height={'18px'}>
+                <Text
+                  fontFamily={'Inter'}
+                  color="white"
+                  fontSize={12}
+                  fontWeight="semibold">
+                  {cartItemCount}
+                </Text>
+              </ZStack>
+            )}
+          </Stack>
+        </Pressable>
+        <Stack w={'82%'}>
+          <Btn_Primary
+            w={'100%'}
+            onPress={handleAddToCart}
+            text={'Add to cart'}
+            disabled={isInMyCourse || isInCart}
+          />
+        </Stack>
+      </HStack>
     </Stack>
   );
 };

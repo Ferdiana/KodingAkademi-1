@@ -7,7 +7,6 @@ import RegisterScreen from '../screen/RegisterScreen';
 import ArticleScreen from '../screen/ArticleScreen';
 import ForgotPassScreen from '../screen/ForgotPassScreen';
 import ResetPassScreen from '../screen/ResetPassScreen';
-import PromoDetailScreen from '../screen/PromoDetailScreen';
 import QRDetailScreen from '../screen/QRDetailScreen';
 import AccountScreen from '../screen/AccountScreen';
 import AddPhoneNumberScreen from '../screen/AddPhoneNumberScreen';
@@ -51,13 +50,6 @@ function Routes() {
           color: '#191F25',
         },
       }}>
-      {/* <Stack.Screen
-        name="splash"
-        component={SplashScreen}
-        options={{
-          headerShown: false,
-        }}
-      /> */}
       {user ? (
         <Stack.Screen
           name="home"
@@ -75,20 +67,6 @@ function Routes() {
           }}
         />
       )}
-      {/* <Stack.Screen
-        name="OnBoarding"
-        component={OnBoardingScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="home"
-        component={BottomNavigation}
-        options={{
-          headerShown: false,
-        }}
-      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -123,13 +101,6 @@ function Routes() {
         component={ResetPassScreen}
         options={{
           title: 'Reset Password',
-        }}
-      />
-      <Stack.Screen
-        name="PromoDetail"
-        component={PromoDetailScreen}
-        options={{
-          title: 'Promo Detail',
         }}
       />
       <Stack.Screen
@@ -178,7 +149,9 @@ function Routes() {
       <Stack.Screen
         name="CourseDetail"
         component={CourseDetailScreen}
-        options={{title: 'Course Detail'}}
+        options={{
+          title: 'Course Detail',
+        }}
       />
       <Stack.Screen
         name="Coupon"
@@ -219,7 +192,9 @@ function Routes() {
       <Stack.Screen
         name="EventDetail"
         component={EventDetailScreen}
-        options={{title: 'Event Detail'}}
+        options={{
+          title: 'Event Detail',
+        }}
       />
     </Stack.Navigator>
   );

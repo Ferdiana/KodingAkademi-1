@@ -25,7 +25,7 @@ const AllPromo = ({searchText}) => {
   }, [user.accessToken]);
 
   const handlePress = id => {
-    navigation.navigate('PromoDetail', {id});
+    navigation.navigate('CourseDetail', {id});
   };
 
   const filteredData = courses.filter(item =>

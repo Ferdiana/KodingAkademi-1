@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {Text, ScrollView, HStack, VStack, Stack, Pressable} from 'native-base';
+import {Text, HStack, VStack, Stack, Pressable} from 'native-base';
 import {
   Article,
   BannerSlider,
@@ -8,10 +8,13 @@ import {
   MyCourse,
   Promo,
 } from '../components';
-import {ImageBackground} from 'react-native';
+import {ImageBackground, ScrollView, RefreshControl} from 'react-native';
 import Colors from '../theme/colors';
+import {useState} from 'react';
 
 function HomeScreen({navigation}) {
+  const [cartItemCount, setCartItemCount] = useState(0);
+
   const Title = ({text1, color1, text2, color2, onPress}) => {
     return (
       <Stack px={5} mb={'10px'}>
@@ -46,7 +49,7 @@ function HomeScreen({navigation}) {
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <HeaderHome navigation={navigation} />
+      <HeaderHome navigation={navigation} cartItemCount={cartItemCount} />
       <Stack space={1}>
         <VStack py={'10px'} bg={Colors.neutral[50]}>
           <Title
