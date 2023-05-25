@@ -1,46 +1,46 @@
-/* eslint-disable react/no-unstable-nested-components */
 import {HStack, Pressable, Stack, Text, View} from 'native-base';
 import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
 
-const AccountScreen = ({navigation}) => {
-  const {user} = useContext(AuthContext);
-
-  const Form = ({title, body, onPress, icon}) => {
-    return (
-      <Pressable onPress={onPress} w={'full'} alignItems={'center'}>
-        <HStack
-          px={'20px'}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          bg={Colors.neutral[50]}
-          h={'44px'}
-          w={'90%'}
-          borderRadius={'8px'}
-          shadow={1}>
+const Form = ({title, body, onPress, icon}) => {
+  return (
+    <Pressable onPress={onPress} w={'full'} alignItems={'center'}>
+      <HStack
+        px={'20px'}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+        bg={Colors.neutral[50]}
+        h={'44px'}
+        w={'90%'}
+        borderRadius={'8px'}
+        shadow={1}>
+        <Text
+          fontFamily={'Inter'}
+          fontWeight={500}
+          fontSize={'12px'}
+          color={'neutral.700'}>
+          {title}
+        </Text>
+        <HStack alignItems={'center'} space={'5px'}>
           <Text
             fontFamily={'Inter'}
             fontWeight={500}
             fontSize={'12px'}
-            color={'neutral.700'}>
-            {title}
+            color={'neutral.900'}>
+            {body}
           </Text>
-          <HStack alignItems={'center'} space={'5px'}>
-            <Text
-              fontFamily={'Inter'}
-              fontWeight={500}
-              fontSize={'12px'}
-              color={'neutral.900'}>
-              {body}
-            </Text>
-            <Icon name={icon} size={18} color={'#191F25'} />
-          </HStack>
+          <Icon name={icon} size={18} color={'#191F25'} />
         </HStack>
-      </Pressable>
-    );
-  };
+      </HStack>
+    </Pressable>
+  );
+};
+
+const AccountScreen = ({navigation}) => {
+  const {user} = useContext(AuthContext);
+
   return (
     <View flex={1} bg={Colors.neutral[50]}>
       <Stack space={'16px'} py={'10px'}>

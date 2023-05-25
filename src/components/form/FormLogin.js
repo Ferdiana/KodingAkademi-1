@@ -16,19 +16,7 @@ const FormLogin = ({navigation}) => {
 
   const handleSubmit = async () => {
     await login(email, password);
-    // navigation.navigate('home');
-
-    // navigation.replace('home');
   };
-
-  // const handleSubmit = async () => {
-  //   if (email === 'email' && password === 'password') {
-  //     await login(email, password);
-  //     navigation.replace('home');
-  //   } else {
-  //     navigation.replace('Login');
-  //   }
-  // };
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);

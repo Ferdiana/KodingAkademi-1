@@ -1,4 +1,4 @@
-import {Button, Center, FormControl, Input, Stack} from 'native-base';
+import {Alert, Button, Center, FormControl, Input, Stack} from 'native-base';
 import React from 'react';
 import Btn_Primary from '../button/Btn_Primary';
 import {Dimensions} from 'react-native';
@@ -8,6 +8,25 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenWidth = Dimensions.get('window').width;
 
+const Form = ({label, placeholder, onChangeText, value}) => {
+  return (
+    <Stack space={1}>
+      <FormControl.Label>{label}</FormControl.Label>
+      <Input
+        bgColor={'transparent'}
+        borderColor={'neutral.100'}
+        focusOutlineColor={'primary.500'}
+        borderRadius={10}
+        variant={'outline'}
+        p={2}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+      />
+    </Stack>
+  );
+};
+
 const FormRegister = () => {
   const [full_name, setFull_Name] = useState('');
   const [email, setEmail] = useState('');
@@ -15,66 +34,50 @@ const FormRegister = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword1, setShowPassword1] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = () => {
-    register(full_name, email, phone_number, password, confirmPassword);
+  const handleSubmit = async () => {
+    try {
+      await register(full_name, email, phone_number, password, confirmPassword);
+    } catch (error) {
+      console.log(error.response.data.message);
+      setErrorMessage(error.response.data.message);
+    }
   };
 
   const handleShowPassword1 = () => {
     setShowPassword1(!showPassword1);
   };
 
-  const handleShowPassword2 = () => {
-    setShowPassword2(!showPassword2);
-  };
-
   return (
     <Center>
       <FormControl>
+        {errorMessage !== '' && (
+          <Alert status="error" variant="solid">
+            <Alert.Icon />
+            <Alert.Title>Error</Alert.Title>
+            <Alert.Description>{errorMessage}</Alert.Description>
+          </Alert>
+        )}
         <Stack space={2} px={10}>
-          <Stack space={1}>
-            <FormControl.Label>Full Name</FormControl.Label>
-            <Input
-              bgColor={'transparent'}
-              borderColor={'neutral.100'}
-              focusOutlineColor={'primary.500'}
-              borderRadius={10}
-              variant={'outline'}
-              p={2}
-              value={full_name}
-              onChangeText={setFull_Name}
-              placeholder={'Enter your full name'}
-            />
-          </Stack>
-          <Stack space={1}>
-            <FormControl.Label>Email</FormControl.Label>
-            <Input
-              bgColor={'transparent'}
-              borderColor={'neutral.100'}
-              focusOutlineColor={'primary.500'}
-              borderRadius={10}
-              variant={'outline'}
-              p={2}
-              value={email}
-              onChangeText={setEmail}
-              placeholder={'Enter your email address'}
-            />
-          </Stack>
-          <Stack space={1}>
-            <FormControl.Label>Phone Number</FormControl.Label>
-            <Input
-              bgColor={'transparent'}
-              borderColor={'neutral.100'}
-              focusOutlineColor={'primary.500'}
-              borderRadius={10}
-              variant={'outline'}
-              p={2}
-              value={phone_number}
-              onChangeText={setPhone_Number}
-              placeholder={'Enter your phone number'}
-            />
-          </Stack>
+          <Form
+            label={'Full Name'}
+            value={full_name}
+            onChangeText={setFull_Name}
+            placeholder={'Enter your full name'}
+          />
+          <Form
+            label={'Email'}
+            value={email}
+            onChangeText={setEmail}
+            placeholder={'Enter your email address'}
+          />
+          <Form
+            label={'Phone Number'}
+            value={phone_number}
+            onChangeText={setPhone_Number}
+            placeholder={'Enter your phone number'}
+          />
           <Stack space={1}>
             <FormControl.Label>Password</FormControl.Label>
             <Input
@@ -104,7 +107,7 @@ const FormRegister = () => {
             />
           </Stack>
           <Stack space={1}>
-            <FormControl.Label>Confirm Password</FormControl.Label>
+            <FormControl.Label> Confirm Password</FormControl.Label>
             <Input
               bgColor={'transparent'}
               borderColor={'neutral.100'}
@@ -114,16 +117,16 @@ const FormRegister = () => {
               p={2}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
-              placeholder={'Re-enter your chosen password'}
-              type={showPassword2 ? 'text' : 'password'}
+              placeholder={'Enter your chosen password'}
+              type={showPassword1 ? 'text' : 'password'}
               InputRightElement={
                 <Button
                   bg={'transparent'}
                   _pressed={{bg: 'transparent'}}
                   _hover={{bg: 'transparent'}}
-                  onPress={handleShowPassword2}>
+                  onPress={handleShowPassword1}>
                   <Ionicons
-                    name={showPassword2 ? 'eye' : 'eye-off'}
+                    name={showPassword1 ? 'eye' : 'eye-off'}
                     size={20}
                     color={'#C2CCD6'}
                   />
@@ -139,6 +142,13 @@ const FormRegister = () => {
             padding={10}
             onPress={handleSubmit}
           />
+          {errorMessage !== '' && (
+            <Alert status="error" variant="solid">
+              <Alert.Icon />
+              <Alert.Title>Error</Alert.Title>
+              <Alert.Description>{errorMessage}</Alert.Description>
+            </Alert>
+          )}
         </Stack>
       </FormControl>
     </Center>

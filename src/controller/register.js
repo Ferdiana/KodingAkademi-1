@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {API_URL} from '@env';
 
 const register = async (
   full_name,
@@ -21,7 +20,7 @@ const register = async (
     );
     console.log(response.data);
   } catch (error) {
-    console.log(error.response.data.message);
+    throw error;
   }
 };
 

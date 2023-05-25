@@ -18,15 +18,17 @@ function RegisterScreen({navigation}) {
           </Text>
         </Stack>
         <Stack h={'80%'} bg={'neutral.50'} borderTopRadius={30} pt={5}>
-          <FormRegister navigation={navigation} />
-          <HStack my={2} justifyContent={'center'}>
-            <Text fontSize={'xs'}>Already have an account? </Text>
-            <Pressable onPress={() => navigation.replace('Login')}>
-              <Text fontSize={'xs'} fontWeight={'bold'} color={'primary.500'}>
-                Login here!
-              </Text>
-            </Pressable>
-          </HStack>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <FormRegister navigation={navigation} />
+            <HStack my={'16px'} justifyContent={'center'}>
+              <Text fontSize={'xs'}>Already have an account? </Text>
+              <Pressable onPress={() => navigation.replace('Login')}>
+                <Text fontSize={'xs'} fontWeight={'bold'} color={'primary.500'}>
+                  Login here!
+                </Text>
+              </Pressable>
+            </HStack>
+          </ScrollView>
         </Stack>
       </ImageBackground>
     </Center>

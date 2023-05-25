@@ -1,34 +1,47 @@
-/* eslint-disable react/no-unstable-nested-components */
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Text, Stack, Box, ZStack, Avatar, HStack, Pressable} from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ImageBackground} from 'react-native';
 import Colors from '../theme/colors';
+import {AlertLogout} from '../components';
+
+const ButtonProfile = ({text, borderColor, icon, onPress}) => {
+  return (
+    <Pressable onPress={onPress}>
+      <HStack
+        space={'24px'}
+        px={'20px'}
+        alignItems={'center'}
+        bg={'neutral.50'}
+        h={'50px'}
+        borderRadius={'8px'}
+        shadow={1}>
+        <Icon name={icon} size={24} color={'#191F25'} />
+        <Text
+          fontFamily={'Inter'}
+          fontWeight={500}
+          fontSize={'14px'}
+          color={'neutral.700'}>
+          {text}
+        </Text>
+      </HStack>
+    </Pressable>
+  );
+};
 
 function ProfileScreen({navigation}) {
-  const ButtonProfile = ({text, borderColor, icon, onPress}) => {
-    return (
-      <Pressable onPress={onPress}>
-        <HStack
-          space={'24px'}
-          px={'20px'}
-          alignItems={'center'}
-          bg={'neutral.50'}
-          h={'50px'}
-          borderRadius={'8px'}
-          shadow={1}>
-          <Icon name={icon} size={24} color={'#191F25'} />
-          <Text
-            fontFamily={'Inter'}
-            fontWeight={500}
-            fontSize={'14px'}
-            color={'neutral.700'}>
-            {text}
-          </Text>
-        </HStack>
-      </Pressable>
-    );
+  const {user} = useContext(AuthContext);
+  const username = user.full_name;
+  const initial = username.charAt(0).toUpperCase();
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
   };
 
   const {logout} = useContext(AuthContext);
@@ -37,9 +50,6 @@ function ProfileScreen({navigation}) {
     await logout();
   };
 
-  const {user} = useContext(AuthContext);
-  const username = user.full_name;
-  const initial = username.charAt(0).toUpperCase();
   return (
     <Stack bg={'neutral.50'} flex={1}>
       <ImageBackground
@@ -111,15 +121,19 @@ function ProfileScreen({navigation}) {
           text={'Transactions'}
           icon={'receipt-long'}
         />
-        <ButtonProfile onPress={handleSubmit} text={'Logout'} icon={'logout'} />
+        <ButtonProfile
+          onPress={handleButtonClick}
+          text={'Logout'}
+          icon={'logout'}
+        />
+        {showAlert && (
+          <AlertLogout
+            handleAlertClose={handleAlertClose}
+            onPress={handleSubmit}
+          />
+        )}
       </Stack>
     </Stack>
-    // <Center flex={1}>
-    //   <Text>Ini Profile Screen</Text>
-    //   <Stack h={10}>
-    //     <Btn_Secondary text={'Logut'} onPress={handleSubmit} />
-    //   </Stack>
-    // </Center>
   );
 }
 export default ProfileScreen;
