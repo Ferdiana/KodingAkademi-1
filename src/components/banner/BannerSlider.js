@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Image, Center, Pressable} from 'native-base';
 import Swiper from 'react-native-swiper';
-import Data from '../../data/Data';
 import Colors from '../../theme/colors';
 import {AuthContext} from '../../controller/AuthContext';
 import {useNavigation} from '@react-navigation/native';

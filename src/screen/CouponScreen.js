@@ -12,6 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
 import API_Coupon from '../controller/API_Coupon';
+import formatDate from '../controller/formatDate';
 
 const CouponScreen = ({route}) => {
   const {selectedItems, totalPrice, numSelectedItems, fromScreen} =
@@ -24,10 +25,8 @@ const CouponScreen = ({route}) => {
   useEffect(() => {
     const loadCoupon = async () => {
       if (user.accessToken && selectedItems.length > 0) {
-        const response = await API_Coupon(
-          user.accessToken,
-          selectedItems[0].id,
-        );
+        const productIds = selectedItems.map(item => item.id);
+        const response = await API_Coupon(user.accessToken, productIds);
         setCoupon(response);
       }
     };
@@ -61,14 +60,6 @@ const CouponScreen = ({route}) => {
       });
     }
     setSelectedCoupon(appliedCoupon ? appliedCoupon.id : null);
-  };
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   };
 
   return (

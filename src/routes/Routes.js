@@ -14,8 +14,6 @@ import CartScreen from '../screen/CartSreen';
 import MyCourseScreen from '../screen/MyCourseScreen';
 import TransactionsScreen from '../screen/TransactionsScreen';
 import EventScreen from '../screen/EventScreen';
-import EventFinishedDetailScreen from '../screen/EventFinishedDetailScreen';
-import EventFreeDetailScreen from '../screen/EventFreeDetailScreen';
 import CourseDetailScreen from '../screen/CourseDetailScreen';
 import {AuthContext} from '../controller/AuthContext';
 import CouponScreen from '../screen/CouponScreen';
@@ -25,8 +23,6 @@ import PromoScreen from '../screen/PromoScreen';
 import ArticleDetailScreen from '../screen/ArticleDetailScreen';
 import MyCourseDetailScreen from '../screen/MyCourseDetailScreen';
 import PaymentScreen from '../screen/PaymentScreen';
-import AttendedEventScreen from '../screen/AttendedEventScreen';
-import AttendedEventDetailScreen from '../screen/AttendedEventDetailScreen';
 import EventDetailScreen from '../screen/EventDetail';
 
 const Stack = createNativeStackNavigator();
@@ -137,16 +133,6 @@ function Routes() {
         }}
       />
       <Stack.Screen
-        name="EventFinishedDetail"
-        component={EventFinishedDetailScreen}
-        options={{title: 'Event Detail'}}
-      />
-      <Stack.Screen
-        name="EventFreeDetail"
-        component={EventFreeDetailScreen}
-        options={{title: 'Event Detail'}}
-      />
-      <Stack.Screen
         name="CourseDetail"
         component={CourseDetailScreen}
         options={{
@@ -178,16 +164,6 @@ function Routes() {
         name="Payment"
         component={PaymentScreen}
         options={{title: 'Complete Payment'}}
-      />
-      <Stack.Screen
-        name="AttendedEvent"
-        component={AttendedEventScreen}
-        options={{title: 'Attended Events'}}
-      />
-      <Stack.Screen
-        name="AttendedEventDetail"
-        component={AttendedEventDetailScreen}
-        options={{title: 'Attended Events'}}
       />
       <Stack.Screen
         name="EventDetail"

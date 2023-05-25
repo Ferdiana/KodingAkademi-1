@@ -1,6 +1,5 @@
 import React from 'react';
 import {Box, Center, Flex, Image, Pressable, Text} from 'native-base';
-import Data from '../../data/Data';
 import Colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
@@ -8,6 +7,7 @@ import {API_ArticleLimit} from '../../controller/API_Article';
 import {useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
 import {useContext} from 'react';
+import formatDate from '../../controller/formatDate';
 
 const Article = ({mr}) => {
   const [article, setArticle] = useState([]);
@@ -23,15 +23,6 @@ const Article = ({mr}) => {
     };
     loadArticle();
   }, [user.accessToken]);
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  };
 
   const handleArticlePress = id => {
     navigation.navigate('ArticleDetail', {id});

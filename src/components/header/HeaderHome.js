@@ -7,6 +7,7 @@ import {ImageBackground} from 'react-native';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import Colors from '../../theme/colors';
 import {API_GetCart} from '../../controller/API_Cart';
+import formatDate from '../../controller/formatDate';
 
 const HeaderHome = ({navigation, refreshing, onRefresh}) => {
   const {user} = useContext(AuthContext);
@@ -47,14 +48,6 @@ const HeaderHome = ({navigation, refreshing, onRefresh}) => {
       setExpiredDate(newestDate);
     }
   }, [myCourse]);
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
   const expired_date = formatDate(expiredDate);
 

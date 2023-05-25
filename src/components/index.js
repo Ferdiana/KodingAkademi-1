@@ -18,7 +18,6 @@ import SearchCategory from './search/SearchCategory';
 import AllArticle from './card/AllArticle';
 import AllEvent from './card/AllEvent';
 import AllMyCourse from './card/AllMyCourse';
-import AttendedEvent from './card/AttendedEvent';
 import AlertDialogg from './Alert/AlertDialog';
 import Alertt from './Alert/Alert';
 
@@ -41,7 +40,6 @@ export {
   AllMyCourse,
   Cart,
   AllEvent,
-  AttendedEvent,
   SearchCategory,
   AllArticle,
   AlertDialogg,

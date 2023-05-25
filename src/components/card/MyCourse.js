@@ -4,6 +4,7 @@ import Colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
+import formatDate from '../../controller/formatDate';
 
 const MyCourse = ({mr}) => {
   const [myCourse, setMyCourse] = useState([]);
@@ -19,14 +20,6 @@ const MyCourse = ({mr}) => {
     };
     loadMyCourse();
   }, [user.accessToken]);
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
   const handlePress = id => {
     navigation.navigate('CourseDetail', {id});
