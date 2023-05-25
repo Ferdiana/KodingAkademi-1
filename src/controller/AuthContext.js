@@ -41,7 +41,8 @@ const AuthProvider = ({children}) => {
       AsyncStorage.setItem('user', JSON.stringify(user));
       navigation.navigate('home');
     } catch (error) {
-      console.error(error.response.data.message);
+      // console.error(error.response.data.message);
+      throw error;
     }
   };
 

@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenWidth = Dimensions.get('window').width;
 
-const FormLogin = ({navigation}) => {
+const FormLogin = ({navigation, onError}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -15,8 +15,16 @@ const FormLogin = ({navigation}) => {
   const {login} = useContext(AuthContext);
 
   const handleSubmit = async () => {
-    await login(email, password);
+    try {
+      await login(email, password);
+    } catch (error) {
+      onError(error);
+    }
   };
+
+  // const handleSubmit = async () => {
+  //   await login(email, password);
+  // };
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);

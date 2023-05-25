@@ -4,7 +4,7 @@ import {AuthContext} from '../controller/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ImageBackground} from 'react-native';
 import Colors from '../theme/colors';
-import {AlertLogout} from '../components';
+import {AlertDialogg} from '../components';
 
 const ButtonProfile = ({text, borderColor, icon, onPress}) => {
   return (
@@ -127,7 +127,9 @@ function ProfileScreen({navigation}) {
           icon={'logout'}
         />
         {showAlert && (
-          <AlertLogout
+          <AlertDialogg
+            alertText={'Are you sure you want to logout?'}
+            displayTwoButtons={false}
             handleAlertClose={handleAlertClose}
             onPress={handleSubmit}
           />

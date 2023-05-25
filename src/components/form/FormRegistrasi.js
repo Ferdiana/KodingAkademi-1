@@ -1,10 +1,11 @@
-import {Alert, Button, Center, FormControl, Input, Stack} from 'native-base';
+import {Button, Center, FormControl, Input, Stack} from 'native-base';
 import React from 'react';
 import Btn_Primary from '../button/Btn_Primary';
 import {Dimensions} from 'react-native';
 import {useState} from 'react';
 import {register} from '../../controller/register';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AlertDialogg from '../Alert/AlertDialog';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -27,21 +28,25 @@ const Form = ({label, placeholder, onChangeText, value}) => {
   );
 };
 
-const FormRegister = () => {
+const FormRegister = ({onError, navigation}) => {
   const [full_name, setFull_Name] = useState('');
   const [email, setEmail] = useState('');
   const [phone_number, setPhone_Number] = useState(null);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword1, setShowPassword1] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
 
   const handleSubmit = async () => {
     try {
       await register(full_name, email, phone_number, password, confirmPassword);
+      setShowAlert(true);
     } catch (error) {
-      console.log(error.response.data.message);
-      setErrorMessage(error.response.data.message);
+      onError(error);
     }
   };
 
@@ -52,13 +57,6 @@ const FormRegister = () => {
   return (
     <Center>
       <FormControl>
-        {errorMessage !== '' && (
-          <Alert status="error" variant="solid">
-            <Alert.Icon />
-            <Alert.Title>Error</Alert.Title>
-            <Alert.Description>{errorMessage}</Alert.Description>
-          </Alert>
-        )}
         <Stack space={2} px={10}>
           <Form
             label={'Full Name'}
@@ -142,12 +140,14 @@ const FormRegister = () => {
             padding={10}
             onPress={handleSubmit}
           />
-          {errorMessage !== '' && (
-            <Alert status="error" variant="solid">
-              <Alert.Icon />
-              <Alert.Title>Error</Alert.Title>
-              <Alert.Description>{errorMessage}</Alert.Description>
-            </Alert>
+          {showAlert && (
+            <AlertDialogg
+              alertText={
+                'Email Verification Token has been sent to your email address!'
+              }
+              handleAlertClose={handleAlertClose}
+              onPress={() => navigation.replace('Login')}
+            />
           )}
         </Stack>
       </FormControl>

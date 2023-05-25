@@ -68,40 +68,6 @@ function HomeScreen({navigation}) {
     loadMyCourse();
   }, [user.accessToken]);
 
-  useEffect(() => {
-    const loadCart = async () => {
-      if (user.accessToken) {
-        const coursesData = await API_GetCart(user.accessToken);
-        const count = coursesData.cart_items.length;
-        setCartItemCount(count);
-      }
-    };
-    loadCart();
-  }, [user.accessToken]);
-
-  useEffect(() => {
-    if (myCourse.length > 0) {
-      let newestDate = new Date(myCourse[0].expired_date);
-      for (let i = 1; i < myCourse.length; i++) {
-        const currentDate = new Date(myCourse[i].expired_date);
-        if (currentDate > newestDate) {
-          newestDate = currentDate;
-        }
-      }
-      setExpiredDate(newestDate);
-    }
-  }, [myCourse]);
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const expired_date = formatDate(expiredDate);
-
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <VStack>

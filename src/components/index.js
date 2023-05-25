@@ -19,7 +19,7 @@ import AllArticle from './card/AllArticle';
 import AllEvent from './card/AllEvent';
 import AllMyCourse from './card/AllMyCourse';
 import AttendedEvent from './card/AttendedEvent';
-import AlertLogout from './Alert/AlertLogout';
+import AlertDialogg from './Alert/AlertDialog';
 import Alertt from './Alert/Alert';
 
 export {
@@ -44,6 +44,6 @@ export {
   AttendedEvent,
   SearchCategory,
   AllArticle,
-  AlertLogout,
+  AlertDialogg,
   Alertt,
 };
