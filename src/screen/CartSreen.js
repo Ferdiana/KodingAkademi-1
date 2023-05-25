@@ -65,7 +65,6 @@ const CartScreen = ({route, navigation}) => {
       setCanCheckout(selectedItems.length > 1);
     } catch (error) {
       console.error(error);
-      // Handle error state or display error message to the user
     }
   };
 
