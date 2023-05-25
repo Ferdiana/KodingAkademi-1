@@ -69,19 +69,9 @@ const CartScreen = ({route, navigation}) => {
     }
   };
 
-  // const handleDeleteItem = itemId => {
-  //   setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
-  //   setSelectedItems(prevItems => prevItems.filter(item => item.id !== itemId));
-  //   setCanCheckout(selectedItems.length > 1);
-  // };
-
   const handlePress = (id, discount_price) => {
     if (id.startsWith('course')) {
-      if (discount_price !== null) {
-        navigation.navigate('PromoDetail', {id, discount_price});
-      } else {
-        navigation.navigate('CourseDetail', {id, discount_price});
-      }
+      navigation.navigate('CourseDetail', {id, discount_price});
     } else if (id.startsWith('event')) {
       navigation.navigate('EventDetail', {id});
     }

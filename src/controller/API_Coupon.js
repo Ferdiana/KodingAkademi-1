@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_MyCourse = async accessToken => {
+const API_Coupon = async (accessToken, productId) => {
   try {
     const response = await axios.get(
-      'https://kodingapp.refillaja.id/user/user-products/courses',
+      `https://kodingapp.refillaja.id/user/coupons?products=${productId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -12,9 +12,8 @@ const API_MyCourse = async accessToken => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
-    return [];
+    throw new Error(error.response.data);
   }
 };
 
-export {API_MyCourse};
+export default API_Coupon;

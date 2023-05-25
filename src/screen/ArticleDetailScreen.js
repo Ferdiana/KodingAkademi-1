@@ -1,10 +1,7 @@
 import {Center, Image, ScrollView, Stack, Text} from 'native-base';
 import React from 'react';
-import {AllArticle, SearchBar} from '../components';
 import Colors from '../theme/colors';
 import {useState} from 'react';
-import {useRoute} from '@react-navigation/native';
-import Data from '../data/Data';
 import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
 import {useEffect} from 'react';

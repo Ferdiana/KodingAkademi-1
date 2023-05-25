@@ -1,23 +1,14 @@
 import React from 'react';
-import {Text, HStack, VStack, Stack, Pressable, ZStack} from 'native-base';
+import {Text, HStack, VStack, Stack, Pressable} from 'native-base';
 import {
   Article,
   BannerSlider,
   HeaderHome,
   MyCourse,
   Promo,
-  QRComponent,
 } from '../components';
 import {ImageBackground, ScrollView} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 import Colors from '../theme/colors';
-import {useState} from 'react';
-import {API_GetCart} from '../controller/API_Cart';
-import {useContext} from 'react';
-import {AuthContext} from '../controller/AuthContext';
-import {useEffect} from 'react';
-import {API_MyCourse} from '../controller/API_MyCourse';
-import {useIsFocused} from '@react-navigation/native';
 
 const Title = ({text1, color1, text2, color2, onPress}) => {
   return (
@@ -53,21 +44,6 @@ const Title = ({text1, color1, text2, color2, onPress}) => {
 };
 
 function HomeScreen({navigation}) {
-  const {user} = useContext(AuthContext);
-  const [myCourse, setMyCourse] = useState([]);
-  const [expiredDate, setExpiredDate] = useState(null);
-  const [cartItemCount, setCartItemCount] = useState(0);
-
-  useEffect(() => {
-    const loadMyCourse = async () => {
-      if (user.accessToken) {
-        const response = await API_MyCourse(user.accessToken);
-        setMyCourse(response);
-      }
-    };
-    loadMyCourse();
-  }, [user.accessToken]);
-
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <VStack>

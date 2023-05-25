@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   Center,
   Text,
@@ -9,27 +9,33 @@ import {
   Checkbox,
 } from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {dataCoupon} from '../data/Cupon';
 import Colors from '../theme/colors';
+import {AuthContext} from '../controller/AuthContext';
+import API_Coupon from '../controller/API_Coupon';
+
 const CouponScreen = ({route}) => {
-  const {
-    selectedItems,
-    totalPrice,
-    discountedPrice,
-    numSelectedItems,
-    fromScreen,
-  } = route.params;
-  const [couponDiscount, setCouponDiscount] = useState(0);
+  const {selectedItems, totalPrice, numSelectedItems, fromScreen} =
+    route.params;
   const [selectedCoupon, setSelectedCoupon] = useState(null);
-
   const navigation = useNavigation();
+  const {user} = useContext(AuthContext);
+  const [coupon, setCoupon] = useState([]);
 
-  const handleSelectCoupon = coupon => {
-    setSelectedCoupon(coupon);
-  };
+  useEffect(() => {
+    const loadCoupon = async () => {
+      if (user.accessToken && selectedItems.length > 0) {
+        const response = await API_Coupon(
+          user.accessToken,
+          selectedItems[0].id,
+        );
+        setCoupon(response);
+      }
+    };
+    loadCoupon();
+  }, [user.accessToken, selectedItems]);
 
   const handleApplyCoupon = () => {
-    const appliedCoupon = dataCoupon.find(item => item.id === selectedCoupon);
+    const appliedCoupon = coupon.find(item => item.id === selectedCoupon);
     const appliedCouponDiscount = appliedCoupon ? appliedCoupon.discount : 0;
     const updatedDiscountedPrice = totalPrice - appliedCouponDiscount;
     const updatedSelectedItems = selectedItems.map(item =>
@@ -54,8 +60,15 @@ const CouponScreen = ({route}) => {
           updatedDiscountedPrice < 0 ? 0 : updatedDiscountedPrice,
       });
     }
-
     setSelectedCoupon(appliedCoupon ? appliedCoupon.id : null);
+  };
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -68,40 +81,43 @@ const CouponScreen = ({route}) => {
           <Text fontWeight={'normal'} fontSize={16}>
             You can use the coupons available to save on your shopping!
           </Text>
-          {dataCoupon.map(item => (
-            <Stack bgColor={'white'} key={item.id}>
-              <HStack py={'15px'}>
-                <Center>
-                  <Checkbox
-                    accessibilityLabel="This is a dummy checkbox"
-                    colorScheme="primary"
-                    mr={15}
-                    isChecked={selectedCoupon === item.id}
-                    onChange={isChecked => {
-                      setSelectedCoupon(isChecked ? item.id : null);
-                    }}
-                  />
-                </Center>
-                <Center
-                  borderRadius={8}
-                  borderWidth={1}
-                  w={'90%'}
-                  h={'57px'}
-                  borderColor={
-                    selectedCoupon === item.id
-                      ? Colors.primary[500]
-                      : 'gray.200'
-                  }>
-                  <Stack w={'full'} px={'19px'}>
-                    <Text>
-                      {`Rp${item.discount.toLocaleString('id-ID')}`} discount
-                    </Text>
-                    <Text>Ends in {item.dateLeft}</Text>
-                  </Stack>
-                </Center>
-              </HStack>
-            </Stack>
-          ))}
+          {coupon.map(item => {
+            const formattedDate = formatDate(item.coupon_end);
+            return (
+              <Stack bgColor={'white'} key={item.id}>
+                <HStack py={'15px'}>
+                  <Center>
+                    <Checkbox
+                      accessibilityLabel="This is a dummy checkbox"
+                      colorScheme="primary"
+                      mr={15}
+                      isChecked={selectedCoupon === item.id}
+                      onChange={isChecked => {
+                        setSelectedCoupon(isChecked ? item.id : null);
+                      }}
+                    />
+                  </Center>
+                  <Center
+                    borderRadius={8}
+                    borderWidth={1}
+                    w={'90%'}
+                    h={'57px'}
+                    borderColor={
+                      selectedCoupon === item.id
+                        ? Colors.primary[500]
+                        : 'gray.200'
+                    }>
+                    <Stack w={'full'} px={'19px'}>
+                      <Text>
+                        {`Rp${item.discount.toLocaleString('id-ID')}`} discount
+                      </Text>
+                      <Text>Ends in {formattedDate}</Text>
+                    </Stack>
+                  </Center>
+                </HStack>
+              </Stack>
+            );
+          })}
         </Stack>
       </ScrollView>
       <Stack
@@ -120,7 +136,7 @@ const CouponScreen = ({route}) => {
               <Text>
                 Rp
                 {selectedCoupon !== null
-                  ? dataCoupon
+                  ? coupon
                       .find(item => item.id === selectedCoupon)
                       ?.discount.toLocaleString('id-ID')
                   : '0'}

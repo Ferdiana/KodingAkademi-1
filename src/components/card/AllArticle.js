@@ -14,14 +14,11 @@ import {useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
 import {API_Article} from '../../controller/API_Article';
 import HTMLContentView from 'react-native-htmlview';
-import RenderHTML from 'react-native-render-html';
-import {useWindowDimensions} from 'react-native';
 
 const AllArticle = ({searchText}) => {
   const [article, setArticle] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
-  const {width} = useWindowDimensions();
 
   useEffect(() => {
     const loadArticle = async () => {

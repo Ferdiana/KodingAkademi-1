@@ -1,18 +1,14 @@
-import React from 'react';
-import {Box, Text, Image, Stack, Pressable} from 'native-base';
+import React, {useEffect, useContext, useState} from 'react';
+import {FlatList, Box, Text, Image, Stack, Pressable} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {FlatGrid} from 'react-native-super-grid';
 import Colors from '../../theme/colors';
-import {useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
-import {useContext} from 'react';
-import {useEffect} from 'react';
 import {API_Promo} from '../../controller/API_Promo';
 
 const AllPromo = ({searchText}) => {
-  const [courses, setCourses] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const loadCourses = async () => {
@@ -33,21 +29,22 @@ const AllPromo = ({searchText}) => {
   );
 
   return (
-    <FlatGrid
+    <FlatList
+      numColumns={2}
+      px={'14px'}
       showsVerticalScrollIndicator={false}
       data={filteredData}
-      spacing={10}
       keyExtractor={item => item.id}
       renderItem={({item}) => {
         if (!item.discount_price) {
           return null;
         }
         return (
-          <Pressable onPress={() => handlePress(item.id)}>
+          <Pressable p={'4px'} w={'50%'} onPress={() => handlePress(item.id)}>
             <Stack
               bgColor={'white'}
               p={2}
-              borderRadius={10}
+              borderRadius={8}
               borderColor={Colors.primary[600]}
               shadow={1}>
               <Image

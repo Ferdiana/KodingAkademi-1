@@ -37,9 +37,10 @@ const AllCourse = ({searchText, selectedCategory}) => {
       return null;
     }
     return (
-      <Pressable onPress={() => handlePress(item.id)} my={'5px'}>
+      <Pressable px={'18px'} onPress={() => handlePress(item.id)} my={'5px'}>
         <Stack
-          borderWidth={1}
+          shadow={1}
+          bg={Colors.neutral[50]}
           borderColor={Colors.neutral[300]}
           w={'100%'}
           p={'8px'}
@@ -85,7 +86,6 @@ const AllCourse = ({searchText, selectedCategory}) => {
   };
   return (
     <FlatList
-      px={'8px'}
       data={filteredData}
       renderItem={renderItem}
       keyExtractor={item => item.id.toString()}

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {API_URL, API_KEY} from '@env';
 
 const API_GetCart = async accessToken => {
   try {

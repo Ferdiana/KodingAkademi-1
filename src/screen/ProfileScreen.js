@@ -129,7 +129,7 @@ function ProfileScreen({navigation}) {
         {showAlert && (
           <AlertDialogg
             alertText={'Are you sure you want to logout?'}
-            displayTwoButtons={false}
+            displayTwoButtons={true}
             handleAlertClose={handleAlertClose}
             onPress={handleSubmit}
           />
