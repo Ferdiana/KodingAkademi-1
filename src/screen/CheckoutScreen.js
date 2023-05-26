@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
-import Icon from 'react-native-vector-icons/AntDesign';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
 const CheckoutScreen = ({route, navigation}) => {
@@ -12,14 +11,6 @@ const CheckoutScreen = ({route, navigation}) => {
     numSelectedItems,
   } = route.params;
 
-  // Menggunakan isNaN() untuk memeriksa apakah nilai discountedPrice adalah NaN
-  const displayDiscountedPrice = isNaN(discountedPrice)
-    ? 0
-    : discountedPrice < 0
-    ? 0
-    : discountedPrice;
-
-  // Menggunakan isNaN() untuk memeriksa apakah nilai discountedPrice adalah NaN
   const displayTotalPrice = isNaN(discountedPrice)
     ? `Rp${totalPrice.toLocaleString('id-ID')}`
     : discountedPrice < 0
@@ -83,7 +74,7 @@ const CheckoutScreen = ({route, navigation}) => {
                 You get {`Rp${couponDiscount.toLocaleString('id-ID')}`} promo
               </Text>
             ) : (
-              <Text>Apply Coupon</Text>
+              <Text>There are no coupons used.</Text>
             )}
           </HStack>
         </Pressable>
@@ -93,7 +84,7 @@ const CheckoutScreen = ({route, navigation}) => {
               Total Price
             </Text>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>
-              {`Rp${displayDiscountedPrice.toLocaleString('id-ID')}`}
+              {`${displayTotalPrice.toLocaleString('id-ID')}`}
             </Text>
           </Stack>
           <Stack>
@@ -102,7 +93,7 @@ const CheckoutScreen = ({route, navigation}) => {
               px={'42'}
               bgColor={Colors.primary[500]}
               onPress={() =>
-                navigation.navigate('Payment', {total: displayDiscountedPrice})
+                navigation.navigate('Payment', {total: displayTotalPrice})
               }>
               <Text color={'white'}>Pay Now</Text>
             </Button>

@@ -5,7 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
-
 const MyCourse = ({mr}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
@@ -14,8 +13,8 @@ const MyCourse = ({mr}) => {
   useEffect(() => {
     const loadMyCourse = async () => {
       if (user.accessToken) {
-        const articleData = await API_MyCourse(user.accessToken);
-        setMyCourse(articleData);
+        const response = await API_MyCourse(user.accessToken);
+        setMyCourse(response);
       }
     };
     loadMyCourse();
@@ -25,11 +24,18 @@ const MyCourse = ({mr}) => {
     navigation.navigate('CourseDetail', {id});
   };
 
+  const isExpired = date => {
+    const currentDate = new Date();
+    const expiredDate = new Date(date);
+    return expiredDate < currentDate;
+  };
+
   return (
     <Flex flexDirection={'row'} mr={mr} p={'10px'}>
       {myCourse && myCourse.length > 0 ? (
         myCourse.map(item => {
           const formattedDate = formatDate(item.expired_date);
+          const expired = isExpired(item.expired_date);
           return (
             <Pressable
               key={item.id}
@@ -41,6 +47,7 @@ const MyCourse = ({mr}) => {
                 px={'10px'}
                 pt={'5px'}
                 mr={2}
+                opacity={expired ? 0.5 : 1}
                 bg={Colors.neutral[50]}
                 borderRadius={8}
                 shadow={1}>

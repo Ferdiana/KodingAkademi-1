@@ -37,12 +37,19 @@ const AllMyCourse = ({searchText}) => {
     item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 
+  const isExpired = date => {
+    const currentDate = new Date();
+    const expiredDate = new Date(date);
+    return expiredDate < currentDate;
+  };
+
   const renderItem = ({item}) => {
     const formattedDate = formatDate(item.expired_date);
-
+    const expired = isExpired(item.expired_date);
     return (
       <Pressable onPress={() => handlePress(item.id)} my={'5px'} mx={'18px'}>
         <Stack
+          opacity={expired ? 0.5 : 1}
           w={'100%'}
           borderRadius={8}
           p={'8px'}

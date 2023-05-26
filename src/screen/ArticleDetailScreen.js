@@ -7,6 +7,7 @@ import {AuthContext} from '../controller/AuthContext';
 import {useEffect} from 'react';
 import HTMLContentView from 'react-native-htmlview';
 import {API_ArticleDetail} from '../controller/API_Article';
+import formatDate from '../controller/formatDate';
 
 const ArticleDetailScreen = ({route}) => {
   const {user} = useContext(AuthContext);
@@ -23,15 +24,6 @@ const ArticleDetailScreen = ({route}) => {
 
     loadArticleDetail();
   }, [route.params, user.accessToken]);
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  };
 
   const formattedDate = formatDate(ArticleDetail.createdAt);
 
