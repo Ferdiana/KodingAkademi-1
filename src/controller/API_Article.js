@@ -37,7 +37,7 @@ const API_ArticleLimit = async accessToken => {
 const API_ArticleDetail = async (id, accessToken) => {
   try {
     const response = await axios.get(
-      `http://192.168.1.17:3000/user/articles/${id}`,
+      `https://kodingapp.refillaja.id/user/articles/${id}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

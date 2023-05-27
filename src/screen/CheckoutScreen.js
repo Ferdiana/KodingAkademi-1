@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
+import API_Checkout from '../controller/API_Checkout';
+import {AuthContext} from '../controller/AuthContext';
 const CheckoutScreen = ({route, navigation}) => {
   const {
     selectedItems,
@@ -10,12 +12,28 @@ const CheckoutScreen = ({route, navigation}) => {
     couponDiscount,
     numSelectedItems,
   } = route.params;
+  const {user} = useContext(AuthContext);
 
   const displayTotalPrice = isNaN(discountedPrice)
     ? `Rp${totalPrice.toLocaleString('id-ID')}`
     : discountedPrice < 0
     ? 0
     : `Rp${discountedPrice.toLocaleString('id-ID')}`;
+
+  const astMau = selectedItems.map(item => item.id);
+  console.log(astMau);
+
+  const handlePayment = async () => {
+    try {
+      await API_Checkout(user.accessToken, astMau);
+      console.log('sukses bos');
+      navigation.navigate('Payment', {total: displayTotalPrice});
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log(selectedItems);
 
   return (
     <Stack flex={1}>
@@ -92,9 +110,7 @@ const CheckoutScreen = ({route, navigation}) => {
               py={'3'}
               px={'42'}
               bgColor={Colors.primary[500]}
-              onPress={() =>
-                navigation.navigate('Payment', {total: displayTotalPrice})
-              }>
+              onPress={handlePayment}>
               <Text color={'white'}>Pay Now</Text>
             </Button>
           </Stack>

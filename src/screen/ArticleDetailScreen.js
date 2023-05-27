@@ -6,8 +6,8 @@ import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
 import {useEffect} from 'react';
 import HTMLContentView from 'react-native-htmlview';
-import {API_ArticleDetail} from '../controller/API_Article';
 import formatDate from '../controller/formatDate';
+import {API_ArticleDetail} from '../controller/API_Article';
 
 const ArticleDetailScreen = ({route}) => {
   const {user} = useContext(AuthContext);
