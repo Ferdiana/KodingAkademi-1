@@ -33,6 +33,7 @@ const TransactionScreen = ({}) => {
       <Stack borderWidth={1} p={4} my={2}>
         <Text>ID: {item.id}</Text>
         <Text>Invoice ID: {item.invoice_id}</Text>
+        <Text>Status: {item.order_status}</Text>
         {item.order.map(orderItem => (
           <Stack key={orderItem.product_id}>
             <Text>Product Name: {orderItem.Product.name}</Text>

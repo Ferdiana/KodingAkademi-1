@@ -1,9 +1,19 @@
 import React, {useContext} from 'react';
-import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
+import {
+  Text,
+  Stack,
+  ScrollView,
+  HStack,
+  Button,
+  Pressable,
+  Link,
+} from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
 import API_Checkout from '../controller/API_Checkout';
 import {AuthContext} from '../controller/AuthContext';
+import {useState} from 'react';
+import {Linking} from 'react-native';
 const CheckoutScreen = ({route, navigation}) => {
   const {
     selectedItems,
@@ -20,12 +30,14 @@ const CheckoutScreen = ({route, navigation}) => {
     ? 0
     : `Rp${discountedPrice.toLocaleString('id-ID')}`;
 
-  const astMau = selectedItems.map(item => item.id);
-  console.log(astMau);
+  const filterSelectedId = selectedItems.map(item => item.id);
 
   const handlePayment = async () => {
     try {
-      await API_Checkout(user.accessToken, astMau);
+      const response = await API_Checkout(user.accessToken, filterSelectedId);
+      if (response) {
+        Linking.openURL(response);
+      }
       console.log('sukses bos');
       navigation.navigate('Payment', {total: displayTotalPrice});
     } catch (error) {

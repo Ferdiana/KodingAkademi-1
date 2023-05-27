@@ -1,5 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Text, Stack, Center, Image, ScrollView} from 'native-base';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
+import {
+  Text,
+  Stack,
+  Center,
+  Image,
+  ScrollView,
+  Pressable,
+  HStack,
+  ZStack,
+} from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Colors from '../theme/colors';
 import Btn_Primary from '../components/button/Btn_Primary';
@@ -7,14 +16,19 @@ import {StyleSheet} from 'react-native';
 import HTMLContentView from 'react-native-htmlview';
 import {Dropdown} from 'react-native-element-dropdown';
 import {API_DetailEvents} from '../controller/API_Events';
-import {API_GetCart} from '../controller/API_Cart';
+import {API_AddCart, API_GetCart} from '../controller/API_Cart';
+import Icon from 'react-native-vector-icons/Feather';
+import {API_MyCourse} from '../controller/API_MyCourse';
 
-const EventDetailScreen = ({route}) => {
+const EventDetailScreen = ({route, navigation}) => {
   const [selectedValue, setSelectedValue] = useState('');
   const {user} = useContext(AuthContext);
   const [eventDetail, setEventDetail] = useState({});
   const [dropdownOption, setDropdownOption] = useState([]);
   const [isInCart, setIsInCart] = useState(false);
+  const [isInMyCourse, setIsInMyCourse] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
@@ -28,14 +42,46 @@ const EventDetailScreen = ({route}) => {
     const checkIfInCart = async () => {
       if (user.accessToken) {
         const cartItems = await API_GetCart(user.accessToken);
-        const isInCart = cartItems.cart_items.some(item => item.id === id);
-        setIsInCart(isInCart);
+        const response = cartItems.cart_items.some(item => item.id === id);
+        setIsInCart(response);
+      }
+    };
+    const checkIfInMyCourse = async () => {
+      if (user.accessToken) {
+        const MyCourseItem = await API_MyCourse(user.accessToken);
+        const response = MyCourseItem.some(item => item.id === id);
+        setIsInMyCourse(response);
+      }
+    };
+    const checkNumberOfCart = async () => {
+      if (user.accessToken) {
+        const coursesData = await API_GetCart(user.accessToken);
+        const count = coursesData.cart_items.length;
+        setCartItemCount(count);
       }
     };
 
+    checkNumberOfCart();
+    checkIfInCart();
+    checkIfInMyCourse();
     loadEventsDetail();
     checkIfInCart();
+    setRefresh(false);
   }, [route.params, user.accessToken]);
+
+  const handleAddToCart = useCallback(
+    async id => {
+      try {
+        await API_AddCart(user.accessToken, eventDetail.id);
+        console.log('sukses');
+        setRefresh(true); // Set state refresh menjadi true
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [user.accessToken, eventDetail.id],
+  );
+
   const formatDate = dateString => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -52,7 +98,7 @@ const EventDetailScreen = ({route}) => {
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView key={refresh.toString()} showsVerticalScrollIndicator={false}>
         <Center w={'full'} h={'324px'} px={'18px'} py={'10px'}>
           <Image
             borderRadius={8}
@@ -109,12 +155,49 @@ const EventDetailScreen = ({route}) => {
           </Stack>
         </Stack>
       </ScrollView>
-      <Btn_Primary
-        disabled={isInCart}
-        text={'Add to cart'}
-        padding={'18px'}
-        pb={'8px'}
-      />
+      <HStack
+        px={'18px'}
+        py={'8px'}
+        alignItems={'center'}
+        space={'8px'}
+        justifyContent={'space-between'}>
+        <Pressable onPress={() => navigation.navigate('Cart')}>
+          <Stack
+            w={'46px'}
+            h={'46px'}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <Icon name="shopping-cart" color={Colors.neutral[900]} size={28} />
+            {cartItemCount > 0 && (
+              <ZStack
+                position="absolute"
+                top={'0'}
+                right={'0'}
+                bg="primary.500"
+                alignItems="center"
+                borderRadius={100}
+                width={'18px'}
+                height={'18px'}>
+                <Text
+                  fontFamily={'Inter'}
+                  color="white"
+                  fontSize={12}
+                  fontWeight="semibold">
+                  {cartItemCount}
+                </Text>
+              </ZStack>
+            )}
+          </Stack>
+        </Pressable>
+        <Stack w={'82%'}>
+          <Btn_Primary
+            w={'100%'}
+            onPress={handleAddToCart}
+            text={'Add to cart'}
+            disabled={isInMyCourse || isInCart}
+          />
+        </Stack>
+      </HStack>
     </Stack>
   );
 };

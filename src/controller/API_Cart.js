@@ -34,11 +34,11 @@ const API_DeleteCart = async (accessToken, productLists) => {
   }
 };
 
-const API_AddCart = async (accessToken, productId) => {
+const API_AddCart = async (accessToken, productId, selectedDate) => {
   try {
     const response = await axios.post(
       'https://kodingapp.refillaja.id/user/cart',
-      {productId},
+      {productId, selectedDate},
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
