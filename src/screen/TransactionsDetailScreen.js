@@ -142,8 +142,9 @@ const TransactionDetailScreen = ({route, navigation}) => {
                   fontWeight={500}
                   fontSize={'12px'}
                   color={Colors.neutral[900]}>
-                  {item.discountPrice ? (
-                    <Text>{`Rp${item.Product.discountPrice.toLocaleString(
+                  {/* {`Rp${item.Product.discount_price.toLocaleString('id-ID')}`} */}
+                  {item.Product.discount_price ? (
+                    <Text>{`Rp${item.Product.discount_price.toLocaleString(
                       'id-ID',
                     )}`}</Text>
                   ) : (
@@ -179,7 +180,7 @@ const TransactionDetailScreen = ({route, navigation}) => {
           ) : (
             <HStack mt={'8px'} w={'100%'}>
               {transaction.order_status === 'pending' ||
-              transaction.order_status === 'cancel' ? (
+              transaction.order_status === 'canceled' ? (
                 <>
                   <Stack w={'50%'} space={'10px'}>
                     <Text
@@ -254,20 +255,24 @@ const TransactionDetailScreen = ({route, navigation}) => {
           )}
         </HStack>
         <Stack mt={'12px'}>
-          <Btn_Primary
-            text={'Pay Now'}
-            pb={'15px'}
-            onPress={() => navigation.navigate('')}
-          />
-          <Btn_Outline text={'Cencel'} onPress={handleButtonClick} />
-          {showAlert && (
-            <AlertDialogg
-              textCencel={'No'}
-              textOk={'Cencel'}
-              alertText={'Are you sure you want to cancel this order?'}
-              displayTwoButtons={true}
-              handleAlertClose={handleAlertClose}
-            />
+          {transaction.order_status === 'pending' && (
+            <>
+              <Btn_Primary
+                text={'Pay Now'}
+                pb={'15px'}
+                onPress={() => navigation.navigate('')}
+              />
+              <Btn_Outline text={'Cancel'} onPress={handleButtonClick} />
+              {showAlert && (
+                <AlertDialogg
+                  textCancel={'No'}
+                  textOk={'Cancel'}
+                  alertText={'Are you sure you want to cancel this order?'}
+                  displayTwoButtons={true}
+                  handleAlertClose={handleAlertClose}
+                />
+              )}
+            </>
           )}
         </Stack>
       </Stack>

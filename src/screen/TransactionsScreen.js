@@ -118,9 +118,9 @@ const TransactionScreen = ({navigation}) => {
                 fontWeight={500}
                 fontSize={'10px'}
                 color={Colors.neutral[500]}>
-                {item.order[0].Product.discountPrice ? (
+                {item.order[0].Product.discount_price ? (
                   <Text>
-                    {`Rp${item.order[0].Product.discountPrice.toLocaleString(
+                    {`Rp${item.order[0].Product.discount_price.toLocaleString(
                       'id-ID',
                     )}`}
                   </Text>
