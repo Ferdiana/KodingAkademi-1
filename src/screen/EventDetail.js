@@ -28,7 +28,7 @@ const EventDetailScreen = ({route, navigation}) => {
   const [isInCart, setIsInCart] = useState(false);
   const [isInMyCourse, setIsInMyCourse] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [refresh, setRefresh] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
@@ -66,21 +66,17 @@ const EventDetailScreen = ({route, navigation}) => {
     checkIfInMyCourse();
     loadEventsDetail();
     checkIfInCart();
-    setRefresh(false);
-  }, [route.params, user.accessToken]);
+  }, [route.params, user.accessToken, refreshPage]);
 
-  const handleAddToCart = useCallback(
-    async id => {
-      try {
-        await API_AddCart(user.accessToken, eventDetail.id);
-        console.log('sukses');
-        setRefresh(true); // Set state refresh menjadi true
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [user.accessToken, eventDetail.id],
-  );
+  const handleAddToCart = async id => {
+    try {
+      await API_AddCart(user.accessToken, eventDetail.id);
+      console.log('sukses');
+      setRefreshPage(!refreshPage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const formatDate = dateString => {
     const date = new Date(dateString);
@@ -98,7 +94,7 @@ const EventDetailScreen = ({route, navigation}) => {
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
-      <ScrollView key={refresh.toString()} showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Center w={'full'} h={'324px'} px={'18px'} py={'10px'}>
           <Image
             borderRadius={8}

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_Checkout = async (accessToken, productList) => {
+const API_Checkout = async (accessToken, productList, selectedCoupon) => {
   try {
     const response = await axios.post(
-      'https://kodingapp.refillaja.id/user/checkouts',
+      `https://kodingapp.refillaja.id/user/checkouts?couponId=${selectedCoupon}`,
       {productList},
       {
         headers: {
@@ -11,7 +11,7 @@ const API_Checkout = async (accessToken, productList) => {
         },
       },
     );
-    // return response.data.invoice_url;
+    return response.data.invoice_url;
   } catch (error) {
     console.error(error.response.data);
   }

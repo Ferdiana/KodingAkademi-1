@@ -9,7 +9,7 @@ import {API_DeleteCart, API_GetCart} from '../controller/API_Cart';
 const CartScreen = ({route, navigation}) => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const {couponDiscount} = route.params || 0;
+  const {couponDiscount, selectedCoupon} = route.params || 0;
   const [updatedSelectedItems, setUpdatedSelectedItems] = useState([]);
   const [canCheckout, setCanCheckout] = useState(false);
   const numSelectedItems = selectedItems.length;
@@ -79,6 +79,7 @@ const CartScreen = ({route, navigation}) => {
   const handleCheckout = () => {
     if (canCheckout) {
       navigation.navigate('Checkout', {
+        selectedCoupon,
         selectedItems,
         totalPrice,
         discountedPrice,

@@ -42,6 +42,7 @@ const CouponScreen = ({route}) => {
     );
     if (fromScreen === 'Cart') {
       navigation.navigate('Cart', {
+        selectedCoupon,
         selectedItems: updatedSelectedItems,
         couponDiscount: appliedCouponDiscount,
         totalPrice: totalPrice,

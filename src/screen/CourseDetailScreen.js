@@ -18,13 +18,15 @@ import {API_DetailCourse} from '../controller/API_Course';
 import {API_AddCart, API_GetCart} from '../controller/API_Cart';
 import {API_MyCourse} from '../controller/API_MyCourse';
 import Icon from 'react-native-vector-icons/Feather';
+import API_Transaction from '../controller/API_Transaction';
+import {Alert} from 'react-native';
 
 const CourseDetailScreen = ({route, navigation}) => {
   const {user} = useContext(AuthContext);
   const [courseDetail, setCourseDetail] = useState({});
   const [isInCart, setIsInCart] = useState(false);
   const [isInMyCourse, setIsInMyCourse] = useState(false);
-  const [refreshPage, setRefreshPage] = useState(false);
+  const [isInOrder, setIsInOrder] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
 
   useEffect(() => {
@@ -40,6 +42,9 @@ const CourseDetailScreen = ({route, navigation}) => {
         const cartItems = await API_GetCart(user.accessToken);
         const response = cartItems.cart_items.some(item => item.id === id);
         setIsInCart(response);
+        if (response) {
+          Alert.alert('Produk ada di dalam keranjang!');
+        }
       }
     };
     const checkIfInMyCourse = async () => {
@@ -47,8 +52,24 @@ const CourseDetailScreen = ({route, navigation}) => {
         const MyCourseItem = await API_MyCourse(user.accessToken);
         const response = MyCourseItem.some(item => item.id === id);
         setIsInMyCourse(response);
+        if (response) {
+          Alert.alert('Produk ada di dalam daftar kursus saya!');
+        }
       }
     };
+    const checkIfInOrder = async () => {
+      if (user.accessToken) {
+        const OrderId = await API_Transaction(user.accessToken);
+        const response = OrderId.some(item =>
+          item.order.some(orderItem => orderItem.product_id === id),
+        );
+        setIsInOrder(response);
+        if (response) {
+          Alert.alert('Produk ada di dalam pesanan!');
+        }
+      }
+    };
+
     const checkNumberOfCart = async () => {
       if (user.accessToken) {
         const coursesData = await API_GetCart(user.accessToken);
@@ -57,27 +78,21 @@ const CourseDetailScreen = ({route, navigation}) => {
       }
     };
 
+    checkIfInOrder();
     loadCourseDetail();
     checkIfInCart();
     checkIfInMyCourse();
     checkNumberOfCart();
-  }, [route.params, user.accessToken, refreshPage]);
+  }, [route.params, user.accessToken]);
 
   const handleAddToCart = async id => {
     try {
       await API_AddCart(user.accessToken, courseDetail.id);
       console.log('sukses');
-      setRefreshPage(!refreshPage);
     } catch (error) {
       console.error(error);
     }
   };
-  React.useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
-      setRefreshPage(!refreshPage);
-    });
-    return focusHandler;
-  }, [navigation, refreshPage]);
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
@@ -181,7 +196,7 @@ const CourseDetailScreen = ({route, navigation}) => {
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}
-            disabled={isInMyCourse || isInCart}
+            disabled={isInMyCourse || isInCart || isInOrder}
           />
         </Stack>
       </HStack>
