@@ -1,4 +1,4 @@
-import {Center, Image, ScrollView, Stack, Text} from 'native-base';
+import {Center, Image, ScrollView, Spinner, Stack, Text} from 'native-base';
 import React from 'react';
 import Colors from '../theme/colors';
 import {useState} from 'react';
@@ -12,18 +12,33 @@ import {API_ArticleDetail} from '../controller/API_Article';
 const ArticleDetailScreen = ({route}) => {
   const {user} = useContext(AuthContext);
   const [ArticleDetail, setArticleDetail] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const {id} = route.params;
     const loadArticleDetail = async () => {
       const response = await API_ArticleDetail(id, user.accessToken);
+      setIsLoading(true);
       if (response) {
         setArticleDetail(response);
+        setIsLoading(false);
       }
     };
 
     loadArticleDetail();
   }, [route.params, user.accessToken]);
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   const formattedDate = formatDate(ArticleDetail.createdAt);
 
