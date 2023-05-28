@@ -8,6 +8,7 @@ import {
   HStack,
   Pressable,
   ZStack,
+  Spinner,
 } from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Colors from '../theme/colors';
@@ -28,13 +29,16 @@ const CourseDetailScreen = ({route, navigation}) => {
   const [isInMyCourse, setIsInMyCourse] = useState(false);
   const [isInOrder, setIsInOrder] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const {id} = route.params;
     const loadCourseDetail = async () => {
       const response = await API_DetailCourse(id, user.accessToken);
+      setIsLoading(true);
       if (response) {
         setCourseDetail(response);
+        setIsLoading(false);
       }
     };
     const checkIfInCart = async () => {
@@ -93,6 +97,18 @@ const CourseDetailScreen = ({route, navigation}) => {
       console.error(error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>

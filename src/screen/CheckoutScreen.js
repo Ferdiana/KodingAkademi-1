@@ -12,10 +12,12 @@ import {
 } from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
-import API_Checkout from '../controller/API_Checkout';
+
 import {AuthContext} from '../controller/AuthContext';
 import {useState} from 'react';
 import {ActivityIndicator, Linking} from 'react-native';
+import {API_Checkout, API_CheckoutWithCoupon} from '../controller/API_Checkout';
+
 const CheckoutScreen = ({route, navigation}) => {
   const {
     selectedItems,
@@ -39,27 +41,27 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const handlePayment = async () => {
     try {
-      setLoading(true); // Menampilkan spinner loading
-      const response = await API_Checkout(
-        user.accessToken,
-        filterSelectedId,
-        selectedCoupon,
-      );
+      setLoading(true);
+      let response;
+      if (selectedCoupon) {
+        response = await API_CheckoutWithCoupon(
+          user.accessToken,
+          filterSelectedId,
+          selectedCoupon,
+        );
+      } else {
+        response = await API_Checkout(user.accessToken, filterSelectedId);
+      }
       if (response) {
         Linking.openURL(response);
-        console.log(response);
       }
-      navigation.replace('Payment', {total: displayTotalPrice});
-      console.log('sukses bos');
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false); // Menyembunyikan spinner loading
+      navigation.replace('Payment', {total: displayTotalPrice});
+      setLoading(false);
     }
   };
-
-  console.log(selectedItems);
-  console.log(selectedCoupon);
 
   return (
     <Stack flex={1}>

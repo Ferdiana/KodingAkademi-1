@@ -9,6 +9,7 @@ import {
   Pressable,
   Box,
   FlatList,
+  Spinner,
 } from 'native-base';
 import HTMLContentView from 'react-native-htmlview';
 import {SectionGrid} from 'react-native-super-grid';
@@ -23,10 +24,12 @@ export default function AllEvent({searchText}) {
   const [eventDate, setEventDate] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadEvents = async () => {
       if (user.accessToken) {
+        setIsLoading(true);
         const response = await API_Events(user.accessToken);
         const eventDates = response.flatMap(event => event.event_dates);
         const sortedEvents = response.sort((a, b) => {
@@ -36,6 +39,7 @@ export default function AllEvent({searchText}) {
         });
         setEvents(sortedEvents);
         setEventDate(eventDates);
+        setIsLoading(false);
       }
     };
     loadEvents();
@@ -150,6 +154,18 @@ export default function AllEvent({searchText}) {
       </Pressable>
     );
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   return (
     <FlatList

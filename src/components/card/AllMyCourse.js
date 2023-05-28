@@ -5,6 +5,7 @@ import {
   HStack,
   Image,
   Pressable,
+  Spinner,
   Stack,
   Text,
 } from 'native-base';
@@ -18,12 +19,15 @@ const AllMyCourse = ({searchText}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadMyCourse = async () => {
       if (user.accessToken) {
+        setIsLoading(true);
         const response = await API_MyCourse(user.accessToken);
         setMyCourse(response);
+        setIsLoading(false);
       }
     };
     loadMyCourse();
@@ -83,21 +87,24 @@ const AllMyCourse = ({searchText}) => {
                 Until {''}
                 {formattedDate}
               </Text>
-              {/* <Text
-                numberOfLines={2}
-                fontFamily={'Inter'}
-                fontSize={'12px'}
-                fontWeight={400}
-                textAlign={'justify'}
-                color={Colors.neutral[700]}>
-                {item.de}
-              </Text> */}
             </Stack>
           </HStack>
         </Stack>
       </Pressable>
     );
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
   return (
     <FlatList
       data={filteredData}

@@ -24,6 +24,7 @@ import ArticleDetailScreen from '../screen/ArticleDetailScreen';
 import MyCourseDetailScreen from '../screen/MyCourseDetailScreen';
 import PaymentScreen from '../screen/PaymentScreen';
 import EventDetailScreen from '../screen/EventDetail';
+import TransactionDetailScreen from '../screen/TransactionsDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -126,6 +127,11 @@ function Routes() {
         options={{title: 'Transactions'}}
       />
       <Stack.Screen
+        name="DetailTransactions"
+        component={TransactionDetailScreen}
+        options={{title: 'Detail Transactions'}}
+      />
+      <Stack.Screen
         name="Event"
         component={EventScreen}
         options={{
@@ -163,7 +169,7 @@ function Routes() {
       <Stack.Screen
         name="Payment"
         component={PaymentScreen}
-        options={{title: 'Complete Payment'}}
+        options={{title: 'Complete Payment', headerShown: false}}
       />
       <Stack.Screen
         name="EventDetail"

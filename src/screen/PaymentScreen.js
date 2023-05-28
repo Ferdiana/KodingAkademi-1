@@ -1,4 +1,4 @@
-import {Stack, Text} from 'native-base';
+import {Center, Stack, Text} from 'native-base';
 import React from 'react';
 import {Btn_Outline, Btn_Primary} from '../components';
 import Colors from '../theme/colors';
@@ -6,8 +6,17 @@ import Colors from '../theme/colors';
 const PaymentScreen = ({route, navigation}) => {
   const {total} = route.params;
   return (
-    <Stack flex={1} py={'10px'} px={'18px'} bg={Colors.neutral[50]}>
-      <Stack space={'10px'} mb={'30px'}>
+    <Stack flex={1} bg={Colors.neutral[50]}>
+      <Center h={'54px'} bg={Colors.neutral[50]} shadow={1}>
+        <Text
+          fontFamily={'Inter'}
+          fontSize={'14px'}
+          fontWeight={600}
+          color={Colors.neutral[900]}>
+          Complete Payment
+        </Text>
+      </Center>
+      <Stack py={'10px'} px={'18px'} space={'10px'} mb={'30px'}>
         <Text
           fontFamily={'Inter'}
           fontWeight={600}
@@ -27,12 +36,14 @@ const PaymentScreen = ({route, navigation}) => {
           payment of {total}
         </Text>
       </Stack>
-      <Btn_Primary
+      {/* <Btn_Primary
+        padding={'18px'}
         text={'Check Payment Status'}
         pb={'15px'}
         onPress={() => navigation.navigate('Transactions')}
-      />
+      /> */}
       <Btn_Outline
+        padding={'18px'}
         text={'Back to Home'}
         onPress={() => navigation.replace('home')}
       />

@@ -14,7 +14,12 @@ const MyCourse = ({mr}) => {
     const loadMyCourse = async () => {
       if (user.accessToken) {
         const response = await API_MyCourse(user.accessToken);
-        setMyCourse(response);
+        const sortedCourses = response.sort((a, b) => {
+          const dateA = new Date(a.expired_date);
+          const dateB = new Date(b.expired_date);
+          return dateB - dateA;
+        });
+        setMyCourse(sortedCourses);
       }
     };
     loadMyCourse();

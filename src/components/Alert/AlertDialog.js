@@ -1,11 +1,13 @@
 import React from 'react';
-import {Text, Button, HStack, AlertDialog} from 'native-base';
+import {Text, Button, HStack, AlertDialog, Stack} from 'native-base';
 
 export default function AlertDialogg({
   handleAlertClose,
   alertText,
   displayTwoButtons,
   onPress,
+  textCencel,
+  textOk,
 }) {
   return (
     <AlertDialog
@@ -20,16 +22,18 @@ export default function AlertDialogg({
         <HStack justifyContent={'space-evenly'}>
           {displayTwoButtons ? (
             <>
-              <Button px={8} colorScheme="primary" onPress={handleAlertClose}>
-                Cancel
-              </Button>
-
               <Button
-                px={8}
+                w={'45%'}
+                colorScheme="primary"
+                onPress={handleAlertClose}>
+                {textCencel}
+              </Button>
+              <Button
+                w={'45%'}
                 colorScheme="primary"
                 variant={'outline'}
                 onPress={onPress}>
-                Logout
+                {textOk}
               </Button>
             </>
           ) : (

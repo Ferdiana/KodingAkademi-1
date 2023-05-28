@@ -1,5 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, HStack, Image, Pressable, Stack, Text} from 'native-base';
+import {
+  FlatList,
+  HStack,
+  Image,
+  Pressable,
+  Spinner,
+  Stack,
+  Text,
+} from 'native-base';
 import Colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../../controller/AuthContext';
@@ -11,12 +19,15 @@ const AllCourse = ({searchText, selectedCategory}) => {
   const [courses, setCourses] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadCourses = async () => {
       if (user.accessToken) {
-        const coursesData = await API_Course(user.accessToken);
-        setCourses(coursesData);
+        setIsLoading(true);
+        const response = await API_Course(user.accessToken);
+        setCourses(response);
+        setIsLoading(false);
       }
     };
     loadCourses();
@@ -84,6 +95,18 @@ const AllCourse = ({searchText, selectedCategory}) => {
       </Pressable>
     );
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
   return (
     <FlatList
       data={filteredData}
