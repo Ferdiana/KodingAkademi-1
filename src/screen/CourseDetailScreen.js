@@ -30,6 +30,7 @@ const CourseDetailScreen = ({route, navigation}) => {
   const [isInOrder, setIsInOrder] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshPage, setRefreshPage] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
@@ -87,12 +88,13 @@ const CourseDetailScreen = ({route, navigation}) => {
     checkIfInCart();
     checkIfInMyCourse();
     checkNumberOfCart();
-  }, [route.params, user.accessToken]);
+  }, [route.params, user.accessToken, refreshPage]);
 
   const handleAddToCart = async id => {
     try {
       await API_AddCart(user.accessToken, courseDetail.id);
       console.log('sukses');
+      setRefreshPage(!refreshPage);
     } catch (error) {
       console.error(error);
     }
