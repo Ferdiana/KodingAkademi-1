@@ -49,6 +49,7 @@ function RegisterScreen({navigation}) {
               variant={'left-accent'}
               mx={10}
               mb={1}
+              alignItems={'flex-start'}
               borderRadius={8}>
               <HStack space={'12px'}>
                 <Alert.Icon />

@@ -8,6 +8,7 @@ import {useEffect} from 'react';
 import HTMLContentView from 'react-native-htmlview';
 import formatDate from '../controller/formatDate';
 import {API_ArticleDetail} from '../controller/API_Article';
+import {StyleSheet} from 'react-native';
 
 const ArticleDetailScreen = ({route}) => {
   const {user} = useContext(AuthContext);
@@ -68,18 +69,25 @@ const ArticleDetailScreen = ({route}) => {
           <HTMLContentView
             numberOfLines={2}
             value={ArticleDetail.content}
-            stylesheet={{
-              p: {
-                textAlign: 'justify',
-                fontSize: 14,
-                lineHeight: 18,
-              },
-            }}
+            stylesheet={styles}
           />
         </Stack>
       </ScrollView>
     </Stack>
   );
 };
+
+const styles = StyleSheet.create({
+  p: {
+    textAlign: 'justify',
+    lineHeight: 18,
+  },
+  ul: {
+    textAlign: 'justify',
+  },
+  li: {
+    textAlign: 'justify',
+  },
+});
 
 export default ArticleDetailScreen;

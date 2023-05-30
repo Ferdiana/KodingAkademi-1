@@ -119,6 +119,11 @@ const AllCourse = ({searchText, selectedCategory}) => {
 const styles = StyleSheet.create({
   p: {
     textAlign: 'justify',
+    color: '#000',
+  },
+  body: {
+    textAlign: 'justify',
+    color: '#000',
   },
 });
 

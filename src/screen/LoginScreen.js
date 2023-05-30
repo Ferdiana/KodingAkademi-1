@@ -67,6 +67,7 @@ function LoginScreen({navigation}) {
               status="danger"
               variant={'left-accent'}
               mx={10}
+              alignItems={'flex-start'}
               borderRadius={8}>
               <HStack space={'12px'}>
                 <Alert.Icon />

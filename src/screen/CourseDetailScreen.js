@@ -9,6 +9,7 @@ import {
   Pressable,
   ZStack,
   Spinner,
+  Alert,
 } from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Colors from '../theme/colors';
@@ -19,18 +20,18 @@ import {API_DetailCourse} from '../controller/API_Course';
 import {API_AddCart, API_GetCart} from '../controller/API_Cart';
 import {API_MyCourse} from '../controller/API_MyCourse';
 import Icon from 'react-native-vector-icons/Feather';
-import API_Transaction from '../controller/API_Transaction';
-import {Alert} from 'react-native';
+import {API_Transaction} from '../controller/API_Transaction';
 
 const CourseDetailScreen = ({route, navigation}) => {
   const {user} = useContext(AuthContext);
   const [courseDetail, setCourseDetail] = useState({});
   const [isInCart, setIsInCart] = useState(false);
   const [isInMyCourse, setIsInMyCourse] = useState(false);
-  const [isInOrder, setIsInOrder] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [refreshPage, setRefreshPage] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [isInOrder, setIsInOrder] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
@@ -47,9 +48,10 @@ const CourseDetailScreen = ({route, navigation}) => {
         const cartItems = await API_GetCart(user.accessToken);
         const response = cartItems.cart_items.some(item => item.id === id);
         setIsInCart(response);
-        if (response) {
-          Alert.alert('Produk ada di dalam keranjang!');
-        }
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       }
     };
     const checkIfInMyCourse = async () => {
@@ -57,9 +59,10 @@ const CourseDetailScreen = ({route, navigation}) => {
         const MyCourseItem = await API_MyCourse(user.accessToken);
         const response = MyCourseItem.some(item => item.id === id);
         setIsInMyCourse(response);
-        if (response) {
-          Alert.alert('Produk ada di dalam daftar kursus saya!');
-        }
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       }
     };
     const checkIfInOrder = async () => {
@@ -69,12 +72,8 @@ const CourseDetailScreen = ({route, navigation}) => {
           item.order.some(orderItem => orderItem.product_id === id),
         );
         setIsInOrder(response);
-        if (response) {
-          Alert.alert('Produk ada di dalam pesanan!');
-        }
       }
     };
-
     const checkNumberOfCart = async () => {
       if (user.accessToken) {
         const coursesData = await API_GetCart(user.accessToken);
@@ -83,10 +82,10 @@ const CourseDetailScreen = ({route, navigation}) => {
       }
     };
 
-    checkIfInOrder();
     loadCourseDetail();
     checkIfInCart();
     checkIfInMyCourse();
+    checkIfInOrder;
     checkNumberOfCart();
   }, [route.params, user.accessToken, refreshPage]);
 
@@ -99,6 +98,12 @@ const CourseDetailScreen = ({route, navigation}) => {
       console.error(error);
     }
   };
+  React.useEffect(() => {
+    const focusHandler = navigation.addListener('focus', () => {
+      setRefreshPage(!refreshPage);
+    });
+    return focusHandler;
+  }, [navigation, refreshPage]);
 
   if (isLoading) {
     return (
@@ -112,8 +117,34 @@ const CourseDetailScreen = ({route, navigation}) => {
     );
   }
 
+  const textAlert = () => {
+    if (isInCart) {
+      return <Text>dalam Cart</Text>;
+    } else if (isInMyCourse) {
+      return <Text>dalam myCourse</Text>;
+    } else if (isInOrder) {
+      return <Text>dalam Order</Text>;
+    }
+  };
+
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
+      {showAlert && (
+        <Alert
+          status="info"
+          variant={'left-accent'}
+          mx={'18px'}
+          mb={1}
+          alignItems={'flex-start'}
+          borderRadius={8}>
+          <HStack space={'12px'}>
+            <Alert.Icon />
+            <Text fontFamily={'Inter'} fontSize={'12px'}>
+              {textAlert()}
+            </Text>
+          </HStack>
+        </Alert>
+      )}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Center w={'full'} h={'324px'} px={'18px'} py={'10px'}>
           <Image
@@ -214,7 +245,7 @@ const CourseDetailScreen = ({route, navigation}) => {
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}
-            disabled={isInMyCourse || isInCart || isInOrder}
+            disabled={isInMyCourse || isInCart}
           />
         </Stack>
       </HStack>
