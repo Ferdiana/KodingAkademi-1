@@ -1,13 +1,26 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import {AuthContext} from '../../controller/AuthContext';
+import {} from 'react';
+import API_Profile from '../../controller/API_Profile';
 
 const QRComponent = ({size}) => {
   const {user} = useContext(AuthContext);
+  const [profile, setProfile] = useState([]);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (user.accessToken) {
+        const articleData = await API_Profile(user.accessToken);
+        setProfile(articleData);
+      }
+    };
+    loadProfile();
+  }, [user.accessToken]);
 
   return (
     <QRCode
-      value={user.qr_code}
+      value={profile.qr_code}
       size={size}
       color="black"
       backgroundColor="white"

@@ -2,6 +2,7 @@ import React from 'react';
 import {Stack, HStack, Text, Checkbox, Image, Pressable} from 'native-base';
 import Colors from '../../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import formatDate from '../../controller/formatDate';
 
 const CartCard = ({
   item,
@@ -13,6 +14,8 @@ const CartCard = ({
   WText,
   onPress,
 }) => {
+  const formattedDate = formatDate(item.selected_date);
+
   return (
     <Pressable onPress={onPress}>
       <Stack bg={Colors.neutral[50]} px={'18px'}>
@@ -44,6 +47,18 @@ const CartCard = ({
               fontWeight={600}
               fontSize={'12px'}>
               {item.name}
+            </Text>
+            <Text
+              numberOfLines={1}
+              fontFamily={'Inter'}
+              fontWeight={400}
+              color={Colors.neutral[700]}
+              fontSize={'12px'}>
+              {item.selected_date !== null && (
+                <>
+                  Date: <Text>{formattedDate}</Text>
+                </>
+              )}
             </Text>
             <HStack justifyContent={'space-between'} alignItems={'center'}>
               <Stack>

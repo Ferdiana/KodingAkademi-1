@@ -2,7 +2,6 @@ import React from 'react';
 import {useState} from 'react';
 import {Stack, Text, HStack, Image, Spinner} from 'native-base';
 import Colors from '../theme/colors';
-
 import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
 import {useEffect} from 'react';

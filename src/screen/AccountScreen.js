@@ -4,6 +4,9 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
 import formatDate from '../controller/formatDate';
+import {useEffect} from 'react';
+import API_Profile from '../controller/API_Profile';
+import {useState} from 'react';
 
 const Form = ({title, body, onPress, icon}) => {
   return (
@@ -41,20 +44,32 @@ const Form = ({title, body, onPress, icon}) => {
 
 const AccountScreen = ({navigation}) => {
   const {user} = useContext(AuthContext);
-  const formattedDate = formatDate(user.birth_date);
+  const [profile, setProfile] = useState([]);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (user.accessToken) {
+        const articleData = await API_Profile(user.accessToken);
+        setProfile(articleData);
+      }
+    };
+    loadProfile();
+  }, [user.accessToken]);
+
+  const formattedDate = formatDate(profile.date);
 
   return (
     <View flex={1} bg={Colors.neutral[50]}>
       <Stack space={'16px'} py={'10px'}>
-        <Form title={'Email'} body={user.email} />
-        <Form title={'Full Name'} body={user.full_name} icon={'right'} />
+        <Form title={'Email'} body={profile.email} />
+        <Form title={'Full Name'} body={profile.full_name} icon={'right'} />
         <Form
           title={'Phone Number'}
-          body={user.phone_number}
+          body={profile.phone_number}
           icon={'right'}
           onPress={() => navigation.navigate('AddPhoneNumber')}
         />
-        <Form title={'Address'} body={user.address} icon={'right'} />
+        <Form title={'Address'} body={profile.address} icon={'right'} />
         <Form title={'Birth Date'} body={formattedDate} icon={'right'} />
         <Form
           title={'Reset Password'}

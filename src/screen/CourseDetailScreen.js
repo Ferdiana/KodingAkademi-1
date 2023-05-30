@@ -35,59 +35,38 @@ const CourseDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     const {id} = route.params;
-    const loadCourseDetail = async () => {
-      const response = await API_DetailCourse(id, user.accessToken);
+    const loadData = async () => {
       setIsLoading(true);
-      if (response) {
-        setCourseDetail(response);
-        setIsLoading(false);
-      }
-    };
-    const checkIfInCart = async () => {
+      const courseDetailResponse = await API_DetailCourse(id, user.accessToken);
+      setCourseDetail(courseDetailResponse);
       if (user.accessToken) {
         const cartItems = await API_GetCart(user.accessToken);
-        const response = cartItems.cart_items.some(item => item.id === id);
-        setIsInCart(response);
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
-      }
-    };
-    const checkIfInMyCourse = async () => {
-      if (user.accessToken) {
-        const MyCourseItem = await API_MyCourse(user.accessToken);
-        const response = MyCourseItem.some(item => item.id === id);
-        setIsInMyCourse(response);
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
-      }
-    };
-    const checkIfInOrder = async () => {
-      if (user.accessToken) {
-        const OrderId = await API_Transaction(user.accessToken);
-        const response = OrderId.some(item =>
-          item.order.some(orderItem => orderItem.product_id === id),
+        setIsInCart(cartItems.cart_items.some(item => item.id === id));
+        const myCourseItems = await API_MyCourse(user.accessToken);
+        setIsInMyCourse(myCourseItems.some(item => item.id === id));
+        const orderId = await API_Transaction(user.accessToken);
+        setIsInOrder(
+          orderId.some(item =>
+            item.order.some(orderItem => orderItem.product_id === id),
+          ),
         );
-        setIsInOrder(response);
-      }
-    };
-    const checkNumberOfCart = async () => {
-      if (user.accessToken) {
-        const coursesData = await API_GetCart(user.accessToken);
-        const count = coursesData.cart_items.length;
+        const count = cartItems.cart_items.length;
         setCartItemCount(count);
+        if (isInCart || isInMyCourse || isInOrder) {
+          setShowAlert(true);
+        }
       }
+      setIsLoading(false);
     };
-
-    loadCourseDetail();
-    checkIfInCart();
-    checkIfInMyCourse();
-    checkIfInOrder;
-    checkNumberOfCart();
-  }, [route.params, user.accessToken, refreshPage]);
+    loadData();
+  }, [
+    route.params,
+    user.accessToken,
+    refreshPage,
+    isInCart,
+    isInMyCourse,
+    isInOrder,
+  ]);
 
   const handleAddToCart = async id => {
     try {
@@ -98,6 +77,7 @@ const CourseDetailScreen = ({route, navigation}) => {
       console.error(error);
     }
   };
+
   React.useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
       setRefreshPage(!refreshPage);
@@ -119,11 +99,13 @@ const CourseDetailScreen = ({route, navigation}) => {
 
   const textAlert = () => {
     if (isInCart) {
-      return <Text>dalam Cart</Text>;
+      return <Text>Product is already in Cart</Text>;
     } else if (isInMyCourse) {
-      return <Text>dalam myCourse</Text>;
+      return <Text>Product is in My Course</Text>;
     } else if (isInOrder) {
-      return <Text>dalam Order</Text>;
+      return <Text>Product is in Order</Text>;
+    } else {
+      return null;
     }
   };
 
@@ -245,7 +227,7 @@ const CourseDetailScreen = ({route, navigation}) => {
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}
-            disabled={isInMyCourse || isInCart}
+            disabled={isInMyCourse || isInCart || isInOrder}
           />
         </Stack>
       </HStack>

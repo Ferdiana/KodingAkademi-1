@@ -18,8 +18,8 @@ const CartScreen = ({route, navigation}) => {
   useEffect(() => {
     const loadCart = async () => {
       if (user.accessToken) {
-        const coursesData = await API_GetCart(user.accessToken);
-        setCartItems(coursesData.cart_items);
+        const response = await API_GetCart(user.accessToken);
+        setCartItems(response.cart_items);
       }
     };
     loadCart();
@@ -75,6 +75,8 @@ const CartScreen = ({route, navigation}) => {
       navigation.navigate('EventDetail', {id});
     }
   };
+
+  console.log(cartItems);
 
   const handleCheckout = () => {
     if (canCheckout) {
