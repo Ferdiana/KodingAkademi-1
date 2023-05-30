@@ -6,16 +6,14 @@ import {
   HStack,
   Button,
   Pressable,
-  Link,
   Center,
   Spinner,
 } from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
-
 import {AuthContext} from '../controller/AuthContext';
 import {useState} from 'react';
-import {ActivityIndicator, Linking} from 'react-native';
+import {Linking} from 'react-native';
 import {API_Checkout, API_CheckoutWithCoupon} from '../controller/API_Checkout';
 
 const CheckoutScreen = ({route, navigation}) => {

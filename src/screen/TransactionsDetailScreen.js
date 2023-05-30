@@ -8,8 +8,12 @@ import {useEffect} from 'react';
 import formatDate from '../controller/formatDate';
 import {API_DetailTransaction} from '../controller/API_Transaction';
 import {AlertDialogg, Btn_Outline, Btn_Primary} from '../components';
-import HTMLContentView from 'react-native-htmlview';
 import {StyleSheet} from 'react-native';
+import {
+  API_CencelPayment,
+  API_GetPayment,
+} from '../controller/API_XenditCallback';
+import {Linking} from 'react-native';
 
 const TransactionDetailScreen = ({route, navigation}) => {
   const [transaction, setTransaction] = useState([]);
@@ -17,13 +21,13 @@ const TransactionDetailScreen = ({route, navigation}) => {
   const [numberOfProducts, setNumberOfProducts] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshPage, setRefreshPage] = useState(false);
 
   useEffect(() => {
     const {id} = route.params;
     const loadTranscation = async () => {
       if (user.accessToken) {
         setIsLoading(true);
-
         const response = await API_DetailTransaction(id, user.accessToken);
         setTransaction(response);
         setNumberOfProducts(response.order.length);
@@ -32,6 +36,46 @@ const TransactionDetailScreen = ({route, navigation}) => {
     };
     loadTranscation();
   }, [route.params, user.accessToken]);
+
+  const handlePayNow = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await API_GetPayment(
+        user.accessToken,
+        transaction.invoice_id,
+      );
+      if (response) {
+        Linking.openURL(response);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+    setIsLoading(false);
+  };
+
+  const handleCencelPayment = async () => {
+    try {
+      setIsLoading(true);
+      const response = await API_CencelPayment(
+        user.accessToken,
+        transaction.invoice_id,
+      );
+      console.log(response);
+      setRefreshPage(!refreshPage);
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    const focusHandler = navigation.addListener('focus', () => {
+      setRefreshPage(!refreshPage);
+    });
+    return focusHandler;
+  }, [navigation, refreshPage]);
 
   const handleButtonClick = () => {
     setShowAlert(true);
@@ -264,16 +308,17 @@ const TransactionDetailScreen = ({route, navigation}) => {
                 <Btn_Primary
                   text={'Pay Now'}
                   pb={'15px'}
-                  onPress={() => navigation.navigate('')}
+                  onPress={handlePayNow}
                 />
                 <Btn_Outline text={'Cancel'} onPress={handleButtonClick} />
                 {showAlert && (
                   <AlertDialogg
-                    textCancel={'No'}
-                    textOk={'Cancel'}
+                    textCencel={'No'}
+                    textOk={'Yes, Cancel'}
                     alertText={'Are you sure you want to cancel this order?'}
                     displayTwoButtons={true}
                     handleAlertClose={handleAlertClose}
+                    onPress={handleCencelPayment}
                   />
                 )}
               </>

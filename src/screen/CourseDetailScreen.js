@@ -44,16 +44,16 @@ const CourseDetailScreen = ({route, navigation}) => {
         setIsInCart(cartItems.cart_items.some(item => item.id === id));
         const myCourseItems = await API_MyCourse(user.accessToken);
         setIsInMyCourse(myCourseItems.some(item => item.id === id));
-        // const orderId = await API_Transaction(user.accessToken);
-        // setIsInOrder(
-        //   orderId.some(item =>
-        //     item.order.some(
-        //       orderItem =>
-        //         orderItem.product_id === id &&
-        //         orderItem.order_status === 'pending',
-        //     ),
-        //   ),
-        // );
+        const orderId = await API_Transaction(user.accessToken);
+        setIsInOrder(
+          orderId.some(item =>
+            item.order.some(
+              orderItem =>
+                orderItem.product_id === id &&
+                orderItem.order_status === 'pending',
+            ),
+          ),
+        );
         const count = cartItems.cart_items.length;
         setCartItemCount(count);
         if (isInCart || isInMyCourse || isInOrder) {

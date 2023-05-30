@@ -64,8 +64,8 @@ const TransactionScreen = ({navigation}) => {
       case 'pending':
         date = formatDate(item.createdAt);
         break;
-      case 'cancel':
-        date = formatDate(item.createdAt);
+      case 'canceled':
+        date = formatDate(item.updatedAt);
         break;
       default:
         date = '';
