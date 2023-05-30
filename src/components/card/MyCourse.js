@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {Box, Center, Flex, Image, Pressable, Text} from 'native-base';
+import {Box, Center, Flex, Image, Pressable, Stack, Text} from 'native-base';
 import Colors from '../../theme/colors';
-import {useNavigation} from '@react-navigation/native';
+import {StackActions, useNavigation} from '@react-navigation/native';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
@@ -42,9 +42,7 @@ const MyCourse = ({mr}) => {
           const formattedDate = formatDate(item.expired_date);
           const expired = isExpired(item.expired_date);
           return (
-            <Pressable
-              key={item.id}
-              onPress={() => handlePress(item.id, item.discount_price)}>
+            <Stack key={item.id}>
               <Box
                 key={item.id}
                 w={'140px'}
@@ -84,7 +82,7 @@ const MyCourse = ({mr}) => {
                   Until {formattedDate}
                 </Text>
               </Box>
-            </Pressable>
+            </Stack>
           );
         })
       ) : (

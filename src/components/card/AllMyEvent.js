@@ -44,7 +44,11 @@ const AllMyEvent = ({searchText}) => {
   const isExpired = date => {
     const currentDate = new Date();
     const expiredDate = new Date(date);
-    return expiredDate < currentDate;
+    if (expiredDate < currentDate) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderItem = ({item}) => {
@@ -52,7 +56,7 @@ const AllMyEvent = ({searchText}) => {
     const expired = isExpired(item.end_date);
 
     return (
-      <Pressable onPress={() => handlePress(item.id)} my={'5px'} mx={'18px'}>
+      <Stack my={'5px'} mx={'18px'}>
         <Stack
           opacity={expired ? 0.5 : 1}
           w={'100%'}
@@ -85,18 +89,20 @@ const AllMyEvent = ({searchText}) => {
                 fontSize={'12px'}
                 fontWeight={500}
                 color={Colors.neutral[900]}>
-                Until {''}
+                Date {''}
                 {formattedDate}
               </Text>
               <Text
                 color={Colors.primary[500]}
                 fontFamily={'Inter'}
-                fontSize={'12px'}
-                fontWeight={600}></Text>
+                fontSize={'14px'}
+                fontWeight={600}>
+                {expired ? 'Finished' : 'Upcoming'}
+              </Text>
             </Stack>
           </HStack>
         </Stack>
-      </Pressable>
+      </Stack>
     );
   };
 

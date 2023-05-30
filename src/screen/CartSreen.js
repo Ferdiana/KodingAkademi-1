@@ -76,8 +76,6 @@ const CartScreen = ({route, navigation}) => {
     }
   };
 
-  console.log(cartItems);
-
   const handleCheckout = () => {
     if (canCheckout) {
       navigation.navigate('Checkout', {

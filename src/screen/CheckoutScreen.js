@@ -37,8 +37,6 @@ const CheckoutScreen = ({route, navigation}) => {
 
   const filterSelectedId = selectedItems.map(item => item.id);
 
-  console.log(selectedItems[0].selected_date);
-
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async () => {

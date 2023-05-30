@@ -51,7 +51,7 @@ const AllMyCourse = ({searchText}) => {
     const formattedDate = formatDate(item.expired_date);
     const expired = isExpired(item.expired_date);
     return (
-      <Pressable onPress={() => handlePress(item.id)} my={'5px'} mx={'18px'}>
+      <Stack my={'5px'} mx={'18px'}>
         <Stack
           opacity={expired ? 0.5 : 1}
           w={'100%'}
@@ -90,7 +90,7 @@ const AllMyCourse = ({searchText}) => {
             </Stack>
           </HStack>
         </Stack>
-      </Pressable>
+      </Stack>
     );
   };
 
