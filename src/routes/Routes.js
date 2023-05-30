@@ -21,10 +21,10 @@ import CheckoutScreen from '../screen/CheckoutScreen';
 import Colors from '../theme/colors';
 import PromoScreen from '../screen/PromoScreen';
 import ArticleDetailScreen from '../screen/ArticleDetailScreen';
-import MyCourseDetailScreen from '../screen/MyCourseDetailScreen';
 import PaymentScreen from '../screen/PaymentScreen';
 import EventDetailScreen from '../screen/EventDetail';
 import TransactionDetailScreen from '../screen/TransactionsDetailScreen';
+import AttendedEventScreen from '../screen/AttendedEventSceen';
 
 const Stack = createNativeStackNavigator();
 
@@ -162,11 +162,6 @@ function Routes() {
         options={{title: 'Article Detail'}}
       />
       <Stack.Screen
-        name="MyCourseDetail"
-        component={MyCourseDetailScreen}
-        options={{title: 'My Course Detail'}}
-      />
-      <Stack.Screen
         name="Payment"
         component={PaymentScreen}
         options={{title: 'Complete Payment', headerShown: false}}
@@ -176,6 +171,13 @@ function Routes() {
         component={EventDetailScreen}
         options={{
           title: 'Event Detail',
+        }}
+      />
+      <Stack.Screen
+        name="AttendedEvent"
+        component={AttendedEventScreen}
+        options={{
+          title: 'Attended Event',
         }}
       />
     </Stack.Navigator>

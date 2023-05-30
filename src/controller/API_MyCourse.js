@@ -12,7 +12,7 @@ const API_MyCourse = async accessToken => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return [];
   }
 };

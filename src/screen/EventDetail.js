@@ -20,9 +20,9 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {API_DetailEvents} from '../controller/API_Events';
 import {API_AddCart, API_GetCart} from '../controller/API_Cart';
 import Icon from 'react-native-vector-icons/Feather';
-import formatDate from '../controller/formatDate';
 import {API_MyEvent} from '../controller/API_MyEvent';
 import {API_Transaction} from '../controller/API_Transaction';
+import formatDate from '../controller/formatDate';
 
 const EventDetailScreen = ({route, navigation}) => {
   const [selectedDate, setSelectedDate] = useState('');
@@ -53,7 +53,7 @@ const EventDetailScreen = ({route, navigation}) => {
           item.order.some(
             orderItem =>
               orderItem.product_id === id &&
-              orderItem.status_order === 'pending',
+              orderItem.order_status === 'pending',
           ),
         );
         setIsInOrder(isInOrderPending);
@@ -61,6 +61,9 @@ const EventDetailScreen = ({route, navigation}) => {
         setCartItemCount(count);
         if (isInCart || isInMyEvent || isInOrder) {
           setShowAlert(true);
+          setTimeout(() => {
+            setShowAlert(false);
+          }, 3000);
         }
       }
       setIsLoading(false);
@@ -82,8 +85,13 @@ const EventDetailScreen = ({route, navigation}) => {
         console.log('sukses');
         setRefreshPage(!refreshPage);
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
       }
+    } else {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
     }
   };
 
@@ -110,6 +118,8 @@ const EventDetailScreen = ({route, navigation}) => {
       return <Text>Product is in My Event</Text>;
     } else if (isInOrder) {
       return <Text>Product is in Order</Text>;
+    } else if (!selectedDate.date) {
+      return <Text>Pilih tanggalnya dulu bos</Text>;
     } else {
       return null;
     }
@@ -178,10 +188,10 @@ const EventDetailScreen = ({route, navigation}) => {
               Choose Event Date
             </Text>
             <Dropdown
+              disable={isInMyEvent || isInCart || isInOrder}
               style={styles.Dropdown}
               fontFamily="Inter"
               data={convertedOptions}
-              disabled
               valueField="date"
               labelField={'date'}
               placeholder={'Select an option'}

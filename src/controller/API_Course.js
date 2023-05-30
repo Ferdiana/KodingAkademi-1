@@ -12,7 +12,7 @@ const API_Course = async accessToken => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return [];
   }
 };
@@ -29,7 +29,7 @@ const API_DetailCourse = async (id, accessToken) => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return null;
   }
 };

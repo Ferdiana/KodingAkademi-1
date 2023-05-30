@@ -12,7 +12,7 @@ const API_GetCart = async accessToken => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return [];
   }
 };
@@ -30,7 +30,7 @@ const API_DeleteCart = async (accessToken, productLists) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -47,7 +47,7 @@ const API_AddCart = async (accessToken, productId, selectedDate) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data);
+    throw new Error(error.response.data.message);
   }
 };
 

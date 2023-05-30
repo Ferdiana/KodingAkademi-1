@@ -20,6 +20,7 @@ import AllEvent from './card/AllEvent';
 import AllMyCourse from './card/AllMyCourse';
 import AlertDialogg from './Alert/AlertDialog';
 import Alertt from './Alert/Alert';
+import AllMyEvent from './card/AllMyEvent';
 
 export {
   FormLogin,
@@ -44,4 +45,5 @@ export {
   AllArticle,
   AlertDialogg,
   Alertt,
+  AllMyEvent,
 };

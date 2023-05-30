@@ -20,6 +20,7 @@ const register = async (
     );
     console.log(response.data);
   } catch (error) {
+    console.error(error.response.data.message);
     throw error;
   }
 };

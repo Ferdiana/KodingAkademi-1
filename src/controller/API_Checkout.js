@@ -13,7 +13,7 @@ const API_Checkout = async (accessToken, productList) => {
     );
     return response.data.invoice_url;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     throw error; // Melempar kembali kesalahan agar dapat ditangani di tempat yang memanggil
   }
 };
@@ -35,7 +35,7 @@ const API_CheckoutWithCoupon = async (
     );
     return response.data.invoice_url;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     throw error; // Melempar kembali kesalahan agar dapat ditangani di tempat yang memanggil
   }
 };

@@ -12,7 +12,7 @@ const API_Events = async accessToken => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return [];
   }
 };
@@ -29,7 +29,7 @@ const API_EventsLimit = async accessToken => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return [];
   }
 };
@@ -46,7 +46,7 @@ const API_DetailEvents = async (id, accessToken) => {
     );
     return response.data.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response.data.message);
     return null;
   }
 };

@@ -61,8 +61,8 @@ export default function AllEvent({searchText}) {
     return date < currentDate;
   };
 
-  const renderTextStatus = dates => {
-    const hasUpcomingEvent = dates.some(
+  const renderTextStatus = eventDates => {
+    const hasUpcomingEvent = eventDates.some(
       date => new Date(date.date) > currentDate,
     );
     return hasUpcomingEvent ? 'Upcoming' : 'Finished';
@@ -73,7 +73,8 @@ export default function AllEvent({searchText}) {
   );
 
   const renderItem = ({item}) => {
-    const statusText = renderTextStatus(item.event_dates);
+    const eventStatusText = renderTextStatus(item.event_dates);
+
     return (
       <Pressable my={'5px'} onPress={() => handlePress(item.id)}>
         <Stack
@@ -108,10 +109,10 @@ export default function AllEvent({searchText}) {
                 fontSize={'10px'}
                 fontWeight={400}>
                 {(() => {
-                  const eventDates = item.event_dates.map(eventDate =>
-                    formatDate(eventDate.date),
+                  const eventDates = item.event_dates.map(eventdate =>
+                    formatDate(eventdate.date),
                   );
-                  const uniqueDates = [...new Set(eventDates)]; // Menghapus tanggal yang duplikat
+                  const uniqueDates = [...new Set(eventDates)];
                   const filteredDates = uniqueDates.filter(date =>
                     convertedOptions.some(option => option.date === date),
                   );
@@ -138,7 +139,7 @@ export default function AllEvent({searchText}) {
                   fontFamily={'Inter'}
                   fontSize={'12px'}
                   fontWeight={600}>
-                  {statusText}
+                  {eventStatusText}
                 </Text>
                 <Text
                   color={Colors.primary[500]}
