@@ -1,10 +1,11 @@
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import {AllMyEvent, SearchBar} from '../components';
+import {AllMyEvent, CategoryButtonsFixed, SearchBar} from '../components';
 import Colors from '../theme/colors';
 
 const AttendedEventSceen = () => {
   const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleSearchTextChange = text => {
     setSearchText(text);
@@ -16,7 +17,14 @@ const AttendedEventSceen = () => {
         placeholder={'Search my course...'}
         onChangeText={handleSearchTextChange}
       />
-      <AllMyEvent searchText={searchText} />
+      <Stack px={'18px'}>
+        <CategoryButtonsFixed
+          categories={['Upcoming', 'Finished']}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      </Stack>
+      <AllMyEvent searchText={searchText} selectedCategory={selectedCategory} />
     </Stack>
   );
 };

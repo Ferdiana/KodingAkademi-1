@@ -11,18 +11,16 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortedData, setSortedData] = useState([]);
 
   useEffect(() => {
     const loadMyCourse = async () => {
       if (user.accessToken) {
         setIsLoading(true);
         const response = await API_MyCourse(user.accessToken);
-        setMyCourse(response);
-        const sortedData = response.sort(
+        const sortedDataa = response.sort(
           (a, b) => new Date(b.expired_date) - new Date(a.expired_date),
         );
-        setSortedData(sortedData);
+        setMyCourse(sortedDataa);
         setIsLoading(false);
       }
     };
@@ -30,7 +28,7 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     loadMyCourse();
   }, [user.accessToken]);
 
-  const filteredData = sortedData.filter(item =>
+  const filteredData = myCourse.filter(item =>
     item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 

@@ -33,10 +33,6 @@ const AllMyEvent = ({searchText}) => {
     loadMyCourse();
   }, [user.accessToken]);
 
-  const handlePress = id => {
-    navigation.navigate('CourseDetail', {id});
-  };
-
   const filteredData = myEvent.filter(item =>
     item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
