@@ -21,7 +21,7 @@ const ForgotPassScreen = () => {
           fontFamily={'Inter'}
           fontWeight={700}
           fontSize={'2xl'}
-          color={'primary.500'}>
+          color={'secondary.50'}>
           Forgot Password
         </Text>
         <Text

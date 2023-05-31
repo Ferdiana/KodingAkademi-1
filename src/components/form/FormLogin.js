@@ -4,6 +4,7 @@ import {AuthContext} from '../../controller/AuthContext';
 import Btn_Primary from '../button/Btn_Primary';
 import {Dimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Colors from '../../theme/colors';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -22,10 +23,6 @@ const FormLogin = ({navigation, onError}) => {
     }
   };
 
-  // const handleSubmit = async () => {
-  //   await login(email, password);
-  // };
-
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -33,13 +30,19 @@ const FormLogin = ({navigation, onError}) => {
   return (
     <Center>
       <FormControl>
-        <Stack space={5} px={10}>
-          <Stack space={1}>
-            <FormControl.Label>Email</FormControl.Label>
+        <Stack space={'12px'} px={10}>
+          <Stack space={'6px'}>
+            <Text
+              fontFamily={'Inter'}
+              fontSize={'12px'}
+              fontWeight={500}
+              color={'neutral.50'}>
+              Email
+            </Text>
             <Input
-              bgColor={'transparent'}
+              bgColor={'neutral.50'}
               borderColor={'neutral.100'}
-              focusOutlineColor={'primary.500'}
+              focusOutlineColor={'neutral.900'}
               borderRadius={10}
               variant={'outline'}
               p={2}
@@ -48,12 +51,18 @@ const FormLogin = ({navigation, onError}) => {
               placeholder={'Enter your email address'}
             />
           </Stack>
-          <Stack space={1}>
-            <FormControl.Label>Password</FormControl.Label>
+          <Stack space={'6px'}>
+            <Text
+              fontFamily={'Inter'}
+              fontSize={'12px'}
+              fontWeight={500}
+              color={'neutral.50'}>
+              Password
+            </Text>
             <Input
-              bgColor={'transparent'}
+              bgColor={'neutral.50'}
               borderColor={'neutral.100'}
-              focusOutlineColor={'primary.500'}
+              focusOutlineColor={'neutral.900'}
               borderRadius={10}
               variant={'outline'}
               p={2}
@@ -83,7 +92,7 @@ const FormLogin = ({navigation, onError}) => {
           justifyContent={'flex-end'}
           px={10}
           mb={2}>
-          <Text fontSize={'xs'} fontWeight={'light'} color={'neutral.300'}>
+          <Text fontSize={'xs'} fontWeight={'light'} color={'neutral.50'}>
             Forgot Password?
           </Text>
         </Button>

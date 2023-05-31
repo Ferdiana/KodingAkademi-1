@@ -2,6 +2,7 @@ import {
   Alert,
   Center,
   HStack,
+  Image,
   Pressable,
   ScrollView,
   Stack,
@@ -34,15 +35,31 @@ function RegisterScreen({navigation}) {
       <ImageBackground
         source={require('../assets/image/bg.png')}
         resizeMode="cover">
-        <Stack h={'20%'} w={'100%'} justifyContent={'center'} px={10} py={2}>
-          <Text fontSize={'2xl'} fontWeight={'bold'} color={'neutral.50'}>
+        <Stack h={'30%'} w={'100%'} justifyContent={'center'} px={10} py={2}>
+          <Stack alignItems={'center'}>
+            <Image
+              source={require('../assets/image/logoRounded.png')}
+              alt="img_logo"
+              h={'98px'}
+              w={'98px'}
+            />
+          </Stack>
+          <Text
+            fontFamily={'Inter'}
+            fontSize={'2xl'}
+            fontWeight={'bold'}
+            color={'neutral.50'}>
             Create Account
           </Text>
-          <Text fontSize={'md'} color={'neutral.50'} textAlign={'justify'}>
+          <Text
+            fontFamily={'Inter'}
+            fontSize={'md'}
+            color={'neutral.50'}
+            textAlign={'justify'}>
             Register an account and join Koding Akademi.
           </Text>
         </Stack>
-        <Stack h={'80%'} bg={'neutral.50'} borderTopRadius={30} pt={5} flex={1}>
+        <Stack h={'70%'} bg={'neutral.50'} borderTopRadius={30} pt={5} flex={1}>
           {showAlert && (
             <Alert
               status="danger"

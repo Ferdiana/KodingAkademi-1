@@ -17,7 +17,7 @@ function OnBoardingScreen({navigation}) {
             source={require('../assets/image/logo.png')}
             alt={'Logo'}
             resizeMode={'contain'}
-            maxH={20}
+            maxH={32}
             mb={10}
           />
           <Text
@@ -34,7 +34,7 @@ function OnBoardingScreen({navigation}) {
             color={'neutral.50'}
             fontSize={'md'}
             textAlign={'justify'}>
-            Welcome to the Koding Academy Mobile App!
+            Welcome to the Koding Akademi Mobile App!
           </Text>
         </Stack>
         <Stack

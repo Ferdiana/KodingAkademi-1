@@ -30,7 +30,7 @@ const Btn_Outline = ({onPress, text, padding, w}) => {
         p={2}
         borderColor={borderColor}
         justifyContent={'center'}>
-        <Text textAlign={'center'} color={'primary.500'}>
+        <Text textAlign={'center'} color={'neutral.900'}>
           {text}
         </Text>
       </Box>

@@ -2,6 +2,7 @@ import {
   Alert,
   Center,
   HStack,
+  Image,
   Pressable,
   ScrollView,
   Stack,
@@ -11,6 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {Btn_Icon, FormLogin} from '../components';
 import {Dimensions} from 'react-native';
 import {ImageBackground} from 'react-native';
+import Colors from '../theme/colors';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -33,80 +35,111 @@ function LoginScreen({navigation}) {
     };
   }, []);
   return (
-    <Center>
-      <ImageBackground
-        source={require('../assets/image/bg.png')}
-        resizeMode="cover">
-        <Stack pt={10} pb={4} h={'30%'} w={'100%'} justifyContent={'center'}>
-          <Text
-            fontSize={'2xl'}
-            fontWeight={'bold'}
-            color={'neutral.50'}
-            px={10}>
-            Login to Continue
-          </Text>
-          <Text
-            fontSize={'md'}
-            color={'neutral.50'}
-            mt={1}
-            mb={2}
-            textAlign={'justify'}
-            px={10}>
-            Log in to your account and continue your learning journey in Koding
-            Akademi.
-          </Text>
-        </Stack>
-        <Stack
-          borderTopRadius={30}
-          bg={'neutral.50'}
-          h={'70%'}
-          w={'100%'}
-          pt={5}>
-          {showAlert && (
-            <Alert
-              status="danger"
-              variant={'left-accent'}
-              mx={10}
-              alignItems={'flex-start'}
-              borderRadius={8}>
-              <HStack space={'12px'}>
-                <Alert.Icon />
-                <Text fontFamily={'Inter'} fontSize={'12px'}>
-                  {errorMsg}
-                </Text>
-              </HStack>
-            </Alert>
-          )}
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <FormLogin navigation={navigation} onError={handleError} />
-            <HStack justifyContent={'center'} my={5}>
-              <Text fontSize={'xs'}>Don't have an account? </Text>
-              <Pressable onPress={() => navigation.replace('Register')}>
-                <Text fontSize={'xs'} fontWeight={'bold'} color={'primary.500'}>
-                  Register here!
-                </Text>
-              </Pressable>
-            </HStack>
-            <Text
-              mb={5}
-              textAlign={'center'}
-              fontWeight={'thin'}
-              fontSize={'xs'}
-              color={'neutral.900'}
-              opacity={0.5}>
-              or continue with
-            </Text>
-            <Btn_Icon
-              w={screenWidth}
-              borderWidth={1}
-              text={'Continue with Google'}
-              padding={10}
-              size={6}
-              source={require('../assets/image/google.png')}
+    <Center bg={Colors.neutral[50]}>
+      <Stack pt={10} pb={4} h={'35%'} w={'100%'} justifyContent={'center'}>
+        <Stack alignItems={'center'}>
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            h={'98px'}
+            w={'98px'}
+            py={'10px'}
+            bg={'secondary.500'}
+            borderRadius={50}>
+            <Image
+              source={require('../assets/image/logoRounded.png')}
+              alt="img_logo"
+              h={'98px'}
+              w={'98px'}
             />
-          </ScrollView>
+          </Stack>
         </Stack>
-      </ImageBackground>
+        <Text
+          fontSize={'2xl'}
+          fontWeight={'bold'}
+          color={Colors.secondary[50]}
+          px={10}>
+          Login to Continue
+        </Text>
+        <Text
+          fontSize={'md'}
+          color={'neutral.700'}
+          mt={1}
+          mb={'12px'}
+          textAlign={'justify'}
+          px={10}>
+          Log in to your account and continue your learning journey in Koding
+          Akademi.
+        </Text>
+      </Stack>
+      <Center
+        borderTopRadius={30}
+        h={'65%'}
+        w={'100%'}
+        pt={'28px'}
+        bg="secondary.50"
+        overflow={'hidden'}>
+        <Image
+          resizeMode="cover"
+          source={require('../assets/image/bg.png')}
+          alt="bg"
+          w={'100%'}
+          h={'200%'}
+          position={'absolute'}
+          top={0}
+          left={0}
+        />
+        {showAlert && (
+          <Alert
+            status="danger"
+            variant={'left-accent'}
+            mx={10}
+            alignItems={'flex-start'}
+            borderRadius={8}>
+            <HStack space={'12px'}>
+              <Alert.Icon />
+              <Text fontFamily={'Inter'} fontSize={'12px'}>
+                {errorMsg}
+              </Text>
+            </HStack>
+          </Alert>
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <FormLogin navigation={navigation} onError={handleError} />
+          <HStack justifyContent={'center'} my={5}>
+            <Text
+              fontFamily={'Inter'}
+              fontSize={'12px'}
+              color={Colors.neutral[50]}>
+              Don't have an account?{' '}
+            </Text>
+            <Pressable onPress={() => navigation.replace('Register')}>
+              <Text
+                fontFamily={'Inter'}
+                fontSize={'12px'}
+                fontWeight={700}
+                color={Colors.neutral[50]}>
+                Register here!
+              </Text>
+            </Pressable>
+          </HStack>
+          <Text
+            mb={5}
+            textAlign={'center'}
+            fontWeight={'thin'}
+            fontSize={'12px'}
+            color={'neutral.50'}>
+            or continue with
+          </Text>
+          <Btn_Icon
+            w={screenWidth}
+            text={'Continue with Google'}
+            padding={10}
+            size={6}
+            source={require('../assets/image/google.png')}
+          />
+        </ScrollView>
+      </Center>
     </Center>
   );
 }
