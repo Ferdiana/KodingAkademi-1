@@ -54,7 +54,6 @@ const CourseDetailScreen = ({route, navigation}) => {
       setsuccessMsg(response.message);
       setShowAlert(true);
       setTimeout(() => {
-        setErrorMsg('');
         setShowAlert(false);
       }, 5000);
       console.log(response.message);
@@ -63,10 +62,10 @@ const CourseDetailScreen = ({route, navigation}) => {
       setErrorMsg(error.message);
       setShowAlert(true);
       setTimeout(() => {
-        setErrorMsg('');
         setShowAlert(false);
       }, 5000);
       console.error(error.message);
+      setRefreshPage(!refreshPage);
     }
   };
 

@@ -121,7 +121,7 @@ const HeaderHome = ({navigation, refreshing, onRefresh}) => {
                   </>
                 ) : (
                   <>
-                    <Text>Anda Belum Memiliki Course</Text>
+                    <Text>You don't have any courses yet</Text>
                   </>
                 )}
               </VStack>

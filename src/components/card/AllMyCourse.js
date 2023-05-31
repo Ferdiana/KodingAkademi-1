@@ -114,7 +114,7 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
   return (
     <Stack flex={1}>
       {filteredData.length === 0 ? (
-        <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
+        <Stack mt={'40px'} justifyContent={'center'} alignItems={'center'}>
           <Image
             source={require('../../assets/image/emptymycourse.png')}
             alt={'img'}

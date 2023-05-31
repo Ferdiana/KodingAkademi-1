@@ -40,7 +40,6 @@ const TransactionDetailScreen = ({route, navigation}) => {
   const handlePayNow = async () => {
     try {
       setIsLoading(true);
-
       const response = await API_GetPayment(
         user.accessToken,
         transaction.invoice_id,

@@ -35,7 +35,7 @@ function LoginScreen({navigation}) {
     };
   }, []);
   return (
-    <Center bg={Colors.neutral[50]}>
+    <Center bg={Colors.neutral[50]} flex={1}>
       <Stack pt={10} pb={4} h={'35%'} w={'100%'} justifyContent={'center'}>
         <Stack alignItems={'center'}>
           <Stack
@@ -75,7 +75,6 @@ function LoginScreen({navigation}) {
       <Center
         borderTopRadius={30}
         h={'65%'}
-        w={'100%'}
         pt={'28px'}
         bg="secondary.50"
         overflow={'hidden'}>
@@ -89,22 +88,24 @@ function LoginScreen({navigation}) {
           top={0}
           left={0}
         />
-        {showAlert && (
-          <Alert
-            status="danger"
-            variant={'left-accent'}
-            mx={10}
-            alignItems={'flex-start'}
-            borderRadius={8}>
-            <HStack space={'12px'}>
-              <Alert.Icon />
-              <Text fontFamily={'Inter'} fontSize={'12px'}>
-                {errorMsg}
-              </Text>
-            </HStack>
-          </Alert>
-        )}
         <ScrollView showsVerticalScrollIndicator={false}>
+          {showAlert && (
+            <Stack mx={10}>
+              <Alert
+                status="danger"
+                variant={'left-accent'}
+                mb={1}
+                alignItems={'flex-start'}
+                borderRadius={8}>
+                <HStack space={'12px'}>
+                  <Alert.Icon />
+                  <Text fontFamily={'Inter'} fontSize={'12px'}>
+                    {errorMsg}
+                  </Text>
+                </HStack>
+              </Alert>
+            </Stack>
+          )}
           <FormLogin navigation={navigation} onError={handleError} />
           <HStack justifyContent={'center'} my={5}>
             <Text
