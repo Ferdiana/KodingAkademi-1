@@ -154,7 +154,7 @@ const CartScreen = ({route, navigation}) => {
           </Stack>
         ) : (
           <ScrollView flex={1} showsVerticalScrollIndicator={false}>
-            renderCartItems()
+            {renderCartItems()}
           </ScrollView>
         )}
       </Stack>
