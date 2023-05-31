@@ -21,6 +21,7 @@ import AllMyCourse from './card/AllMyCourse';
 import AlertDialogg from './Alert/AlertDialog';
 import Alertt from './Alert/Alert';
 import AllMyEvent from './card/AllMyEvent';
+import CategoryButtons from './search/CategoryButtons';
 
 export {
   FormLogin,
@@ -46,4 +47,5 @@ export {
   AlertDialogg,
   Alertt,
   AllMyEvent,
+  CategoryButtons,
 };

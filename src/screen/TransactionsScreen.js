@@ -11,7 +11,7 @@ import {
   Spinner,
 } from 'native-base';
 import Colors from '../theme/colors';
-import {SearchBar} from '../components';
+import {CategoryButtons, SearchBar} from '../components';
 import {API_Transaction} from '../controller/API_Transaction';
 import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
@@ -22,6 +22,7 @@ const TransactionScreen = ({navigation}) => {
   const [transaction, setTransaction] = useState([]);
   const {user} = useContext(AuthContext);
   const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -56,6 +57,12 @@ const TransactionScreen = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
+    if (
+      selectedCategory &&
+      selectedCategory.toLowerCase() !== item.order_status.toLowerCase()
+    ) {
+      return null;
+    }
     let date;
     switch (item.order_status) {
       case 'success':
@@ -168,7 +175,14 @@ const TransactionScreen = ({navigation}) => {
           placeholder={'Search transaction...'}
         />
       </Stack>
-      {isLoading ? ( // Menampilkan indikator loading jika isLoading true
+      <Stack my={2}>
+        <CategoryButtons
+          categories={['Success', 'Pending', 'Canceled']}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      </Stack>
+      {isLoading ? (
         <Center flex={1}>
           <Spinner size="large" color={Colors.secondary[500]} />
         </Center>
