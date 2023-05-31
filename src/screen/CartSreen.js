@@ -1,6 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {Text, Stack, ScrollView, HStack, Button, Pressable} from 'native-base';
+import {
+  Text,
+  Stack,
+  HStack,
+  Button,
+  Pressable,
+  Image,
+  ScrollView,
+} from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
@@ -127,16 +135,30 @@ const CartScreen = ({route, navigation}) => {
 
   return (
     <Stack flex={1}>
-      <ScrollView>
-        <Stack space={1}>
-          {renderCartItems()}
-          {cartItems.length === 0 && (
-            <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
-              <Text>Your cart is empty</Text>
-            </Stack>
-          )}
-        </Stack>
-      </ScrollView>
+      <Stack flex={1} space={1}>
+        {cartItems.length === 0 ? (
+          <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
+            <Image
+              source={require('../assets/image/cartemptypng.png')}
+              alt={'img'}
+              h={230}
+              w={208}
+            />
+            <Text fontWeight={600} fontSize={'24'}>
+              Your cart is empty
+            </Text>
+            <Text textAlign={'center'}>
+              Sorry, there are no results for this search. Please try another
+              phrase.
+            </Text>
+          </Stack>
+        ) : (
+          <ScrollView flex={1} showsVerticalScrollIndicator={false}>
+            renderCartItems()
+          </ScrollView>
+        )}
+      </Stack>
+
       <Stack
         pb={'10px'}
         w={'full'}

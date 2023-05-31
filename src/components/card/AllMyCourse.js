@@ -112,11 +112,30 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     );
   }
   return (
-    <FlatList
-      data={filteredData}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-    />
+    <Stack flex={1}>
+      {filteredData.length === 0 ? (
+        <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
+          <Image
+            source={require('../../assets/image/emptymycourse.png')}
+            alt={'img'}
+            h={230}
+            w={208}
+          />
+          <Text fontWeight={'bold'} fontSize={'24'}>
+            No Course
+          </Text>
+          <Text textAlign={'center'}>
+            You haven't taken any courses. Let's take the course you want now.
+          </Text>
+        </Stack>
+      ) : (
+        <FlatList
+          data={filteredData}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+        />
+      )}
+    </Stack>
   );
 };
 
