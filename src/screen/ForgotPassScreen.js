@@ -17,8 +17,8 @@ const screenWidth = Dimensions.get('window').width;
 
 const ForgotPassScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [refreshPage, setRefreshPage] = useState(false);

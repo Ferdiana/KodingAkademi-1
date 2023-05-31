@@ -11,4 +11,21 @@ const API_ForgotPassword = async email => {
   }
 };
 
-export {API_ForgotPassword};
+const API_ResetPassword = async (accessToken, email) => {
+  try {
+    await axios.put(
+      'https://kodingapp.refillaja.id/user/reset-password',
+      {email},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export {API_ForgotPassword, API_ResetPassword};

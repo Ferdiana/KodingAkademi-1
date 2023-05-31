@@ -6,7 +6,6 @@ import LoginScreen from '../screen/LoginScreen';
 import RegisterScreen from '../screen/RegisterScreen';
 import ArticleScreen from '../screen/ArticleScreen';
 import ForgotPassScreen from '../screen/ForgotPassScreen';
-import ResetPassScreen from '../screen/ResetPassScreen';
 import QRDetailScreen from '../screen/QRDetailScreen';
 import AccountScreen from '../screen/AccountScreen';
 import AddPhoneNumberScreen from '../screen/AddPhoneNumberScreen';
@@ -91,13 +90,6 @@ function Routes() {
         component={ForgotPassScreen}
         options={{
           title: 'Forgot Password',
-        }}
-      />
-      <Stack.Screen
-        name="ResetPass"
-        component={ResetPassScreen}
-        options={{
-          title: 'Reset Password',
         }}
       />
       <Stack.Screen
