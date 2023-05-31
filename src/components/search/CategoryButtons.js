@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
-import {Box, Text, Stack, Pressable, HStack} from 'native-base';
+import {Box, Text, Pressable, HStack} from 'native-base';
 import Colors from '../../theme/colors';
 
 const CategoryButtons = ({

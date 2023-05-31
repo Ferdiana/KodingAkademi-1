@@ -1,25 +1,17 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {
-  Box,
-  FlatList,
-  HStack,
-  Image,
-  Pressable,
-  Spinner,
-  Stack,
-  Text,
-} from 'native-base';
-import {useNavigation} from '@react-navigation/native';
+import {Box, FlatList, HStack, Image, Spinner, Stack, Text} from 'native-base';
 import Colors from '../../theme/colors';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
+import HTMLContentView from 'react-native-htmlview';
+import {StyleSheet} from 'react-native';
 
-const AllMyCourse = ({searchText}) => {
+const AllMyCourse = ({searchText, selectedCategory}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
-  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
+  const [sortedData, setSortedData] = useState([]);
 
   useEffect(() => {
     const loadMyCourse = async () => {
@@ -27,27 +19,40 @@ const AllMyCourse = ({searchText}) => {
         setIsLoading(true);
         const response = await API_MyCourse(user.accessToken);
         setMyCourse(response);
+        const sortedData = response.sort(
+          (a, b) => new Date(b.expired_date) - new Date(a.expired_date),
+        );
+        setSortedData(sortedData);
         setIsLoading(false);
       }
     };
+
     loadMyCourse();
   }, [user.accessToken]);
 
-  const handlePress = id => {
-    navigation.navigate('CourseDetail', {id});
-  };
-
-  const filteredData = myCourse.filter(item =>
+  const filteredData = sortedData.filter(item =>
     item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   const isExpired = date => {
     const currentDate = new Date();
     const expiredDate = new Date(date);
-    return expiredDate < currentDate;
+    if (expiredDate < currentDate) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderItem = ({item}) => {
+    if (
+      selectedCategory &&
+      selectedCategory.toLowerCase() !==
+        (isExpired(item.expired_date) ? 'finished' : 'active')
+    ) {
+      return null;
+    }
+
     const formattedDate = formatDate(item.expired_date);
     const expired = isExpired(item.expired_date);
     return (
@@ -69,7 +74,7 @@ const AllMyCourse = ({searchText}) => {
                 alt="image_article"
               />
             </Box>
-            <Stack pr={'8px'} w={'60%'} justifyContent={'space-evenly'}>
+            <Stack pr={'8px'} w={'60%'} justifyContent={'space-between'}>
               <Text
                 numberOfLines={2}
                 fontFamily={'Inter'}
@@ -79,7 +84,7 @@ const AllMyCourse = ({searchText}) => {
                 {item.name}
               </Text>
               <Text
-                numberOfLines={2}
+                numberOfLines={1}
                 fontFamily={'Inter'}
                 fontSize={'12px'}
                 fontWeight={500}
@@ -87,6 +92,9 @@ const AllMyCourse = ({searchText}) => {
                 Until {''}
                 {formattedDate}
               </Text>
+              <Stack h={'44px'} overflow={'hidden'}>
+                <HTMLContentView value={item.description} stylesheet={styles} />
+              </Stack>
             </Stack>
           </HStack>
         </Stack>
@@ -113,5 +121,17 @@ const AllMyCourse = ({searchText}) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  p: {
+    textAlign: 'justify',
+    color: '#33404C',
+    fontSize: 12,
+  },
+  body: {
+    textAlign: 'justify',
+    color: '#000',
+  },
+});
 
 export default AllMyCourse;

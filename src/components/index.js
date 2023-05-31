@@ -22,6 +22,7 @@ import AlertDialogg from './Alert/AlertDialog';
 import Alertt from './Alert/Alert';
 import AllMyEvent from './card/AllMyEvent';
 import CategoryButtons from './search/CategoryButtons';
+import CategoryButtonsFixed from './search/CategoryButtonsFixed';
 
 export {
   FormLogin,
@@ -48,4 +49,5 @@ export {
   Alertt,
   AllMyEvent,
   CategoryButtons,
+  CategoryButtonsFixed,
 };

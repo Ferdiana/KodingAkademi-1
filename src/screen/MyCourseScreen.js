@@ -1,10 +1,11 @@
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import {AllMyCourse, SearchBar} from '../components';
+import {AllMyCourse, CategoryButtonsFixed, SearchBar} from '../components';
 import Colors from '../theme/colors';
 
 const MyCourseScreen = () => {
   const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleSearchTextChange = text => {
     setSearchText(text);
@@ -16,7 +17,17 @@ const MyCourseScreen = () => {
         placeholder={'Search my course...'}
         onChangeText={handleSearchTextChange}
       />
-      <AllMyCourse searchText={searchText} />
+      <Stack px={'18px'}>
+        <CategoryButtonsFixed
+          categories={['Active', 'Finished']}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      </Stack>
+      <AllMyCourse
+        searchText={searchText}
+        selectedCategory={selectedCategory}
+      />
     </Stack>
   );
 };
