@@ -25,13 +25,12 @@ import {API_Transaction} from '../controller/API_Transaction';
 const CourseDetailScreen = ({route, navigation}) => {
   const {user} = useContext(AuthContext);
   const [courseDetail, setCourseDetail] = useState({});
-  const [isInCart, setIsInCart] = useState(false);
-  const [isInMyCourse, setIsInMyCourse] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-  const [isInOrder, setIsInOrder] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setsuccessMsg] = useState('');
 
   useEffect(() => {
     const {id} = route.params;
@@ -41,46 +40,32 @@ const CourseDetailScreen = ({route, navigation}) => {
       setCourseDetail(courseDetailResponse);
       if (user.accessToken) {
         const cartItems = await API_GetCart(user.accessToken);
-        setIsInCart(cartItems.cart_items.some(item => item.id === id));
-        const myCourseItems = await API_MyCourse(user.accessToken);
-        setIsInMyCourse(myCourseItems.some(item => item.id === id));
-        const orderId = await API_Transaction(user.accessToken);
-        setIsInOrder(
-          orderId.some(item =>
-            item.order.some(
-              orderItem =>
-                orderItem.product_id === id &&
-                orderItem.order_status === 'pending',
-            ),
-          ),
-        );
         const count = cartItems.cart_items.length;
         setCartItemCount(count);
-        if (isInCart || isInMyCourse || isInOrder) {
-          setShowAlert(true);
-          setTimeout(() => {
-            setShowAlert(false);
-          }, 3000);
-        }
       }
       setIsLoading(false);
     };
     loadData();
-  }, [
-    route.params,
-    user.accessToken,
-    refreshPage,
-    isInCart,
-    isInMyCourse,
-    isInOrder,
-  ]);
+  }, [route.params, user.accessToken, refreshPage]);
 
   const handleAddToCart = async id => {
     try {
-      await API_AddCart(user.accessToken, courseDetail.id);
-      console.log('sukses');
+      const response = await API_AddCart(user.accessToken, courseDetail.id);
+      setsuccessMsg(response.message);
+      setShowAlert(true);
+      setTimeout(() => {
+        setErrorMsg('');
+        setShowAlert(false);
+      }, 5000);
+      console.log(response.message);
       setRefreshPage(!refreshPage);
     } catch (error) {
+      setErrorMsg(error.message);
+      setShowAlert(true);
+      setTimeout(() => {
+        setErrorMsg('');
+        setShowAlert(false);
+      }, 5000);
       console.error(error.message);
     }
   };
@@ -104,23 +89,11 @@ const CourseDetailScreen = ({route, navigation}) => {
     );
   }
 
-  const textAlert = () => {
-    if (isInCart) {
-      return <Text>Product is already in Cart</Text>;
-    } else if (isInMyCourse) {
-      return <Text>Product is in My Course</Text>;
-    } else if (isInOrder) {
-      return <Text>Product is in Order</Text>;
-    } else {
-      return null;
-    }
-  };
-
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
       {showAlert && (
         <Alert
-          status="info"
+          status={successMsg ? 'success' : 'error'}
           variant={'left-accent'}
           mx={'18px'}
           mb={1}
@@ -129,7 +102,7 @@ const CourseDetailScreen = ({route, navigation}) => {
           <HStack space={'12px'}>
             <Alert.Icon />
             <Text fontFamily={'Inter'} fontSize={'12px'}>
-              {textAlert()}
+              {successMsg ? successMsg : errorMsg}
             </Text>
           </HStack>
         </Alert>
@@ -234,7 +207,7 @@ const CourseDetailScreen = ({route, navigation}) => {
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}
-            disabled={isInMyCourse || isInCart || isInOrder}
+            // disabled={isInMyCourse || isInCart || isInOrder}
           />
         </Stack>
       </HStack>
