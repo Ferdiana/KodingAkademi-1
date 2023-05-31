@@ -1,24 +1,13 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {
-  Box,
-  FlatList,
-  HStack,
-  Image,
-  Pressable,
-  Spinner,
-  Stack,
-  Text,
-} from 'native-base';
-import {useNavigation} from '@react-navigation/native';
+import {Box, FlatList, HStack, Image, Spinner, Stack, Text} from 'native-base';
 import Colors from '../../theme/colors';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
 import {API_MyEvent} from '../../controller/API_MyEvent';
 
-const AllMyEvent = ({searchText}) => {
+const AllMyEvent = ({searchText, selectedCategory}) => {
   const [myEvent, setMyEvent] = useState([]);
   const {user} = useContext(AuthContext);
-  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +15,10 @@ const AllMyEvent = ({searchText}) => {
       if (user.accessToken) {
         setIsLoading(true);
         const response = await API_MyEvent(user.accessToken);
-        setMyEvent(response);
+        const sortedDataa = response.sort(
+          (a, b) => new Date(b.end_date) - new Date(a.end_date),
+        );
+        setMyEvent(sortedDataa);
         setIsLoading(false);
       }
     };
@@ -48,6 +40,13 @@ const AllMyEvent = ({searchText}) => {
   };
 
   const renderItem = ({item}) => {
+    if (
+      selectedCategory &&
+      selectedCategory.toLowerCase() !==
+        (isExpired(item.end_date) ? 'finished' : 'upcoming')
+    ) {
+      return null;
+    }
     const formattedDate = formatDate(item.end_date);
     const expired = isExpired(item.end_date);
 
