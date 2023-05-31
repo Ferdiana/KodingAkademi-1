@@ -100,22 +100,30 @@ const HeaderHome = ({navigation, refreshing, onRefresh}) => {
               alignItems={'center'}>
               <QRComponent size={80} />
               <VStack space={1}>
-                <Text fontFamily={'Inter'} fontSize={'14px'}>
-                  Status: {''}
-                  <Text
-                    color={
-                      expiredDate && expiredDate < new Date()
-                        ? 'red.500'
-                        : 'primary.500'
-                    }>
-                    {expiredDate && expiredDate < new Date()
-                      ? 'Expired'
-                      : 'Active'}
-                  </Text>
-                </Text>
-                <Text fontFamily={'Inter'} fontSize={'12px'}>
-                  Expired Date: {expired_date}
-                </Text>
+                {expiredDate ? (
+                  <>
+                    <Text fontFamily={'Inter'} fontSize={'14px'}>
+                      Status: {''}
+                      <Text
+                        color={
+                          expiredDate && expiredDate < new Date()
+                            ? 'red.500'
+                            : 'primary.500'
+                        }>
+                        {expiredDate && expiredDate < new Date()
+                          ? 'Expired'
+                          : 'Active'}
+                      </Text>
+                    </Text>
+                    <Text fontFamily={'Inter'} fontSize={'12px'}>
+                      Expired Date: {expired_date}
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text>Anda Belum Memiliki Course</Text>
+                  </>
+                )}
               </VStack>
             </HStack>
           </Pressable>
