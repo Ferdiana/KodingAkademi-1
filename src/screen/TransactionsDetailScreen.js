@@ -53,7 +53,7 @@ const TransactionDetailScreen = ({route, navigation}) => {
     setIsLoading(false);
   };
 
-  const handleCencelPayment = async () => {
+  const handleCencelPayment = async id => {
     try {
       setIsLoading(true);
       const response = await API_CencelPayment(
@@ -62,11 +62,13 @@ const TransactionDetailScreen = ({route, navigation}) => {
       );
       console.log(response);
       setRefreshPage(!refreshPage);
+      navigation.replace('DetailTransactions', {id});
     } catch (error) {
       console.error(error.message);
     } finally {
-      setIsLoading(false);
+      setShowAlert(false);
     }
+    setIsLoading(false);
   };
 
   React.useEffect(() => {
@@ -172,19 +174,12 @@ const TransactionDetailScreen = ({route, navigation}) => {
                     numberOfLines={3}>
                     {item.Product.name}
                   </Text>
-                  {/* <Stack h={'45px'} overflow={'hidden'}>
-                    <HTMLContentView
-                      value={item.Product.description}
-                      stylesheet={styles}
-                    />
-                  </Stack> */}
                   <Text
                     textAlign={'right'}
                     fontFamily={'Inter'}
                     fontWeight={500}
                     fontSize={'12px'}
                     color={Colors.neutral[900]}>
-                    {/* {`Rp${item.Product.discount_price.toLocaleString('id-ID')}`} */}
                     {item.Product.discount_price ? (
                       <Text>{`Rp${item.Product.discount_price.toLocaleString(
                         'id-ID',

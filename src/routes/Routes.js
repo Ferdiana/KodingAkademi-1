@@ -25,6 +25,7 @@ import EventDetailScreen from '../screen/EventDetail';
 import TransactionDetailScreen from '../screen/TransactionsDetailScreen';
 import AttendedEventScreen from '../screen/AttendedEventSceen';
 import EditProfileScreen from '../screen/EditProfileScreen';
+import PaymentFailed from '../screen/PaymentFailed';
 
 const Stack = createNativeStackNavigator();
 
@@ -158,6 +159,11 @@ function Routes() {
         name="Payment"
         component={PaymentScreen}
         options={{title: 'Complete Payment', headerShown: false}}
+      />
+      <Stack.Screen
+        name="PaymentFailed"
+        component={PaymentFailed}
+        options={{title: 'Payment Failed', headerShown: false}}
       />
       <Stack.Screen
         name="EventDetail"

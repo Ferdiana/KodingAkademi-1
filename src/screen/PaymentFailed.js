@@ -1,9 +1,10 @@
 import {Center, Stack, Text} from 'native-base';
 import React from 'react';
-import {Btn_Outline, Btn_Primary} from '../components';
+import {Btn_Primary} from '../components';
 import Colors from '../theme/colors';
 
-const PaymentScreen = ({navigation}) => {
+const PaymentFailed = ({navigation, route}) => {
+  const {error} = route.params;
   return (
     <Stack flex={1} bg={Colors.neutral[50]}>
       <Center h={'54px'} bg={Colors.neutral[50]} shadow={1}>
@@ -12,7 +13,7 @@ const PaymentScreen = ({navigation}) => {
           fontSize={'14px'}
           fontWeight={600}
           color={Colors.neutral[900]}>
-          Complete Payment
+          Payment Failed
         </Text>
       </Center>
       <Stack py={'10px'} px={'18px'} space={'10px'} my={'30px'}>
@@ -22,7 +23,7 @@ const PaymentScreen = ({navigation}) => {
           fontSize={'20px'}
           lineHeight={'26px'}
           color={Colors.secondary[50]}>
-          You will be redirected to the Xendit Payment Page.
+          An error occurred. Please try again later.
         </Text>
         <Text
           fontFamily={'Inter'}
@@ -30,22 +31,18 @@ const PaymentScreen = ({navigation}) => {
           fontSize={'12px'}
           textAlign={'justify'}
           color={Colors.neutral[900]}>
-          Thank you for choosing Koding Akademi as your learning partner. Your
-          payment will continue on the Xendit payment page.
+          Error message: {''}
+          <Text color={'red.500'}>{error}</Text>
         </Text>
       </Stack>
       <Btn_Primary
-        padding={'18px'}
-        text={'Check Payment Status'}
-        pb={'15px'}
-        onPress={() => navigation.navigate('Transactions')}
-      />
-      <Btn_Outline
+        w={'100%'}
         padding={'18px'}
         text={'Back to Home'}
+        pb={'15px'}
         onPress={() => navigation.replace('home')}
       />
     </Stack>
   );
 };
-export default PaymentScreen;
+export default PaymentFailed;

@@ -9,6 +9,7 @@ import {
 } from '../components';
 import {ImageBackground, ScrollView} from 'react-native';
 import Colors from '../theme/colors';
+import {useState} from 'react';
 
 const Title = ({text1, color1, text2, color2, onPress}) => {
   return (
@@ -44,6 +45,15 @@ const Title = ({text1, color1, text2, color2, onPress}) => {
 };
 
 function HomeScreen({navigation}) {
+  const [refreshPage, setRefreshPage] = useState(false);
+
+  React.useEffect(() => {
+    const focusHandler = navigation.addListener('focus', () => {
+      setRefreshPage(!refreshPage);
+    });
+    return focusHandler;
+  }, [navigation, refreshPage]);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <VStack>

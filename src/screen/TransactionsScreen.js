@@ -16,7 +16,7 @@ import {API_Transaction} from '../controller/API_Transaction';
 import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
 import {useEffect} from 'react';
-import formatDate from '../controller/formatDate';
+// import formatDate from '../controller/formatDate';
 
 const TransactionScreen = ({navigation}) => {
   const [transaction, setTransaction] = useState([]);
@@ -54,6 +54,21 @@ const TransactionScreen = ({navigation}) => {
 
   const handlePress = id => {
     navigation.navigate('DetailTransactions', {id});
+  };
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+    };
+    const localizedDate = date.toLocaleString('id-ID', options);
+
+    return localizedDate;
   };
 
   const renderItem = ({item}) => {

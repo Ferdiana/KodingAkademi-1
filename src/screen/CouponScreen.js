@@ -78,7 +78,7 @@ const CouponScreen = ({route}) => {
           </Text>
           {coupon.length > 0 ? (
             coupon.map(item => {
-              if (item.quota !== 0) {
+              if (item.id !== 0) {
                 const formattedDate = formatDate(item.coupon_end);
                 return (
                   <Stack bgColor={'white'} key={item.id}>

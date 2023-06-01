@@ -6,7 +6,6 @@ import {
   HStack,
   Button,
   Pressable,
-  Center,
   Spinner,
 } from 'native-base';
 import CartCard from '../components/card/Cart';
@@ -52,9 +51,15 @@ const CheckoutScreen = ({route, navigation}) => {
       if (response) {
         Linking.openURL(response);
       }
+      navigation.replace('Payment', {
+        total: displayTotalPrice,
+      });
     } catch (error) {
+      console.log(error.message);
+      navigation.replace('PaymentFailed', {
+        error: error.message,
+      });
     } finally {
-      navigation.replace('Payment', {total: displayTotalPrice});
       seIstLoading(false);
     }
   };
