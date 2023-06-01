@@ -36,6 +36,8 @@ const EventDetailScreen = ({route, navigation}) => {
   const [refreshPage, setRefreshPage] = useState(false);
   const [isInOrder, setIsInOrder] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setsuccessMsg] = useState('');
 
   useEffect(() => {
     const {id} = route.params;
@@ -81,14 +83,31 @@ const EventDetailScreen = ({route, navigation}) => {
   const handleAddToCart = async () => {
     if (selectedDate) {
       try {
-        await API_AddCart(user.accessToken, eventDetail.id, selectedDate.date);
-        console.log('sukses');
+        const response = await API_AddCart(
+          user.accessToken,
+          eventDetail.id,
+          selectedDate.date,
+        );
+        setsuccessMsg(response.message);
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 5000);
+        console.log(response.message);
         setRefreshPage(!refreshPage);
       } catch (error) {
+        setErrorMsg('Tanggalnya dah lewat bos');
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 5000);
         console.error(error.message);
+        setRefreshPage(!refreshPage);
       }
     } else {
       setShowAlert(true);
+      setErrorMsg('Pilih tanggal dulu bos');
+      console.log('pilih tanggal dulu');
       setTimeout(() => {
         setShowAlert(false);
       }, 3000);
@@ -111,25 +130,12 @@ const EventDetailScreen = ({route, navigation}) => {
       </Stack>
     );
   }
-  const textAlert = () => {
-    if (isInCart) {
-      return <Text>Product is already in Cart</Text>;
-    } else if (isInMyEvent) {
-      return <Text>Product is in My Event</Text>;
-    } else if (isInOrder) {
-      return <Text>Product is in Order</Text>;
-    } else if (!selectedDate.date) {
-      return <Text>Pilih tanggalnya dulu bos</Text>;
-    } else {
-      return null;
-    }
-  };
 
   return (
     <Stack bg={Colors.neutral[50]} flex={1}>
       {showAlert && (
         <Alert
-          status="info"
+          status={successMsg ? 'success' : 'error'}
           variant={'left-accent'}
           mx={'18px'}
           mb={1}
@@ -138,7 +144,7 @@ const EventDetailScreen = ({route, navigation}) => {
           <HStack space={'12px'}>
             <Alert.Icon />
             <Text fontFamily={'Inter'} fontSize={'12px'}>
-              {textAlert()}
+              {successMsg ? successMsg : errorMsg}
             </Text>
           </HStack>
         </Alert>

@@ -11,8 +11,8 @@ const QRComponent = ({size}) => {
   useEffect(() => {
     const loadProfile = async () => {
       if (user.accessToken) {
-        const articleData = await API_Profile(user.accessToken);
-        setProfile(articleData);
+        const response = await API_Profile(user.accessToken);
+        setProfile(response);
       }
     };
     loadProfile();

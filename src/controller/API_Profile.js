@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_Profile = async accessToken => {
   try {
     const response = await axios.get(
-      'https://kodingapp.refillaja.id/user/articles',
+      'https://kodingapp.refillaja.id/user/profile',
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
