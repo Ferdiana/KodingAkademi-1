@@ -6,7 +6,6 @@ const API_Coupon = async (accessToken, productIds) => {
       .map(productId => `products=${productId}`)
       .join('&');
     const url = `https://kodingapp.refillaja.id/user/coupons?${params}`;
-
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,

@@ -1,5 +1,14 @@
 import React, {useContext, useState} from 'react';
-import {Text, Stack, Box, ZStack, Avatar, HStack, Pressable} from 'native-base';
+import {
+  Text,
+  Stack,
+  Box,
+  ZStack,
+  Avatar,
+  HStack,
+  Pressable,
+  Spinner,
+} from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ImageBackground} from 'react-native';
@@ -35,33 +44,38 @@ const ButtonProfile = ({text, borderColor, icon, onPress}) => {
 function ProfileScreen({navigation}) {
   const {user} = useContext(AuthContext);
   const [profile, setProfile] = useState([]);
-  const username = profile.full_name;
-  const initial = username.charAt(0).toUpperCase();
   const [showAlert, setShowAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadProfile = async () => {
       if (user.accessToken) {
+        setIsLoading(true);
         const response = await API_Profile(user.accessToken);
         setProfile(response);
       }
+      setIsLoading(false);
     };
     loadProfile();
   }, [user.accessToken]);
-
-  const handleButtonClick = () => {
-    setShowAlert(true);
-  };
-
-  const handleAlertClose = () => {
-    setShowAlert(false);
-  };
 
   const {logout} = useContext(AuthContext);
 
   const handleSubmit = async () => {
     await logout();
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   return (
     <Stack bg={'neutral.50'} flex={1}>
@@ -108,7 +122,7 @@ function ProfileScreen({navigation}) {
               fontWeight={600}
               fontSize={'36px'}
               color={Colors.neutral[50]}>
-              {initial}
+              {profile.full_name.charAt(0).toUpperCase()}
             </Text>
           </Avatar>
         </Box>
@@ -135,7 +149,7 @@ function ProfileScreen({navigation}) {
           icon={'receipt-long'}
         />
         <ButtonProfile
-          onPress={handleButtonClick}
+          onPress={() => setShowAlert(true)}
           text={'Logout'}
           icon={'logout'}
         />
@@ -145,7 +159,7 @@ function ProfileScreen({navigation}) {
             textOk={'Logout'}
             alertText={'Are you sure you want to logout?'}
             displayTwoButtons={true}
-            handleAlertClose={handleAlertClose}
+            handleAlertClose={() => setShowAlert(false)}
             onPress={handleSubmit}
           />
         )}

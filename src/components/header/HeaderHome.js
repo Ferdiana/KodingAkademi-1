@@ -8,12 +8,14 @@ import {API_MyCourse} from '../../controller/API_MyCourse';
 import Colors from '../../theme/colors';
 import {API_GetCart} from '../../controller/API_Cart';
 import formatDate from '../../controller/formatDate';
+import {API_Profile} from '../../controller/API_Profile';
 
 const HeaderHome = ({navigation, refreshing, onRefresh}) => {
-  const {user, refreshToken} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
   const [myCourse, setMyCourse] = useState([]);
   const [expiredDate, setExpiredDate] = useState(null);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [profile, setProfile] = useState([]);
 
   useEffect(() => {
     const loadMyCourse = async () => {
@@ -23,6 +25,16 @@ const HeaderHome = ({navigation, refreshing, onRefresh}) => {
       }
     };
     loadMyCourse();
+  }, [user.accessToken]);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (user.accessToken) {
+        const response = await API_Profile(user.accessToken);
+        setProfile(response);
+      }
+    };
+    loadProfile();
   }, [user.accessToken]);
 
   useEffect(() => {
@@ -60,7 +72,7 @@ const HeaderHome = ({navigation, refreshing, onRefresh}) => {
           <HStack alignItems={'center'} justifyContent={'space-between'}>
             <VStack>
               <Text color={'neutral.50'} fontSize={'18px'} fontWeight={700}>
-                Hello, {user.full_name}
+                Hello, {profile.full_name}
               </Text>
               <Text color={'neutral.50'} fontSize={'14px'}>
                 What do you want to learn?

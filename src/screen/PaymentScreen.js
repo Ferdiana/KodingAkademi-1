@@ -36,12 +36,12 @@ const PaymentScreen = ({route, navigation}) => {
           payment of {total}
         </Text>
       </Stack>
-      {/* <Btn_Primary
+      <Btn_Primary
         padding={'18px'}
         text={'Check Payment Status'}
         pb={'15px'}
         onPress={() => navigation.navigate('Transactions')}
-      /> */}
+      />
       <Btn_Outline
         padding={'18px'}
         text={'Back to Home'}

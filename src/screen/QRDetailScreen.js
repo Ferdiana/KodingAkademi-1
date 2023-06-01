@@ -1,14 +1,41 @@
 import React from 'react';
 import QRComponent from '../components/QR/QRComponent';
-import {Avatar, Center, Text, Stack} from 'native-base';
+import {Avatar, Center, Text, Stack, Spinner} from 'native-base';
 import {useContext} from 'react';
 import {AuthContext} from '../controller/AuthContext';
 import Colors from '../theme/colors';
+import {useEffect} from 'react';
+import {API_Profile} from '../controller/API_Profile';
+import {useState} from 'react';
 
 const QRDetailScreen = () => {
   const {user} = useContext(AuthContext);
-  const username = user.full_name;
-  const initial = username.charAt(0).toUpperCase();
+  const [profile, setProfile] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (user.accessToken) {
+        setIsLoading(true);
+        const response = await API_Profile(user.accessToken);
+        setProfile(response);
+      }
+      setIsLoading(false);
+    };
+    loadProfile();
+  }, [user.accessToken]);
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   return (
     <Stack alignItems={'center'} flex={1} bg={Colors.neutral[50]} py={'10px'}>
@@ -19,7 +46,7 @@ const QRDetailScreen = () => {
             fontWeight={600}
             fontSize={'36px'}
             color={Colors.neutral[50]}>
-            {initial}
+            {profile.full_name.charAt(0).toUpperCase()}
           </Text>
         </Avatar>
         <Text
@@ -28,7 +55,7 @@ const QRDetailScreen = () => {
           fontFamily={'Inter'}
           fontWeight={600}
           fontSize={'20px'}>
-          {user.full_name}
+          {profile.full_name}
         </Text>
       </Stack>
       <Stack

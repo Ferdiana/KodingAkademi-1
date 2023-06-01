@@ -8,6 +8,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  Spinner,
 } from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
@@ -16,6 +17,7 @@ import {API_DeleteCart, API_GetCart} from '../controller/API_Cart';
 
 const CartScreen = ({route, navigation}) => {
   const [cartItems, setCartItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const {couponDiscount, selectedCoupon} = route.params || 0;
   const [updatedSelectedItems, setUpdatedSelectedItems] = useState([]);
@@ -26,9 +28,11 @@ const CartScreen = ({route, navigation}) => {
   useEffect(() => {
     const loadCart = async () => {
       if (user.accessToken) {
+        setIsLoading(true);
         const response = await API_GetCart(user.accessToken);
         setCartItems(response.cart_items);
       }
+      setIsLoading(false);
     };
     loadCart();
   }, [user.accessToken]);
@@ -107,6 +111,18 @@ const CartScreen = ({route, navigation}) => {
       numSelectedItems,
     });
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   const renderCartItems = () => {
     return cartItems.map(item => (
