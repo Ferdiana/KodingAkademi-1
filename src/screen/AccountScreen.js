@@ -11,12 +11,13 @@ import React, {useContext, useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
-import AlertInput from '../components/Alert/AlertInput';
 import formatDate from '../controller/formatDate';
-import {AlertDialogg} from '../components';
+import {AlertDialogg, Btn_Primary} from '../components';
 import {API_ResetPassword} from '../controller/API_ForgotPass';
+import {useEffect} from 'react';
+import {API_Profile} from '../controller/API_Profile';
 
-const Form = ({title, body, onPress, icon, shadow, borderWidth}) => {
+const Form = ({title, body, onPress, icon, shadow, borderWidth, color}) => {
   return (
     <Pressable onPress={onPress} w={'full'} alignItems={'center'}>
       <HStack
@@ -42,7 +43,7 @@ const Form = ({title, body, onPress, icon, shadow, borderWidth}) => {
             fontFamily={'Inter'}
             fontWeight={500}
             fontSize={'12px'}
-            color={'neutral.900'}>
+            color={color}>
             {body}
           </Text>
           <Icon name={icon} size={18} color={'#191F25'} />
@@ -54,36 +55,29 @@ const Form = ({title, body, onPress, icon, shadow, borderWidth}) => {
 
 const AccountScreen = ({navigation}) => {
   const {user} = useContext(AuthContext);
-  const formattedDate = formatDate(user.birth_date);
-  const [showAlertInput, setShowAlertInput] = useState(false);
-  const [alertInputTitle, setAlertInputTitle] = useState('');
-  const [alertInputLabel, setAlertInputLabel] = useState('');
-  const [alertInputPlaceholder, setAlertInputPlaceholder] = useState('');
+  const [profile, setProfile] = useState([]);
+  const formattedDate = profile.birth_date
+    ? formatDate(profile.birth_date)
+    : null;
   const [showInfoAlert, setShowInfoAlert] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertEdit, setShowAlertEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [refreshPage, setRefreshPage] = useState(false);
 
-  const handleClick = () => {
-    setShowAlert(true);
-  };
-
-  const handleClose = () => {
-    setShowAlert(false);
-  };
-
-  const handlePressForm = (name, label, placeholder) => {
-    setAlertInputTitle(name);
-    setAlertInputLabel(label);
-    setAlertInputPlaceholder(placeholder);
-    setShowAlertInput(true);
-  };
-
-  const handleAlertClose = () => {
-    setShowAlertInput(false);
-  };
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (user.accessToken) {
+        setIsLoading(true);
+        const response = await API_Profile(user.accessToken);
+        setProfile(response);
+      }
+      setIsLoading(false);
+    };
+    loadProfile();
+  }, [user.accessToken]);
 
   const handleResetPassword = async (accessToken, email) => {
     try {
@@ -96,7 +90,7 @@ const AccountScreen = ({navigation}) => {
       }, 5000);
       setRefreshPage(!refreshPage);
     } catch (error) {
-      setSuccessMsg('An error occurred. Please try again.');
+      setErrorMsg('An error occurred. Please try again.');
       setShowInfoAlert(true);
       setTimeout(() => {
         setShowInfoAlert(false);
@@ -145,72 +139,59 @@ const AccountScreen = ({navigation}) => {
           </HStack>
         </Alert>
       )}
-      <Stack space={'16px'} py={'10px'}>
-        <Form borderWidth={1} title={'Email'} body={user.email} />
+      <Stack flex={1} space={'16px'} py={'10px'}>
+        <Form borderWidth={1} title={'Email'} body={profile.email} />
+        <Form borderWidth={1} title={'Full Name'} body={profile.full_name} />
         <Form
-          shadow={1}
-          title={'Full Name'}
-          body={user.full_name}
-          onPress={() =>
-            handlePressForm(
-              'Change Full Name',
-              'Full Name',
-              'Input Your new full name',
-            )
-          }
-        />
-        <Form
-          shadow={1}
+          borderWidth={1}
           title={'Phone Number'}
-          body={user.phone_number}
-          onPress={() =>
-            handlePressForm(
-              'Change Phone Number',
-              'Phone Number',
-              'Input new phone number',
-            )
-          }
+          body={profile.phone_number}
         />
         <Form
-          shadow={1}
+          borderWidth={1}
           title={'Address'}
-          body={user.address}
-          onPress={() =>
-            handlePressForm('Change Address', 'Address', 'input new addres')
-          }
+          body={profile.address ? profile.address : 'Address is null'}
+          color={profile.address ? 'neutral.900' : 'neutral.400'}
+        />
+        <Form
+          borderWidth={1}
+          title={'Birth Date'}
+          body={formattedDate ? formattedDate : 'Birth date is null'}
+          color={formattedDate ? 'neutral.900' : 'neutral.400'}
         />
         <Form
           shadow={1}
-          title={'Birth Date'}
-          body={formattedDate}
-          onPress={() =>
-            handlePressForm(
-              'Change Birth Date',
-              'Birth Date',
-              'input new birth day',
-            )
-          }
+          title={'Reset Password'}
+          onPress={() => setShowAlert(true)}
         />
-        <Form shadow={1} title={'Reset Password'} onPress={handleClick} />
         {showAlert && (
           <AlertDialogg
             textCencel={'No'}
             textOk={'Yes'}
             alertText={'Are you sure you want to change your password?'}
             displayTwoButtons={true}
-            handleAlertClose={handleClose}
+            handleAlertClose={() => setShowAlert(false)}
             onPress={handleResetPassword}
           />
         )}
       </Stack>
-      {showAlertInput && (
-        <AlertInput
-          handleAlertClose={handleAlertClose}
-          name={alertInputTitle}
-          label={alertInputLabel}
-          placeholder={alertInputPlaceholder}
+      <Stack justifyContent={'center'} alignItems={'center'} pb={'20px'}>
+        <Btn_Primary
+          text={'Edit Profile'}
+          w={'90%'}
+          onPress={() => setShowAlertEdit(true)}
         />
-      )}
+        {showAlertEdit && (
+          <AlertDialogg
+            textCencel={'Sing'}
+            textOk={'Oow'}
+            alertText={'Sajaan kal nganti profile bli?'}
+            displayTwoButtons={true}
+            handleAlertClose={() => setShowAlertEdit(false)}
+            onPress={() => navigation.navigate('EditProfile')}
+          />
+        )}
+      </Stack>
     </View>
   );
 };

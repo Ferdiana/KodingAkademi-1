@@ -24,6 +24,7 @@ import PaymentScreen from '../screen/PaymentScreen';
 import EventDetailScreen from '../screen/EventDetail';
 import TransactionDetailScreen from '../screen/TransactionsDetailScreen';
 import AttendedEventScreen from '../screen/AttendedEventSceen';
+import EditProfileScreen from '../screen/EditProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -170,6 +171,13 @@ function Routes() {
         component={AttendedEventScreen}
         options={{
           title: 'Attended Event',
+        }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{
+          title: 'Edit Profile',
         }}
       />
     </Stack.Navigator>

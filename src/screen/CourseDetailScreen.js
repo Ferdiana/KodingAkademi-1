@@ -18,9 +18,7 @@ import {StyleSheet} from 'react-native';
 import HTMLContentView from 'react-native-htmlview';
 import {API_DetailCourse} from '../controller/API_Course';
 import {API_AddCart, API_GetCart} from '../controller/API_Cart';
-import {API_MyCourse} from '../controller/API_MyCourse';
 import Icon from 'react-native-vector-icons/Feather';
-import {API_Transaction} from '../controller/API_Transaction';
 
 const CourseDetailScreen = ({route, navigation}) => {
   const {user} = useContext(AuthContext);

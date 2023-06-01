@@ -29,8 +29,8 @@ const Form = ({label, placeholder, onChangeText, value}) => {
 };
 
 const FormRegister = ({onError, navigation}) => {
-  const [full_name, setFull_Name] = useState('');
   const [email, setEmail] = useState('');
+  const [full_name, setFull_Name] = useState('');
   const [phone_number, setPhone_Number] = useState(null);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

@@ -64,6 +64,28 @@ const AuthProvider = ({children}) => {
     }
   };
 
+  const refreshToken = async () => {
+    try {
+      const response = await axios.put(
+        'https://kodingapp.refillaja.id/authentications',
+        {
+          refreshToken: user.refreshToken,
+        },
+      );
+      const newAccessToken = response.data.accessToken;
+      setUser(prevUser => ({
+        ...prevUser,
+        accessToken: newAccessToken,
+      }));
+      AsyncStorage.setItem(
+        'user',
+        JSON.stringify({...user, accessToken: newAccessToken}),
+      );
+    } catch (error) {
+      console.error(error.response.data.message);
+    }
+  };
+
   if (loading) {
     return (
       <Center flex={1}>
@@ -79,7 +101,7 @@ const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{user, login, logout}}>
+    <AuthContext.Provider value={{user, login, logout, refreshToken}}>
       {children}
     </AuthContext.Provider>
   );

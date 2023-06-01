@@ -4,7 +4,6 @@ import {AuthContext} from '../../controller/AuthContext';
 import Btn_Primary from '../button/Btn_Primary';
 import {Dimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Colors from '../../theme/colors';
 
 const screenWidth = Dimensions.get('window').width;
 

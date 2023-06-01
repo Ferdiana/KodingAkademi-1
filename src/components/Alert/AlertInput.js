@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FormControl, Input, Button, Modal} from 'native-base';
 
-export default function AlertInput({
+const AlertInput = ({
   handleAlertClose,
   name,
   label,
   placeholder,
-}) {
+  value,
+  onChangeText,
+  handleAlertSave,
+}) => {
   return (
     <Modal isOpen={true} onClose={handleAlertClose}>
       <Modal.Content>
@@ -15,7 +18,13 @@ export default function AlertInput({
         <Modal.Body>
           <FormControl>
             <FormControl.Label>{label}</FormControl.Label>
-            <Input placeholder={placeholder} />
+            <Input
+              bgColor={'transparent'}
+              focusOutlineColor={'neutral.200'}
+              placeholder={placeholder}
+              value={value}
+              onChangeText={onChangeText}
+            />
           </FormControl>
         </Modal.Body>
         <Modal.Footer>
@@ -26,10 +35,11 @@ export default function AlertInput({
               onPress={handleAlertClose}>
               Cancel
             </Button>
-            <Button onPress={handleAlertClose}>Save</Button>
+            <Button onPress={handleAlertSave}>Save</Button>
           </Button.Group>
         </Modal.Footer>
       </Modal.Content>
     </Modal>
   );
-}
+};
+export default AlertInput;

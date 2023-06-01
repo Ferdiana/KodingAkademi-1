@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import {AuthContext} from '../../controller/AuthContext';
 import {} from 'react';
-import API_Profile from '../../controller/API_Profile';
+import {API_Profile} from '../../controller/API_Profile';
 
 const QRComponent = ({size}) => {
   const {user} = useContext(AuthContext);

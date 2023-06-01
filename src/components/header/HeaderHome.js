@@ -10,7 +10,7 @@ import {API_GetCart} from '../../controller/API_Cart';
 import formatDate from '../../controller/formatDate';
 
 const HeaderHome = ({navigation, refreshing, onRefresh}) => {
-  const {user} = useContext(AuthContext);
+  const {user, refreshToken} = useContext(AuthContext);
   const [myCourse, setMyCourse] = useState([]);
   const [expiredDate, setExpiredDate] = useState(null);
   const [cartItemCount, setCartItemCount] = useState(0);

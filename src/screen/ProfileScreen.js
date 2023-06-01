@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ImageBackground} from 'react-native';
 import Colors from '../theme/colors';
 import {AlertDialogg} from '../components';
+import {useEffect} from 'react';
+import {API_Profile} from '../controller/API_Profile';
 
 const ButtonProfile = ({text, borderColor, icon, onPress}) => {
   return (
@@ -32,9 +34,20 @@ const ButtonProfile = ({text, borderColor, icon, onPress}) => {
 
 function ProfileScreen({navigation}) {
   const {user} = useContext(AuthContext);
-  const username = user.full_name;
+  const [profile, setProfile] = useState([]);
+  const username = profile.full_name;
   const initial = username.charAt(0).toUpperCase();
   const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (user.accessToken) {
+        const response = await API_Profile(user.accessToken);
+        setProfile(response);
+      }
+    };
+    loadProfile();
+  }, [user.accessToken]);
 
   const handleButtonClick = () => {
     setShowAlert(true);
@@ -71,7 +84,7 @@ function ProfileScreen({navigation}) {
               fontWeight={600}
               fontSize={'20px'}
               color={'neutral.700'}>
-              {user.full_name}
+              {profile.full_name}
             </Text>
             <Text
               fontFamily={'Inter'}
