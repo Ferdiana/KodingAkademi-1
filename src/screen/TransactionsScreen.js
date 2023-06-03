@@ -31,7 +31,31 @@ const TransactionScreen = ({navigation}) => {
         setIsLoading(true);
         try {
           const response = await API_Transaction(user.accessToken);
-          setTransaction(response);
+          const sortedData = [...response].sort((a, b) => {
+            const orderStatusA = a.order_status.toLowerCase();
+            const orderStatusB = b.order_status.toLowerCase();
+
+            if (orderStatusA === 'success' && orderStatusB !== 'success') {
+              return -1;
+            }
+            if (orderStatusA !== 'success' && orderStatusB === 'success') {
+              return 1;
+            }
+            if (orderStatusA === 'pending' && orderStatusB !== 'pending') {
+              return -1;
+            }
+            if (orderStatusA !== 'pending' && orderStatusB === 'pending') {
+              return 1;
+            }
+            if (orderStatusA === 'canceled' && orderStatusB !== 'canceled') {
+              return 1;
+            }
+            if (orderStatusA !== 'canceled' && orderStatusB === 'canceled') {
+              return -1;
+            }
+            return 0;
+          });
+          setTransaction(sortedData);
         } catch (error) {
           console.error(error);
         } finally {

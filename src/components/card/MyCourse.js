@@ -42,8 +42,8 @@ const MyCourse = ({mr}) => {
           const formattedDate = formatDate(item.expired_date);
           const expired = isExpired(item.expired_date);
           return (
-            <Pressable onPress={() => handlePress(item.id)}>
-              <Stack key={item.id}>
+            <Pressable key={item.id} onPress={() => handlePress(item.id)}>
+              <Stack>
                 <Box
                   key={item.id}
                   w={'140px'}
