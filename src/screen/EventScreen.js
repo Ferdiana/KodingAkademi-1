@@ -3,7 +3,7 @@ import {Center, Stack, Text} from 'native-base';
 import {AllPromo, SearchBar} from '../components';
 import Colors from '../theme/colors';
 
-function PromoScreen({navigation}) {
+function EventScreen({navigation}) {
   const [searchText, setSearchText] = useState('');
 
   const handleSearchTextChange = text => {
@@ -30,4 +30,4 @@ function PromoScreen({navigation}) {
     </Stack>
   );
 }
-export default PromoScreen;
+export default EventScreen;

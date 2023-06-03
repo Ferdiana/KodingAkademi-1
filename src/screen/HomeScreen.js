@@ -7,7 +7,7 @@ import {
   MyCourse,
   Promo,
 } from '../components';
-import {ImageBackground, ScrollView} from 'react-native';
+import {ImageBackground, RefreshControl, ScrollView} from 'react-native';
 import Colors from '../theme/colors';
 import {useState} from 'react';
 
@@ -45,14 +45,26 @@ const Title = ({text1, color1, text2, color2, onPress}) => {
 };
 
 function HomeScreen({navigation}) {
-  const [refreshPage, setRefreshPage] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  React.useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
-      setRefreshPage(!refreshPage);
-    });
-    return focusHandler;
-  }, [navigation, refreshPage]);
+  const onScroll = event => {
+    const scrollPosition = event.nativeEvent.contentOffset.y;
+    if (scrollPosition === 0 && !refreshing) {
+      setRefreshing(true);
+      handleRefresh();
+    }
+  };
+
+  const handleRefresh = () => {
+    // Simulate refreshing delay
+    setTimeout(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      });
+      setRefreshing(false);
+    }, 2000);
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

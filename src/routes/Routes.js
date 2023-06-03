@@ -8,7 +8,6 @@ import ArticleScreen from '../screen/ArticleScreen';
 import ForgotPassScreen from '../screen/ForgotPassScreen';
 import QRDetailScreen from '../screen/QRDetailScreen';
 import AccountScreen from '../screen/AccountScreen';
-import AddPhoneNumberScreen from '../screen/AddPhoneNumberScreen';
 import CartScreen from '../screen/CartSreen';
 import MyCourseScreen from '../screen/MyCourseScreen';
 import TransactionsScreen from '../screen/TransactionsScreen';
@@ -100,11 +99,6 @@ function Routes() {
       />
       <Stack.Screen name="Account" component={AccountScreen} options={{}} />
       <Stack.Screen
-        name="AddPhoneNumber"
-        component={AddPhoneNumberScreen}
-        options={{title: 'Add Phone Number'}}
-      />
-      <Stack.Screen
         name="MyCourse"
         component={MyCourseScreen}
         options={{title: 'My Courses '}}
@@ -124,13 +118,7 @@ function Routes() {
         component={TransactionDetailScreen}
         options={{title: 'Detail Transactions'}}
       />
-      <Stack.Screen
-        name="Event"
-        component={EventScreen}
-        options={{
-          title: 'All Event',
-        }}
-      />
+
       <Stack.Screen
         name="CourseDetail"
         component={CourseDetailScreen}

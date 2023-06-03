@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screen/HomeScreen';
 import CourseScreen from '../screen/CourseScreen';
@@ -9,10 +9,40 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import EventScreen from '../screen/EventScreen';
+import {useIsFocused} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
-function BottomNavigation() {
+function BottomNavigation({navigation}) {
+  const [currentTab, setCurrentTab] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+
+  // ...
+
+  useEffect(() => {
+    const refreshTab = currentTab => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: currentTab}],
+      });
+      setRefreshing(false);
+    };
+
+    if (refreshing) {
+      refreshTab(currentTab);
+      setRefreshing(false);
+    }
+  }, [currentTab, refreshing, navigation]);
+
+  const isTabFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isTabFocused) {
+      setRefreshing(true);
+    }
+  }, [isTabFocused]);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -52,6 +82,11 @@ function BottomNavigation() {
               />
             ),
         }}
+        listeners={({navigation, route}) => ({
+          focus: () => {
+            setCurrentTab('Home');
+          },
+        })}
       />
       <Tab.Screen
         name="Course"
@@ -74,10 +109,15 @@ function BottomNavigation() {
               />
             ),
         }}
+        listeners={({navigation, route}) => ({
+          focus: () => {
+            setCurrentTab('Course');
+          },
+        })}
       />
       <Tab.Screen
         name="Event"
-        component={PromoScreen}
+        component={EventScreen}
         options={{
           headerShown: false,
           title: 'All Event',
@@ -88,6 +128,11 @@ function BottomNavigation() {
               <Feather name="percent" size={28} color={'#5D7389'} />
             ),
         }}
+        listeners={({navigation, route}) => ({
+          focus: () => {
+            setCurrentTab('Event');
+          },
+        })}
       />
       <Tab.Screen
         name="Profile"
@@ -105,6 +150,11 @@ function BottomNavigation() {
               />
             ),
         }}
+        listeners={({navigation, route}) => ({
+          focus: () => {
+            setCurrentTab('Profile');
+          },
+        })}
       />
     </Tab.Navigator>
   );

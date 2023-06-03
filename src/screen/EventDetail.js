@@ -40,7 +40,6 @@ const EventDetailScreen = ({route, navigation}) => {
       const eventDetailResponse = await API_DetailEvents(id, user.accessToken);
       setEventDetail(eventDetailResponse);
 
-      // Filter out the dates that have already passed
       const currentDate = new Date(); // Get the current date
       const filteredDates = eventDetailResponse.event_dates.filter(
         date => new Date(date.date) > currentDate,
