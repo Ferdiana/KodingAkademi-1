@@ -2,6 +2,7 @@ import {Stack} from 'native-base';
 import React, {useState} from 'react';
 import {AllMyCourse, CategoryButtonsFixed, SearchBar} from '../components';
 import Colors from '../theme/colors';
+import {useNavigation} from '@react-navigation/native';
 
 const MyCourseScreen = () => {
   const [searchText, setSearchText] = useState('');

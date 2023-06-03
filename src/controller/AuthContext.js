@@ -3,7 +3,8 @@ import React, {createContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, CommonActions} from '@react-navigation/native';
-import {Center, Image} from 'native-base';
+import {Center, Image, Spinner, Stack} from 'native-base';
+import Colors from '../theme/colors';
 
 const AuthContext = createContext();
 

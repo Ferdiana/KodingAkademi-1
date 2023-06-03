@@ -1,9 +1,18 @@
-import {Center, FormControl, Input, Stack, Button, Text} from 'native-base';
+import {
+  Center,
+  FormControl,
+  Input,
+  Stack,
+  Button,
+  Text,
+  Spinner,
+} from 'native-base';
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../../controller/AuthContext';
 import Btn_Primary from '../button/Btn_Primary';
 import {Dimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Colors from '../../theme/colors';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -11,7 +20,6 @@ const FormLogin = ({navigation, onError}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
   const {login} = useContext(AuthContext);
 
   const handleSubmit = async () => {

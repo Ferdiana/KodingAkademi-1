@@ -4,13 +4,14 @@ import Colors from '../../theme/colors';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
-import HTMLContentView from 'react-native-htmlview';
-import {StyleSheet} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const AllMyCourse = ({searchText, selectedCategory}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const loadMyCourse = async () => {
@@ -42,6 +43,10 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     }
   };
 
+  const handlePress = id => {
+    navigation.navigate('CourseDetail', {id});
+  };
+
   const renderItem = ({item}) => {
     if (
       selectedCategory &&
@@ -50,53 +55,58 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     ) {
       return null;
     }
-
     const formattedDate = formatDate(item.expired_date);
     const expired = isExpired(item.expired_date);
     return (
-      <Stack my={'5px'} mx={'18px'}>
-        <Stack
-          opacity={expired ? 0.5 : 1}
-          w={'100%'}
-          borderRadius={8}
-          p={'8px'}
-          shadow={1}
-          bg={Colors.neutral[50]}>
-          <HStack h={'103px'} space={'8px'}>
-            <Box w={'40%'}>
-              <Image
-                borderRadius={8}
-                h={'100%'}
-                w={'100%'}
-                source={{uri: `${item.img_url}`}}
-                alt="image_article"
-              />
-            </Box>
-            <Stack pr={'8px'} w={'60%'} justifyContent={'space-between'}>
-              <Text
-                numberOfLines={2}
-                fontFamily={'Inter'}
-                fontSize={'14px'}
-                fontWeight={600}
-                color={Colors.neutral[900]}>
-                {item.name}
-              </Text>
-              <Text
-                numberOfLines={1}
-                fontFamily={'Inter'}
-                fontSize={'12px'}
-                fontWeight={500}
-                color={Colors.neutral[900]}>
-                Until {''}
-                {formattedDate}
-              </Text>
-              <Stack h={'44px'} overflow={'hidden'}>
-                <HTMLContentView value={item.description} stylesheet={styles} />
+      <Pressable onPress={() => handlePress(item.id)}>
+        <Stack my={'5px'} mx={'18px'}>
+          <Stack
+            opacity={expired ? 0.5 : 1}
+            w={'100%'}
+            borderRadius={8}
+            p={'8px'}
+            shadow={1}
+            bg={Colors.neutral[50]}>
+            <HStack h={'103px'} space={'8px'}>
+              <Box w={'40%'}>
+                <Image
+                  borderRadius={8}
+                  h={'100%'}
+                  w={'100%'}
+                  source={{uri: `${item.img_url}`}}
+                  alt="image_article"
+                />
+              </Box>
+              <Stack pr={'8px'} w={'60%'} justifyContent={'space-between'}>
+                <Text
+                  numberOfLines={2}
+                  fontFamily={'Inter'}
+                  fontSize={'14px'}
+                  fontWeight={600}
+                  color={Colors.neutral[900]}>
+                  {item.name}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  fontFamily={'Inter'}
+                  fontSize={'12px'}
+                  fontWeight={500}
+                  color={Colors.neutral[900]}>
+                  Until {''}
+                  {formattedDate}
+                </Text>
+                <Text
+                  color={expired ? Colors.neutral[500] : Colors.primary[500]}
+                  fontFamily={'Inter'}
+                  fontSize={'14px'}
+                  fontWeight={600}>
+                  {expired ? 'Finished' : 'Active'}
+                </Text>
               </Stack>
-            </Stack>
-          </HStack>
+            </HStack>
+          </Stack>
         </Stack>
-      </Stack>
+      </Pressable>
     );
   };
 
