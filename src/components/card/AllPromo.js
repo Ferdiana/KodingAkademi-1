@@ -7,45 +7,68 @@ import {
   Stack,
   Pressable,
   Spinner,
+  HStack,
 } from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../theme/colors';
 import {AuthContext} from '../../controller/AuthContext';
-import {API_Promo} from '../../controller/API_Promo';
+import formatDate from '../../controller/formatDate';
+import {API_Events} from '../../controller/API_Events';
 
 const AllPromo = ({searchText}) => {
+  const [events, setEvents] = useState([]);
+  const [eventDate, setEventDate] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
-  const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadCourses = async () => {
+    const loadEvents = async () => {
       if (user.accessToken) {
         setIsLoading(true);
-        const coursesData = await API_Promo(user.accessToken);
-        setCourses(coursesData);
+        const response = await API_Events(user.accessToken);
+        const eventDates = response.flatMap(event => event.event_dates);
+        const sortedEvents = response.sort((a, b) => {
+          const dateA = new Date(a.event_dates[0].date);
+          const dateB = new Date(b.event_dates[0].date);
+          return dateB - dateA;
+        });
+        setEvents(sortedEvents);
+        setEventDate(eventDates);
         setIsLoading(false);
       }
     };
-    loadCourses();
+    loadEvents();
   }, [user.accessToken]);
 
   const handlePress = id => {
-    navigation.navigate('CourseDetail', {id});
+    navigation.navigate('EventDetail', {id});
   };
 
-  const filteredData = courses.filter(item =>
+  const convertedOptions = eventDate.map(option => {
+    const formattedDate = formatDate(option.date);
+    return {date: formattedDate};
+  });
+
+  const currentDate = new Date();
+
+  const renderTextStatus = eventDates => {
+    const hasUpcomingEvent = eventDates.some(
+      date => new Date(date.date) > currentDate,
+    );
+    return hasUpcomingEvent;
+  };
+
+  const filteredData = events.filter(item =>
     item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   const renderItem = ({item}) => {
-    if (!item.discount_price) {
-      return null;
-    }
+    const eventStatusText = renderTextStatus(item.event_dates);
     return (
       <Pressable p={'4px'} w={'50%'} onPress={() => handlePress(item.id)}>
         <Stack
+          opacity={eventStatusText ? 1 : 0.5}
           bgColor={'white'}
           p={2}
           borderRadius={8}
@@ -58,34 +81,55 @@ const AllPromo = ({searchText}) => {
             alt={'image'}
             borderRadius={10}
           />
-          <Box>
-            <Box>
-              <Text
-                mb={'2px'}
-                numberOfLines={2}
-                py={'4px'}
-                fontFamily={'Inter'}
-                fontSize={'14px'}
-                fontWeight={600}
-                h={'50px'}
-                color={Colors.primary[600]}>
-                {item.name}
-              </Text>
-            </Box>
+          <Text
+            mb={'2px'}
+            py={'4px'}
+            numberOfLines={2}
+            fontFamily={'Inter'}
+            fontSize={'14px'}
+            fontWeight={600}
+            h={'50px'}
+            color={Colors.primary[600]}>
+            {item.name}
+          </Text>
+          <Text
+            color={Colors.neutral[900]}
+            fontFamily={'Inter'}
+            fontSize={'10px'}
+            fontWeight={400}>
+            {(() => {
+              const eventDates = item.event_dates.map(eventdate =>
+                formatDate(eventdate.date),
+              );
+              const uniqueDates = [...new Set(eventDates)];
+              const filteredDates = uniqueDates.filter(date =>
+                convertedOptions.some(option => option.date === date),
+              );
+              if (filteredDates.length > 1) {
+                const startDate = filteredDates[0];
+                const endDate = filteredDates[filteredDates.length - 1];
+                return `${startDate} - ${endDate}`;
+              } else {
+                return filteredDates[0];
+              }
+            })()}
+          </Text>
+          <HStack justifyContent={'space-between'}>
             <Text
+              color={Colors.primary[500]}
               fontFamily={'Inter'}
-              color={Colors.neutral[900]}
-              fontWeight={500}>
-              {`Rp${item.discount_price.toLocaleString('id-ID')}`}
+              fontSize={'12px'}
+              fontWeight={600}>
+              {eventStatusText ? 'Upcoming' : 'Finished'}
             </Text>
             <Text
+              color={Colors.primary[500]}
               fontFamily={'Inter'}
-              fontWeight={400}
-              textDecorationLine={'line-through'}
-              color={Colors.neutral[200]}>
-              {`Rp${item.price.toLocaleString('id-ID')}`}
+              fontSize={'12px'}
+              fontWeight={600}>
+              quota: {item.participants}/{item.quota}
             </Text>
-          </Box>
+          </HStack>
         </Stack>
       </Pressable>
     );

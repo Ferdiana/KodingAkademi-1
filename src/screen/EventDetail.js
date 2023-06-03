@@ -20,8 +20,6 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {API_DetailEvents} from '../controller/API_Events';
 import {API_AddCart, API_GetCart} from '../controller/API_Cart';
 import Icon from 'react-native-vector-icons/Feather';
-import {API_MyEvent} from '../controller/API_MyEvent';
-import {API_Transaction} from '../controller/API_Transaction';
 import formatDate from '../controller/formatDate';
 
 const EventDetailScreen = ({route, navigation}) => {
@@ -31,10 +29,7 @@ const EventDetailScreen = ({route, navigation}) => {
   const [dropdownOption, setDropdownOption] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [isInCart, setIsInCart] = useState(false);
-  const [isInMyEvent, setIsInMyEvent] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
-  const [isInOrder, setIsInOrder] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setsuccessMsg] = useState('');
@@ -44,41 +39,23 @@ const EventDetailScreen = ({route, navigation}) => {
     const loadData = async () => {
       const eventDetailResponse = await API_DetailEvents(id, user.accessToken);
       setEventDetail(eventDetailResponse);
-      setDropdownOption(eventDetailResponse.event_dates);
+
+      // Filter out the dates that have already passed
+      const currentDate = new Date(); // Get the current date
+      const filteredDates = eventDetailResponse.event_dates.filter(
+        date => new Date(date.date) > currentDate,
+      );
+      setDropdownOption(filteredDates);
+
       if (user.accessToken) {
         const cartItems = await API_GetCart(user.accessToken);
-        setIsInCart(cartItems.cart_items.some(item => item.id === id));
-        const myEventItems = await API_MyEvent(user.accessToken);
-        setIsInMyEvent(myEventItems.some(item => item.id === id));
-        const orderId = await API_Transaction(user.accessToken);
-        const isInOrderPending = orderId.some(item =>
-          item.order.some(
-            orderItem =>
-              orderItem.product_id === id &&
-              orderItem.order_status === 'pending',
-          ),
-        );
-        setIsInOrder(isInOrderPending);
         const count = cartItems.cart_items.length;
         setCartItemCount(count);
-        if (isInCart || isInMyEvent || isInOrder) {
-          setShowAlert(true);
-          setTimeout(() => {
-            setShowAlert(false);
-          }, 3000);
-        }
       }
       setIsLoading(false);
     };
     loadData();
-  }, [
-    route.params,
-    user.accessToken,
-    refreshPage,
-    isInCart,
-    isInMyEvent,
-    isInOrder,
-  ]);
+  }, [route.params, user.accessToken, refreshPage]);
 
   const handleAddToCart = async () => {
     if (selectedDate) {
@@ -93,10 +70,9 @@ const EventDetailScreen = ({route, navigation}) => {
         setTimeout(() => {
           setShowAlert(false);
         }, 5000);
-        console.log(response.message);
         setRefreshPage(!refreshPage);
       } catch (error) {
-        setErrorMsg('Tanggalnya dah lewat bos');
+        setErrorMsg(error.message);
         setShowAlert(true);
         setTimeout(() => {
           setShowAlert(false);
@@ -105,17 +81,23 @@ const EventDetailScreen = ({route, navigation}) => {
         setRefreshPage(!refreshPage);
       }
     } else {
+      setErrorMsg('Event date is invalid');
       setShowAlert(true);
-      setErrorMsg('Pilih tanggal dulu bos');
-      console.log('pilih tanggal dulu');
       setTimeout(() => {
         setShowAlert(false);
-      }, 3000);
+      }, 5000);
+      setRefreshPage(!refreshPage);
     }
   };
 
+  const currentDate = new Date(); // Get the current date
+
   const convertedOptions = dropdownOption.map(option => {
     const formattedDate = formatDate(option.date);
+    const isDatePassed = new Date(option.date) < currentDate;
+    if (isDatePassed) {
+      return null;
+    }
     return {date: formattedDate};
   });
 
@@ -194,13 +176,12 @@ const EventDetailScreen = ({route, navigation}) => {
               Choose Event Date
             </Text>
             <Dropdown
-              disable={isInMyEvent || isInCart || isInOrder}
               style={styles.Dropdown}
               fontFamily="Inter"
               data={convertedOptions}
               valueField="date"
               labelField={'date'}
-              placeholder={'Select an option'}
+              placeholder={'Select Date'}
               value={selectedDate.date}
               onChange={itemValue => setSelectedDate(itemValue)}
             />
@@ -246,7 +227,6 @@ const EventDetailScreen = ({route, navigation}) => {
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}
-            disabled={isInMyEvent || isInCart || isInOrder}
           />
         </Stack>
       </HStack>
