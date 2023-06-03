@@ -45,27 +45,6 @@ const Title = ({text1, color1, text2, color2, onPress}) => {
 };
 
 function HomeScreen({navigation}) {
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onScroll = event => {
-    const scrollPosition = event.nativeEvent.contentOffset.y;
-    if (scrollPosition === 0 && !refreshing) {
-      setRefreshing(true);
-      handleRefresh();
-    }
-  };
-
-  const handleRefresh = () => {
-    // Simulate refreshing delay
-    setTimeout(() => {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Home'}],
-      });
-      setRefreshing(false);
-    }, 2000);
-  };
-
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <VStack>

@@ -72,19 +72,15 @@ const EditProfileScreen = () => {
   }
 
   const SaveEdit = async () => {
-    try {
-      const response = await API_EditProfile(
-        user.accessToken,
-        full_name,
-        phone_number,
-        address,
-        birth_date,
-      );
-      console.log(response);
-      navigation.replace('Account');
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await API_EditProfile(
+      user.accessToken,
+      full_name,
+      phone_number,
+      address,
+      birth_date,
+    );
+    console.log(response);
+    navigation.navigate('Account', {shouldRefresh: true});
   };
 
   return (
@@ -138,7 +134,7 @@ const EditProfileScreen = () => {
             <AlertDialogg
               textCencel={'No'}
               textOk={'Yes'}
-              alertText={'Dah bener kan?'}
+              alertText={'Are you sure you want to save these changes?'}
               displayTwoButtons={true}
               handleAlertClose={() => setShowAlert(false)}
               onPress={SaveEdit}

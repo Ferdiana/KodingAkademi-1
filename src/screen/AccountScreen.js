@@ -53,7 +53,7 @@ const Form = ({title, body, onPress, icon, shadow, borderWidth, color}) => {
   );
 };
 
-const AccountScreen = ({navigation}) => {
+const AccountScreen = ({navigation, route}) => {
   const {user} = useContext(AuthContext);
   const [profile, setProfile] = useState([]);
   const formattedDate = profile.birth_date
@@ -66,6 +66,7 @@ const AccountScreen = ({navigation}) => {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [refreshPage, setRefreshPage] = useState(false);
+  const shouldRefresh = route.params?.shouldRefresh || false;
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -77,7 +78,7 @@ const AccountScreen = ({navigation}) => {
       setIsLoading(false);
     };
     loadProfile();
-  }, [user.accessToken]);
+  }, [user.accessToken, shouldRefresh]);
 
   const handleResetPassword = async (accessToken, email) => {
     try {
@@ -101,13 +102,6 @@ const AccountScreen = ({navigation}) => {
     }
     setIsLoading(false);
   };
-
-  React.useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
-      setRefreshPage(!refreshPage);
-    });
-    return focusHandler;
-  }, [navigation, refreshPage]);
 
   if (isLoading) {
     return (
@@ -183,12 +177,15 @@ const AccountScreen = ({navigation}) => {
         />
         {showAlertEdit && (
           <AlertDialogg
-            textCencel={'Sing'}
-            textOk={'Oow'}
-            alertText={'Sajaan kal nganti profile bli?'}
+            textCencel={'No'}
+            textOk={'Yes'}
+            alertText={'Are you sure want to change your profile?'}
             displayTwoButtons={true}
             handleAlertClose={() => setShowAlertEdit(false)}
-            onPress={() => navigation.navigate('EditProfile')}
+            onPress={() => {
+              setShowAlertEdit(false);
+              navigation.navigate('EditProfile');
+            }}
           />
         )}
       </Stack>
