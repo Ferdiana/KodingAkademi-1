@@ -11,7 +11,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {Btn_Icon, FormLogin} from '../components';
 import {Dimensions} from 'react-native';
-import {ImageBackground} from 'react-native';
 import Colors from '../theme/colors';
 
 const screenWidth = Dimensions.get('window').width;
@@ -88,7 +87,9 @@ function LoginScreen({navigation}) {
           top={0}
           left={0}
         />
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled">
           {showAlert && (
             <Stack mx={10}>
               <Alert

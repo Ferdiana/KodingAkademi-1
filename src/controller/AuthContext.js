@@ -2,7 +2,7 @@
 import React, {createContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, CommonActions} from '@react-navigation/native';
 import {Center, Image} from 'native-base';
 
 const AuthContext = createContext();
@@ -39,7 +39,12 @@ const AuthProvider = ({children}) => {
       const user = response.data.data;
       setUser(user);
       AsyncStorage.setItem('user', JSON.stringify(user));
-      navigation.navigate('home');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'home'}],
+        }),
+      );
     } catch (error) {
       console.error(error.response.data.message);
       throw error;

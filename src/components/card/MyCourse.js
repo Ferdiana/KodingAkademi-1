@@ -42,47 +42,49 @@ const MyCourse = ({mr}) => {
           const formattedDate = formatDate(item.expired_date);
           const expired = isExpired(item.expired_date);
           return (
-            <Stack key={item.id}>
-              <Box
-                key={item.id}
-                w={'140px'}
-                h={'170px'}
-                px={'10px'}
-                pt={'5px'}
-                mr={2}
-                opacity={expired ? 0.5 : 1}
-                bg={Colors.neutral[50]}
-                borderRadius={8}
-                shadow={1}>
-                <Center>
-                  <Image
-                    source={{uri: `${item.img_url}`}}
-                    alt={'img'}
-                    w={'100%'}
-                    h={'84px'}
-                    borderRadius={8}
-                  />
-                </Center>
-                <Text
-                  numberOfLines={2}
-                  mt={'5px'}
-                  h={'38px'}
-                  fontFamily={'Inter'}
-                  fontSize={'12px'}
-                  fontWeight={600}
-                  color={Colors.neutral[900]}>
-                  {item.name}
-                </Text>
-                <Text
-                  mt={'5px'}
-                  fontFamily={'Inter'}
-                  fontWeight={300}
-                  fontSize={'10px'}
-                  color={Colors.neutral[900]}>
-                  Until {formattedDate}
-                </Text>
-              </Box>
-            </Stack>
+            <Pressable onPress={() => handlePress(item.id)}>
+              <Stack key={item.id}>
+                <Box
+                  key={item.id}
+                  w={'140px'}
+                  h={'170px'}
+                  px={'10px'}
+                  pt={'5px'}
+                  mr={2}
+                  opacity={expired ? 0.5 : 1}
+                  bg={Colors.neutral[50]}
+                  borderRadius={8}
+                  shadow={1}>
+                  <Center>
+                    <Image
+                      source={{uri: `${item.img_url}`}}
+                      alt={'img'}
+                      w={'100%'}
+                      h={'84px'}
+                      borderRadius={8}
+                    />
+                  </Center>
+                  <Text
+                    numberOfLines={2}
+                    mt={'5px'}
+                    h={'38px'}
+                    fontFamily={'Inter'}
+                    fontSize={'12px'}
+                    fontWeight={600}
+                    color={Colors.neutral[900]}>
+                    {item.name}
+                  </Text>
+                  <Text
+                    mt={'5px'}
+                    fontFamily={'Inter'}
+                    fontWeight={300}
+                    fontSize={'10px'}
+                    color={Colors.neutral[900]}>
+                    Until {formattedDate}
+                  </Text>
+                </Box>
+              </Stack>
+            </Pressable>
           );
         })
       ) : (
