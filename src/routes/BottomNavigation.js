@@ -3,7 +3,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screen/HomeScreen';
 import CourseScreen from '../screen/CourseScreen';
-import PromoScreen from '../screen/PromoScreen';
+import PromoScreen from '../screen/EventScreen';
 import ProfileScreen from '../screen/ProfileScreen';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
@@ -76,11 +76,11 @@ function BottomNavigation() {
         }}
       />
       <Tab.Screen
-        name="Promo"
+        name="Event"
         component={PromoScreen}
         options={{
           headerShown: false,
-          title: 'All Promo',
+          title: 'All Event',
           tabBarIcon: ({focused}) =>
             focused ? (
               <FontAwesome5 name="percentage" size={28} color={'#0B2347'} />

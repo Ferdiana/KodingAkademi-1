@@ -18,7 +18,6 @@ import {AuthContext} from '../controller/AuthContext';
 import CouponScreen from '../screen/CouponScreen';
 import CheckoutScreen from '../screen/CheckoutScreen';
 import Colors from '../theme/colors';
-import PromoScreen from '../screen/PromoScreen';
 import ArticleDetailScreen from '../screen/ArticleDetailScreen';
 import PaymentScreen from '../screen/PaymentScreen';
 import EventDetailScreen from '../screen/EventDetail';
@@ -143,11 +142,6 @@ function Routes() {
         name="Coupon"
         component={CouponScreen}
         options={{title: 'Coupon Detail'}}
-      />
-      <Stack.Screen
-        name="Promo"
-        component={PromoScreen}
-        options={{headerShown: false}}
       />
       <Stack.Screen name="Checkout" component={CheckoutScreen} options={{}} />
       <Stack.Screen

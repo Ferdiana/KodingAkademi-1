@@ -1,23 +1,33 @@
 import React, {useState} from 'react';
-import {View} from 'native-base';
-import SearchBar from '../components/search/SearchBar';
+import {Center, Stack, Text} from 'native-base';
+import {AllPromo, SearchBar} from '../components';
 import Colors from '../theme/colors';
-import {AllEvent} from '../components';
 
-export default function EventScreen() {
+function PromoScreen({navigation}) {
   const [searchText, setSearchText] = useState('');
 
   const handleSearchTextChange = text => {
     setSearchText(text);
   };
   return (
-    <View flex={1} bg={Colors.neutral[50]}>
+    <Stack bg={'neutral.50'} flex={1}>
+      <Center bg={'secondary.50'} h={'42px'}>
+        <Text
+          color={'neutral.50'}
+          fontFamily={'Inter'}
+          fontSize={'14px'}
+          fontWeight={600}>
+          All Event
+        </Text>
+      </Center>
       <SearchBar
-        shadow={1}
+        pb={'20px'}
+        bg={Colors.secondary[50]}
         placeholder={'Search'}
         onChangeText={handleSearchTextChange}
       />
-      <AllEvent searchText={searchText} />
-    </View>
+      <AllPromo navigation={navigation} searchText={searchText} />
+    </Stack>
   );
 }
+export default PromoScreen;
