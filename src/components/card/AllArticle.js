@@ -111,6 +111,7 @@ const AllArticle = ({searchText}) => {
   return (
     <FlatList
       data={filteredData}
+      showsVerticalScrollIndicator={false}
       renderItem={renderItem}
       keyExtractor={item => item.id.toString()}
     />

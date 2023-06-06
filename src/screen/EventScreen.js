@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Center, Stack, Text} from 'native-base';
-import {AllPromo, SearchBar} from '../components';
+import {AllEvent, SearchBar} from '../components';
 import Colors from '../theme/colors';
 
-function EventScreen({navigation}) {
+function EventScreen() {
   const [searchText, setSearchText] = useState('');
 
   const handleSearchTextChange = text => {
@@ -26,7 +26,7 @@ function EventScreen({navigation}) {
         placeholder={'Search'}
         onChangeText={handleSearchTextChange}
       />
-      <AllPromo navigation={navigation} searchText={searchText} />
+      <AllEvent searchText={searchText} />
     </Stack>
   );
 }

@@ -141,6 +141,7 @@ const AllMyEvent = ({searchText, selectedCategory}) => {
       ) : (
         <FlatList
           data={filteredData}
+          showsVerticalScrollIndicator={false}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
         />

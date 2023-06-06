@@ -119,6 +119,7 @@ const AllCourse = ({searchText, selectedCategory}) => {
   return (
     <FlatList
       data={filteredData}
+      showsVerticalScrollIndicator={false}
       renderItem={renderItem}
       keyExtractor={item => item.id.toString()}
     />

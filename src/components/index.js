@@ -22,6 +22,8 @@ import Alertt from './Alert/Alert';
 import AllMyEvent from './card/AllMyEvent';
 import CategoryButtons from './search/CategoryButtons';
 import CategoryButtonsFixed from './search/CategoryButtonsFixed';
+import AllEvent from './card/AllEvent';
+import Transaction from './card/Transaction';
 
 export {
   FormLogin,
@@ -48,4 +50,6 @@ export {
   AllMyEvent,
   CategoryButtons,
   CategoryButtonsFixed,
+  AllEvent,
+  Transaction,
 };
