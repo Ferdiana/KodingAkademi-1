@@ -11,7 +11,6 @@ import AccountScreen from '../screen/AccountScreen';
 import CartScreen from '../screen/CartSreen';
 import MyCourseScreen from '../screen/MyCourseScreen';
 import TransactionsScreen from '../screen/TransactionsScreen';
-import EventScreen from '../screen/EventScreen';
 import CourseDetailScreen from '../screen/CourseDetailScreen';
 import {AuthContext} from '../controller/AuthContext';
 import CouponScreen from '../screen/CouponScreen';
@@ -24,6 +23,7 @@ import TransactionDetailScreen from '../screen/TransactionsDetailScreen';
 import AttendedEventScreen from '../screen/AttendedEventSceen';
 import EditProfileScreen from '../screen/EditProfileScreen';
 import PaymentFailed from '../screen/PaymentFailed';
+import PromoScreen from '../screen/PromoScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -166,6 +166,13 @@ function Routes() {
         component={EditProfileScreen}
         options={{
           title: 'Edit Profile',
+        }}
+      />
+      <Stack.Screen
+        name="Promo"
+        component={PromoScreen}
+        options={{
+          title: 'All Promo',
         }}
       />
     </Stack.Navigator>

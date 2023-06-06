@@ -112,6 +112,15 @@ const AllMyEvent = ({searchText, selectedCategory}) => {
       </Stack>
     );
   }
+
+  if (filteredData.length === 0) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Text>No event available.</Text>
+      </Stack>
+    );
+  }
+
   return (
     <Stack flex={1}>
       {filteredData.length === 0 ? (

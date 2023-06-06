@@ -79,6 +79,7 @@ function RegisterScreen({navigation}) {
           <ScrollView
             flexGrow={1}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
             flex={1}>
             <FormRegister navigation={navigation} onError={handleError} />
             <HStack my={'16px'} justifyContent={'center'}>

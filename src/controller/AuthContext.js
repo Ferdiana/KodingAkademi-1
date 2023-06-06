@@ -105,6 +105,10 @@ const AuthProvider = ({children}) => {
     );
   }
 
+  if (user && user.accessToken === 'Token has expired/invalid') {
+    refreshToken();
+  }
+
   return (
     <AuthContext.Provider value={{user, login, logout, refreshToken}}>
       {children}

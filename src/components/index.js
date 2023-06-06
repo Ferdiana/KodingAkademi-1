@@ -16,7 +16,6 @@ import Cart from './card/Cart';
 import SearchBar from './search/SearchBar';
 import SearchCategory from './search/SearchCategory';
 import AllArticle from './card/AllArticle';
-import AllEvent from './card/AllPromo';
 import AllMyCourse from './card/AllMyCourse';
 import AlertDialogg from './Alert/AlertDialog';
 import Alertt from './Alert/Alert';
@@ -42,7 +41,6 @@ export {
   AllCourse,
   AllMyCourse,
   Cart,
-  AllEvent,
   SearchCategory,
   AllArticle,
   AlertDialogg,

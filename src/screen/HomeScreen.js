@@ -7,9 +7,8 @@ import {
   MyCourse,
   Promo,
 } from '../components';
-import {ImageBackground, RefreshControl, ScrollView} from 'react-native';
+import {ImageBackground, ScrollView} from 'react-native';
 import Colors from '../theme/colors';
-import {useState} from 'react';
 
 const Title = ({text1, color1, text2, color2, onPress}) => {
   return (

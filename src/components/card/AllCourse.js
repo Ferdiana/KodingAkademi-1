@@ -107,6 +107,15 @@ const AllCourse = ({searchText, selectedCategory}) => {
       </Stack>
     );
   }
+
+  if (filteredData.length === 0) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Text>No courses available.</Text>
+      </Stack>
+    );
+  }
+
   return (
     <FlatList
       data={filteredData}

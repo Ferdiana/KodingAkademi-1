@@ -118,6 +118,7 @@ const TransactionScreen = ({navigation}) => {
         break;
     }
     const numberOfProducts = item.order.length;
+
     return (
       <Pressable key={item.id} onPress={() => handlePress(item.id)}>
         <Stack

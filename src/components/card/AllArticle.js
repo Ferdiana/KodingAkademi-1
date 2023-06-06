@@ -99,6 +99,15 @@ const AllArticle = ({searchText}) => {
       </Pressable>
     );
   };
+
+  if (filteredData.length === 0) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Text>No article available.</Text>
+      </Stack>
+    );
+  }
+
   return (
     <FlatList
       data={filteredData}

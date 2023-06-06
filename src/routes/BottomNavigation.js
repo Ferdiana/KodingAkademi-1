@@ -3,10 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screen/HomeScreen';
 import CourseScreen from '../screen/CourseScreen';
-import PromoScreen from '../screen/EventScreen';
 import ProfileScreen from '../screen/ProfileScreen';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EventScreen from '../screen/EventScreen';
@@ -82,7 +79,7 @@ function BottomNavigation({navigation}) {
               />
             ),
         }}
-        listeners={({navigation, route}) => ({
+        listeners={({route}) => ({
           focus: () => {
             setCurrentTab('Home');
           },
@@ -109,7 +106,7 @@ function BottomNavigation({navigation}) {
               />
             ),
         }}
-        listeners={({navigation, route}) => ({
+        listeners={({route}) => ({
           focus: () => {
             setCurrentTab('Course');
           },
@@ -123,12 +120,20 @@ function BottomNavigation({navigation}) {
           title: 'All Event',
           tabBarIcon: ({focused}) =>
             focused ? (
-              <FontAwesome5 name="percentage" size={28} color={'#0B2347'} />
+              <MaterialCommunityIcons
+                name="calendar-check"
+                size={28}
+                color={'#0B2347'}
+              />
             ) : (
-              <Feather name="percent" size={28} color={'#5D7389'} />
+              <MaterialCommunityIcons
+                name="calendar-check-outline"
+                size={28}
+                color={'#5D7389'}
+              />
             ),
         }}
-        listeners={({navigation, route}) => ({
+        listeners={({route}) => ({
           focus: () => {
             setCurrentTab('Event');
           },
@@ -150,7 +155,7 @@ function BottomNavigation({navigation}) {
               />
             ),
         }}
-        listeners={({navigation, route}) => ({
+        listeners={({route}) => ({
           focus: () => {
             setCurrentTab('Profile');
           },

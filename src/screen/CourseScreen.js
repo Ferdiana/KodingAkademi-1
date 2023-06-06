@@ -27,6 +27,13 @@ function CourseScreen() {
 
   const categories = [...new Set(courses.map(course => course.category.name))];
 
+  const filteredCourses = selectedCategory
+    ? courses.filter(
+        course =>
+          course.category.name === selectedCategory && !course.discount_price,
+      )
+    : courses.filter(course => !course.discount_price);
+
   return (
     <Stack flex={1} bg={'neutral.50'}>
       <Center bg={'secondary.50'} h={'42px'}>
@@ -52,7 +59,16 @@ function CourseScreen() {
         />
       </Stack>
       <Box my={'5px'} />
-      <AllCourse searchText={searchText} selectedCategory={selectedCategory} />
+      {filteredCourses.length === 0 ? (
+        <Stack flex={1} justifyContent="center" alignItems="center">
+          <Text>No courses available.</Text>
+        </Stack>
+      ) : (
+        <AllCourse
+          searchText={searchText}
+          selectedCategory={selectedCategory}
+        />
+      )}
     </Stack>
   );
 }
