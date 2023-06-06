@@ -115,7 +115,6 @@ const AllCourse = ({searchText, selectedCategory}) => {
       </Stack>
     );
   }
-
   return (
     <FlatList
       data={filteredData}

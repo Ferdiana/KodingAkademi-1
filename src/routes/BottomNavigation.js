@@ -15,8 +15,6 @@ function BottomNavigation({navigation}) {
   const [currentTab, setCurrentTab] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
-  // ...
-
   useEffect(() => {
     const refreshTab = currentTab => {
       navigation.reset({

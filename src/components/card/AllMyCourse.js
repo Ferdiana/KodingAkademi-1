@@ -1,10 +1,18 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {Box, FlatList, HStack, Image, Spinner, Stack, Text} from 'native-base';
+import {
+  Box,
+  FlatList,
+  HStack,
+  Image,
+  Spinner,
+  Stack,
+  Text,
+  Pressable,
+} from 'native-base';
 import Colors from '../../theme/colors';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
-import {Pressable, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 const AllMyCourse = ({searchText, selectedCategory}) => {
@@ -158,17 +166,5 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     </Stack>
   );
 };
-
-const styles = StyleSheet.create({
-  p: {
-    textAlign: 'justify',
-    color: '#33404C',
-    fontSize: 12,
-  },
-  body: {
-    textAlign: 'justify',
-    color: '#000',
-  },
-});
 
 export default AllMyCourse;

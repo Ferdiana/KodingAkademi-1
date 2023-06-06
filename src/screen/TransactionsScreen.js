@@ -1,22 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
-import {
-  Stack,
-  Text,
-  HStack,
-  Image,
-  FlatList,
-  Pressable,
-  Center,
-  Spinner,
-} from 'native-base';
+import {Stack} from 'native-base';
 import Colors from '../theme/colors';
 import {CategoryButtons, SearchBar, Transaction} from '../components';
-import {API_Transaction} from '../controller/API_Transaction';
-import {useContext} from 'react';
-import {AuthContext} from '../controller/AuthContext';
-import {useEffect} from 'react';
-// import formatDate from '../controller/formatDate';
 
 const TransactionScreen = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
