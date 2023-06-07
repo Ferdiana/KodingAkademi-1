@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import {Center, Image} from 'native-base';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const AuthContext = createContext();
 
@@ -26,6 +27,33 @@ const AuthProvider = ({children}) => {
         setLoading(false);
       });
   }, [navigation]);
+
+  const loginWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const {idToken} = await userInfo.idToken;
+
+      const response = await axios.post(
+        'https://kodingapp.refillaja.id/auth/google',
+        {idToken},
+      );
+
+      const user = response.data.user;
+      AsyncStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'home'}],
+        }),
+      );
+    } catch (error) {
+      console.error(error.response?.data?.message || error.message);
+      throw error;
+    }
+  };
 
   const login = async (email, password) => {
     try {
@@ -110,7 +138,8 @@ const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{user, login, logout, refreshToken}}>
+    <AuthContext.Provider
+      value={{user, login, logout, refreshToken, loginWithGoogle}}>
       {children}
     </AuthContext.Provider>
   );

@@ -92,6 +92,7 @@ const AllEvent = ({searchText}) => {
             {item.name}
           </Text>
           <Text
+            numberOfLines={1}
             color={Colors.neutral[900]}
             fontFamily={'Inter'}
             fontSize={'10px'}

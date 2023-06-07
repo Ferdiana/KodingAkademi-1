@@ -111,7 +111,7 @@ function Routes() {
       <Stack.Screen
         name="Transactions"
         component={TransactionsScreen}
-        options={{title: 'Transactions'}}
+        options={{title: 'Transactions', headerShown: false}}
       />
       <Stack.Screen
         name="DetailTransactions"

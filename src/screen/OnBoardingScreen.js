@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Center, Text, Image, Stack} from 'native-base';
 import {Btn_Primary, Btn_Icon, Btn_Outline} from '../components';
 import {Dimensions} from 'react-native';
 import {ImageBackground} from 'react-native';
+import {AuthContext} from '../controller/AuthContext';
 
 const screenWidth = Dimensions.get('window').width;
 
 function OnBoardingScreen({navigation}) {
+  const {loginWithGoogle} = useContext(AuthContext);
+
+  const handleGoogleLogin = () => {
+    loginWithGoogle();
+  };
   return (
     <Center flex={1}>
       <ImageBackground
@@ -61,6 +67,7 @@ function OnBoardingScreen({navigation}) {
           </Text>
           <Btn_Icon
             borderWidth={1}
+            onPress={handleGoogleLogin}
             w={screenWidth}
             text={'Continue with Google'}
             padding={10}

@@ -5,8 +5,8 @@ import {
   ScrollView,
   HStack,
   Button,
-  Pressable,
   Spinner,
+  Input,
 } from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
@@ -26,6 +26,7 @@ const CheckoutScreen = ({route, navigation}) => {
   } = route.params;
   const {user} = useContext(AuthContext);
   const [isLoading, seIstLoading] = useState(false);
+  const [custom_field_1, setCustom_field_1] = useState('');
 
   const displayTotalPrice = isNaN(discountedPrice)
     ? `Rp${totalPrice.toLocaleString('id-ID')}`
@@ -44,9 +45,14 @@ const CheckoutScreen = ({route, navigation}) => {
           user.accessToken,
           filterSelectedId,
           selectedCoupon,
+          custom_field_1,
         );
       } else {
-        response = await API_Checkout(user.accessToken, filterSelectedId);
+        response = await API_Checkout(
+          user.accessToken,
+          filterSelectedId,
+          custom_field_1,
+        );
       }
       if (response) {
         Linking.openURL(response);
@@ -80,7 +86,7 @@ const CheckoutScreen = ({route, navigation}) => {
     <Stack flex={1}>
       <Stack flex={1} space={1}>
         <ScrollView>
-          <Stack space={1} h={'85%'}>
+          <Stack space={1} h={'80%'}>
             {selectedItems.map(item => (
               <CartCard
                 WImage={'40%'}
@@ -92,6 +98,7 @@ const CheckoutScreen = ({route, navigation}) => {
             ))}
           </Stack>
         </ScrollView>
+
         <Stack h={'15%'} py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
           <HStack justifyContent={'space-between'}>
             <Text>Subtotal ({numSelectedItems} items) </Text>
@@ -114,29 +121,34 @@ const CheckoutScreen = ({route, navigation}) => {
       </Stack>
       <Stack
         justifyContent={'flex-end'}
-        pb={'10px'}
+        space={'10px'}
+        py={'10px'}
         w={'full'}
-        h={'150'}
         px={'18'}
         bgColor={Colors.secondary[100]}>
-        <Pressable>
-          <HStack
-            h={44}
-            bgColor={'white'}
-            my={25}
-            borderRadius={'10'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-            px={18}>
-            {couponDiscount ? (
-              <Text>
-                You get {`Rp${couponDiscount.toLocaleString('id-ID')}`} promo
-              </Text>
-            ) : (
-              <Text>There are no coupons used.</Text>
-            )}
-          </HStack>
-        </Pressable>
+        <Input
+          h={'40px'}
+          bg={'white'}
+          borderRadius={'10'}
+          placeholder="Add some note"
+          value={custom_field_1}
+          onChangeText={setCustom_field_1}
+        />
+        <HStack
+          h={'40px'}
+          bg={'white'}
+          borderRadius={'10'}
+          justifyContent={'space-between'}
+          alignItems={'center'}
+          px={18}>
+          {couponDiscount ? (
+            <Text>
+              You get {`Rp${couponDiscount.toLocaleString('id-ID')}`} promo
+            </Text>
+          ) : (
+            <Text>There are no coupons used.</Text>
+          )}
+        </HStack>
         <HStack justifyContent={'space-between'}>
           <Stack>
             <Text fontWeight={'bold'} fontSize={16} color={'white'}>

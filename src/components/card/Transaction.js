@@ -16,7 +16,7 @@ import {AuthContext} from '../../controller/AuthContext';
 import {API_Transaction} from '../../controller/API_Transaction';
 import Colors from '../../theme/colors';
 
-const Transaction = ({searchText, selectedCategory}) => {
+const Transaction = ({searchText, selectedCategory, refresh, onRefresh}) => {
   const [transaction, setTransaction] = useState([]);
   const {user} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,40 +28,17 @@ const Transaction = ({searchText, selectedCategory}) => {
         setIsLoading(true);
         try {
           const response = await API_Transaction(user.accessToken);
-          const sortedData = [...response].sort((a, b) => {
-            const orderStatusA = a.order_status.toLowerCase();
-            const orderStatusB = b.order_status.toLowerCase();
-
-            if (orderStatusA === 'success' && orderStatusB !== 'success') {
-              return -1;
-            }
-            if (orderStatusA !== 'success' && orderStatusB === 'success') {
-              return 1;
-            }
-            if (orderStatusA === 'pending' && orderStatusB !== 'pending') {
-              return -1;
-            }
-            if (orderStatusA !== 'pending' && orderStatusB === 'pending') {
-              return 1;
-            }
-            if (orderStatusA === 'canceled' && orderStatusB !== 'canceled') {
-              return 1;
-            }
-            if (orderStatusA !== 'canceled' && orderStatusB === 'canceled') {
-              return -1;
-            }
-            return 0;
-          });
-          setTransaction(sortedData);
+          setTransaction(response);
         } catch (error) {
           console.error(error);
         } finally {
           setIsLoading(false);
+          onRefresh();
         }
       }
     };
     loadTransaction();
-  }, [user.accessToken]);
+  }, [user.accessToken, refresh, onRefresh]);
 
   const filteredData = transaction.filter(
     item =>
@@ -71,10 +48,6 @@ const Transaction = ({searchText, selectedCategory}) => {
         orderItem.Product.name.toLowerCase().includes(searchText.toLowerCase()),
       ),
   );
-
-  console.log(transaction);
-
-  console.log(selectedCategory);
 
   const handlePress = id => {
     navigation.navigate('DetailTransactions', {id});
@@ -216,7 +189,7 @@ const Transaction = ({searchText, selectedCategory}) => {
   if (filteredData.length === 0) {
     return (
       <Stack flex={1} justifyContent="center" alignItems="center">
-        <Text>No courses available.</Text>
+        <Text>No transaction available.</Text>
       </Stack>
     );
   }

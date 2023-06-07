@@ -8,7 +8,6 @@ import {useEffect} from 'react';
 import formatDate from '../controller/formatDate';
 import {API_DetailTransaction} from '../controller/API_Transaction';
 import {AlertDialogg, Btn_Outline, Btn_Primary} from '../components';
-import {StyleSheet} from 'react-native';
 import {
   API_CencelPayment,
   API_GetPayment,
@@ -62,7 +61,7 @@ const TransactionDetailScreen = ({route, navigation}) => {
       );
       console.log(response);
       setRefreshPage(!refreshPage);
-      navigation.replace('DetailTransactions', {id});
+      navigation.navigate('Transactions');
     } catch (error) {
       console.error(error.message);
     } finally {
@@ -323,18 +322,5 @@ const TransactionDetailScreen = ({route, navigation}) => {
     </Stack>
   );
 };
-const styles = StyleSheet.create({
-  p: {
-    textAlign: 'justify',
-    fontSize: 10,
-    lineHeight: 14,
-  },
-  ul: {
-    textAlign: 'justify',
-  },
-  li: {
-    textAlign: 'justify',
-  },
-});
 
 export default TransactionDetailScreen;

@@ -13,13 +13,11 @@ import Colors from '../../theme/colors';
 import {API_MyCourse} from '../../controller/API_MyCourse';
 import {AuthContext} from '../../controller/AuthContext';
 import formatDate from '../../controller/formatDate';
-import {useNavigation} from '@react-navigation/native';
 
 const AllMyCourse = ({searchText, selectedCategory}) => {
   const [myCourse, setMyCourse] = useState([]);
   const {user} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation();
 
   useEffect(() => {
     const loadMyCourse = async () => {
@@ -51,10 +49,6 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     }
   };
 
-  const handlePress = id => {
-    navigation.navigate('CourseDetail', {id});
-  };
-
   const renderItem = ({item}) => {
     if (
       selectedCategory &&
@@ -66,7 +60,7 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     const formattedDate = formatDate(item.expired_date);
     const expired = isExpired(item.expired_date);
     return (
-      <Pressable onPress={() => handlePress(item.id)}>
+      <Pressable>
         <Stack my={'5px'} mx={'18px'}>
           <Stack
             opacity={expired ? 0.5 : 1}
@@ -102,6 +96,15 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
                   color={Colors.neutral[900]}>
                   Until {''}
                   {formattedDate}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  fontFamily={'Inter'}
+                  fontSize={'10px'}
+                  fontWeight={400}
+                  color={Colors.neutral[700]}>
+                  Meeting Quota: {''}
+                  {item.meeting_quota}
                 </Text>
                 <Text
                   color={expired ? Colors.neutral[500] : Colors.primary[500]}

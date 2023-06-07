@@ -8,16 +8,22 @@ import {
   Stack,
   Text,
 } from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Btn_Icon, FormLogin} from '../components';
 import {Dimensions} from 'react-native';
 import Colors from '../theme/colors';
+import {AuthContext} from '../controller/AuthContext';
 
 const screenWidth = Dimensions.get('window').width;
 
 function LoginScreen({navigation}) {
   const [errorMsg, setErrorMsg] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const {loginWithGoogle} = useContext(AuthContext);
+
+  const handleGoogleLogin = () => {
+    loginWithGoogle();
+  };
 
   const handleError = error => {
     setErrorMsg(error.response.data.message);
@@ -134,6 +140,7 @@ function LoginScreen({navigation}) {
             or continue with
           </Text>
           <Btn_Icon
+            onPress={handleGoogleLogin}
             w={screenWidth}
             text={'Continue with Google'}
             padding={10}
