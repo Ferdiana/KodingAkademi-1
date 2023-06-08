@@ -22,6 +22,8 @@ const TransactionDetailScreen = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshPage, setRefreshPage] = useState(false);
 
+  console.log(transaction);
+
   useEffect(() => {
     const {id} = route.params;
     const loadTranscation = async () => {
@@ -192,6 +194,12 @@ const TransactionDetailScreen = ({route, navigation}) => {
                 </Stack>
               </HStack>
             ))}
+          <Text fontFamily={'Inter'} fontSize={'12px'} fontWeight={'600'}>
+            Payment Notes
+          </Text>
+          <Text fontFamily={'Inter'} fontSize={'12px'} fontWeight={'400'}>
+            {transaction.custom_field_1}
+          </Text>
           <Text fontFamily={'Inter'} fontSize={'12px'} fontWeight={'600'}>
             Payment Details
           </Text>

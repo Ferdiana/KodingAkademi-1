@@ -1,11 +1,23 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {FormControl, HStack, Input, Spinner, Stack, Text} from 'native-base';
+import {
+  Button,
+  FormControl,
+  HStack,
+  Input,
+  Pressable,
+  Spinner,
+  Stack,
+  Text,
+  View,
+} from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import {AlertDialogg, Btn_Primary} from '../components';
 import Colors from '../theme/colors';
 import {API_EditProfile, API_Profile} from '../controller/API_Profile';
 import formatDate from '../controller/formatDate';
 import {useNavigation} from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {Platform} from 'react-native';
 
 const Form = ({label, placeholder, onChangeText, value, isDisabled}) => {
   const handleTextChange = text => {
@@ -42,6 +54,19 @@ const EditProfileScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const navigation = useNavigation();
+  const [date, setDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowPicker(false);
+    setDate(currentDate);
+    setBirth_Date(formatDate(currentDate));
+  };
+
+  const showDatepicker = () => {
+    setShowPicker(true);
+  };
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -115,14 +140,33 @@ const EditProfileScreen = () => {
             label={'Address'}
             value={address}
             onChangeText={setAddress}
-            placeholder={'Anda Tidak Punya Alamat Untuk Pulang'}
+            placeholder={'Input your address'}
           />
-          <Form
-            label={'Birth Date'}
-            value={birth_date}
-            onChangeText={setBirth_Date}
-            placeholder={'Anda Belum Lahir'}
-          />
+          <FormControl.Label>Birth Date</FormControl.Label>
+          <Pressable onPress={showDatepicker}>
+            <HStack
+              mt={-1}
+              borderWidth={1}
+              borderColor={Colors.neutral[100]}
+              p={2}
+              alignItems={'center'}
+              bg={Colors.neutral[50]}
+              h={'44px'}
+              borderRadius={'8px'}>
+              <Text fontSize={'12px'} fontFamily={'Inter'} fontWeight={400}>
+                {birth_date}
+              </Text>
+            </HStack>
+          </Pressable>
+          {showPicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              is24Hour={true}
+              onChange={onChange}
+              style={{color: 'red'}}
+            />
+          )}
         </Stack>
         <Stack mt={'40px'}>
           <Btn_Primary

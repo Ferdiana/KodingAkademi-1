@@ -38,7 +38,7 @@ const PaymentScreen = ({navigation}) => {
         padding={'18px'}
         text={'Check Payment Status'}
         pb={'15px'}
-        onPress={() => navigation.navigate('Transactions')}
+        onPress={() => navigation.replace('Transactions')}
       />
       <Btn_Outline
         padding={'18px'}

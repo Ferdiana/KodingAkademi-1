@@ -7,6 +7,7 @@ import {
   Button,
   Spinner,
   Input,
+  View,
 } from 'native-base';
 import CartCard from '../components/card/Cart';
 import Colors from '../theme/colors';
@@ -86,7 +87,7 @@ const CheckoutScreen = ({route, navigation}) => {
     <Stack flex={1}>
       <Stack flex={1} space={1}>
         <ScrollView>
-          <Stack space={1} h={'80%'}>
+          <Stack space={1}>
             {selectedItems.map(item => (
               <CartCard
                 WImage={'40%'}
@@ -98,26 +99,25 @@ const CheckoutScreen = ({route, navigation}) => {
             ))}
           </Stack>
         </ScrollView>
-
-        <Stack h={'15%'} py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
-          <HStack justifyContent={'space-between'}>
-            <Text>Subtotal ({numSelectedItems} items) </Text>
-            <Text>{`Rp${totalPrice.toLocaleString('id-ID')}`}</Text>
-          </HStack>
-          <HStack justifyContent={'space-between'}>
-            <Text>Coupon</Text>
-            <Text color={'red.500'}>
-              -{' '}
-              {couponDiscount !== null && couponDiscount !== undefined
-                ? `Rp${couponDiscount.toLocaleString('id-ID')}`
-                : 'Rp0'}
-            </Text>
-          </HStack>
-          <HStack justifyContent={'space-between'}>
-            <Text>Total Order </Text>
-            <Text>{displayTotalPrice}</Text>
-          </HStack>
-        </Stack>
+      </Stack>
+      <Stack py={'5px'} bg={Colors.neutral[50]} px={'18px'}>
+        <HStack justifyContent={'space-between'}>
+          <Text>Subtotal ({numSelectedItems} items) </Text>
+          <Text>{`Rp${totalPrice.toLocaleString('id-ID')}`}</Text>
+        </HStack>
+        <HStack justifyContent={'space-between'}>
+          <Text>Coupon</Text>
+          <Text color={'red.500'}>
+            -{' '}
+            {couponDiscount !== null && couponDiscount !== undefined
+              ? `Rp${couponDiscount.toLocaleString('id-ID')}`
+              : 'Rp0'}
+          </Text>
+        </HStack>
+        <HStack justifyContent={'space-between'}>
+          <Text>Total Order </Text>
+          <Text>{displayTotalPrice}</Text>
+        </HStack>
       </Stack>
       <Stack
         justifyContent={'flex-end'}
@@ -128,8 +128,10 @@ const CheckoutScreen = ({route, navigation}) => {
         bgColor={Colors.secondary[100]}>
         <Input
           h={'40px'}
-          bg={'white'}
+          bgColor={'neutral.50'}
           borderRadius={'10'}
+          borderColor={'neutral.50'}
+          focusOutlineColor={'neutral.500'}
           placeholder="Add some note"
           value={custom_field_1}
           onChangeText={setCustom_field_1}

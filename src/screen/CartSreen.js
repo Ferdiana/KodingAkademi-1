@@ -80,14 +80,6 @@ const CartScreen = ({route, navigation}) => {
     }
   };
 
-  const handlePress = (id, discount_price) => {
-    if (id.startsWith('course')) {
-      navigation.navigate('CourseDetail', {id, discount_price});
-    } else if (id.startsWith('event')) {
-      navigation.navigate('EventDetail', {id});
-    }
-  };
-
   const handleCheckout = () => {
     if (canCheckout) {
       navigation.navigate('Checkout', {
@@ -127,7 +119,6 @@ const CartScreen = ({route, navigation}) => {
   const renderCartItems = () => {
     return cartItems.map(item => (
       <CartCard
-        onPress={() => handlePress(item.id, item.discount_price)}
         WImage={'30%'}
         WText={'60%'}
         key={item.id}
