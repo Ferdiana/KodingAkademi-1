@@ -61,7 +61,6 @@ const AccountScreen = ({navigation, route}) => {
     : null;
   const [showInfoAlert, setShowInfoAlert] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [showAlertEdit, setShowAlertEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -173,21 +172,8 @@ const AccountScreen = ({navigation, route}) => {
         <Btn_Primary
           text={'Edit Profile'}
           w={'90%'}
-          onPress={() => setShowAlertEdit(true)}
+          onPress={() => navigation.navigate('EditProfile')}
         />
-        {showAlertEdit && (
-          <AlertDialogg
-            textCencel={'No'}
-            textOk={'Yes'}
-            alertText={'Are you sure want to change your profile?'}
-            displayTwoButtons={true}
-            handleAlertClose={() => setShowAlertEdit(false)}
-            onPress={() => {
-              setShowAlertEdit(false);
-              navigation.navigate('EditProfile');
-            }}
-          />
-        )}
       </Stack>
     </View>
   );
