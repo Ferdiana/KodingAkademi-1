@@ -47,6 +47,8 @@ const TransactionDetailScreen = ({route, navigation}) => {
       );
       if (response) {
         Linking.openURL(response);
+        setRefreshPage(!refreshPage);
+        navigation.navigate('Transactions');
       }
     } catch (error) {
       console.error(error.message);

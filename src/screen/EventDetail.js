@@ -40,7 +40,7 @@ const EventDetailScreen = ({route, navigation}) => {
       const eventDetailResponse = await API_DetailEvents(id, user.accessToken);
       setEventDetail(eventDetailResponse);
 
-      const currentDate = new Date(); // Get the current date
+      const currentDate = new Date();
       const filteredDates = eventDetailResponse.event_dates.filter(
         date => new Date(date.date) > currentDate,
       );
@@ -223,6 +223,7 @@ const EventDetailScreen = ({route, navigation}) => {
         </Pressable>
         <Stack w={'82%'}>
           <Btn_Primary
+            disabled={convertedOptions ? true : false}
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}

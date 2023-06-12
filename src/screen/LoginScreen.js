@@ -131,22 +131,22 @@ function LoginScreen({navigation}) {
               </Text>
             </Pressable>
           </HStack>
-          <Text
+          {/* <Text
             mb={5}
             textAlign={'center'}
             fontWeight={'thin'}
             fontSize={'12px'}
             color={'neutral.50'}>
             or continue with
-          </Text>
-          <Btn_Icon
+          </Text> */}
+          {/* <Btn_Icon
             onPress={handleGoogleLogin}
             w={screenWidth}
             text={'Continue with Google'}
             padding={10}
             size={6}
             source={require('../assets/image/google.png')}
-          />
+          /> */}
         </ScrollView>
       </Center>
     </Center>

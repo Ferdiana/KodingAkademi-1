@@ -62,10 +62,10 @@ function OnBoardingScreen({navigation}) {
             padding={10}
             onPress={() => navigation.replace('Login')}
           />
-          <Text color={'neutral.200'} fontSize={'xs'} my={2}>
+          {/* <Text color={'neutral.200'} fontSize={'xs'} my={2}>
             or
-          </Text>
-          <Btn_Icon
+          </Text> */}
+          {/* <Btn_Icon
             borderWidth={1}
             onPress={handleGoogleLogin}
             w={screenWidth}
@@ -73,7 +73,7 @@ function OnBoardingScreen({navigation}) {
             padding={10}
             size={6}
             source={require('../assets/image/google.png')}
-          />
+          /> */}
         </Stack>
       </ImageBackground>
     </Center>
