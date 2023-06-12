@@ -35,35 +35,21 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
     loadMyCourse();
   }, [user.accessToken]);
 
-  const filteredData = myCourse.filter(item =>
-    item.name.toLowerCase().includes(searchText.toLowerCase()),
+  console.log(myCourse);
+
+  const filteredData = myCourse.filter(
+    item =>
+      item.name.toLowerCase().includes(searchText.toLowerCase()) &&
+      (selectedCategory === null ||
+        item.status.toLowerCase() === selectedCategory.toLowerCase()),
   );
 
-  const isExpired = date => {
-    const currentDate = new Date();
-    const expiredDate = new Date(date);
-    if (expiredDate < currentDate) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const renderItem = ({item}) => {
-    if (
-      selectedCategory &&
-      selectedCategory.toLowerCase() !==
-        (isExpired(item.expired_date) ? 'finished' : 'active')
-    ) {
-      return null;
-    }
     const formattedDate = formatDate(item.expired_date);
-    const expired = isExpired(item.expired_date);
     return (
       <Pressable>
         <Stack my={'5px'} mx={'18px'}>
           <Stack
-            opacity={expired ? 0.5 : 1}
             w={'100%'}
             borderRadius={8}
             p={'8px'}
@@ -107,11 +93,12 @@ const AllMyCourse = ({searchText, selectedCategory}) => {
                   {item.meeting_quota}
                 </Text>
                 <Text
-                  color={expired ? Colors.neutral[500] : Colors.primary[500]}
+                  color={Colors.primary[500]}
+                  textTransform={'capitalize'}
                   fontFamily={'Inter'}
                   fontSize={'14px'}
                   fontWeight={600}>
-                  {expired ? 'Finished' : 'Active'}
+                  {item.status}
                 </Text>
               </Stack>
             </HStack>
