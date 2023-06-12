@@ -5,6 +5,7 @@ import {
   HStack,
   Image,
   Pressable,
+  Spinner,
   Stack,
   Text,
 } from 'native-base';
@@ -20,13 +21,16 @@ const AllArticle = ({searchText}) => {
   const [article, setArticle] = useState([]);
   const {user} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadArticle = async () => {
       if (user.accessToken) {
+        setIsLoading(true);
         const articleData = await API_Article(user.accessToken);
         setArticle(articleData);
       }
+      setIsLoading(false);
     };
     loadArticle();
   }, [user.accessToken]);
@@ -99,6 +103,18 @@ const AllArticle = ({searchText}) => {
       </Pressable>
     );
   };
+
+  if (isLoading) {
+    return (
+      <Stack flex={1} justifyContent="center" alignItems="center">
+        <Spinner
+          accessibilityLabel="Loading posts"
+          size="large"
+          color={Colors.secondary[500]}
+        />
+      </Stack>
+    );
+  }
 
   if (filteredData.length === 0) {
     return (

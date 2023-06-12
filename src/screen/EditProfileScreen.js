@@ -8,7 +8,6 @@ import {
   Spinner,
   Stack,
   Text,
-  View,
 } from 'native-base';
 import {AuthContext} from '../controller/AuthContext';
 import {AlertDialogg, Btn_Primary} from '../components';
@@ -17,7 +16,6 @@ import {API_EditProfile, API_Profile} from '../controller/API_Profile';
 import formatDate from '../controller/formatDate';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Platform} from 'react-native';
 
 const Form = ({label, placeholder, onChangeText, value, isDisabled}) => {
   const handleTextChange = text => {
@@ -160,11 +158,12 @@ const EditProfileScreen = () => {
           </Pressable>
           {showPicker && (
             <DateTimePicker
+              locale="en-US"
+              display="default"
               value={date}
               mode="date"
               is24Hour={true}
               onChange={onChange}
-              style={{color: 'red'}}
             />
           )}
         </Stack>
