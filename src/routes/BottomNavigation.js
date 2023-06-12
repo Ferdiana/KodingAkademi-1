@@ -42,129 +42,127 @@ function BottomNavigation({navigation}) {
   }, [isTabFocused]);
 
   return (
-    <View w={width} h={height} pb={'26px'}>
-      <Tab.Navigator
-        screenOptions={{
-          headerShadowVisible: false,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            height: 54,
-            backgroundColor: '#0B2347',
+    <Tab.Navigator
+      screenOptions={{
+        headerShadowVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          height: 54,
+          backgroundColor: '#0B2347',
+        },
+        headerTitleStyle: {
+          fontSize: 14,
+          fontFamily: 'Inter',
+          fontWeight: 700,
+          color: '#fff',
+        },
+        tabBarActiveTintColor: '#0B2347',
+        tabBarInactiveTintColor: '#5D7389',
+        tabBarStyle: [{display: 'flex'}, null],
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <MaterialCommunityIcons
+                name="home-variant"
+                size={28}
+                color={'#0B2347'}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="home-variant-outline"
+                size={28}
+                color={'#5D7389'}
+              />
+            ),
+        }}
+        listeners={({route}) => ({
+          focus: () => {
+            setCurrentTab('Home');
           },
-          headerTitleStyle: {
-            fontSize: 14,
-            fontFamily: 'Inter',
-            fontWeight: 700,
-            color: '#fff',
+        })}
+      />
+      <Tab.Screen
+        name="Course"
+        component={CourseScreen}
+        options={{
+          headerShown: false,
+          title: 'All Course',
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <MaterialCommunityIcons
+                name="book-open"
+                size={28}
+                color={'#0B2347'}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="book-open-outline"
+                size={28}
+                color={'#5D7389'}
+              />
+            ),
+        }}
+        listeners={({route}) => ({
+          focus: () => {
+            setCurrentTab('Course');
           },
-          tabBarActiveTintColor: '#0B2347',
-          tabBarInactiveTintColor: '#5D7389',
-          tabBarStyle: [{display: 'flex'}, null],
-        }}>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <MaterialCommunityIcons
-                  name="home-variant"
-                  size={28}
-                  color={'#0B2347'}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="home-variant-outline"
-                  size={28}
-                  color={'#5D7389'}
-                />
-              ),
-          }}
-          listeners={({route}) => ({
-            focus: () => {
-              setCurrentTab('Home');
-            },
-          })}
-        />
-        <Tab.Screen
-          name="Course"
-          component={CourseScreen}
-          options={{
-            headerShown: false,
-            title: 'All Course',
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <MaterialCommunityIcons
-                  name="book-open"
-                  size={28}
-                  color={'#0B2347'}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="book-open-outline"
-                  size={28}
-                  color={'#5D7389'}
-                />
-              ),
-          }}
-          listeners={({route}) => ({
-            focus: () => {
-              setCurrentTab('Course');
-            },
-          })}
-        />
-        <Tab.Screen
-          name="Event"
-          component={EventScreen}
-          options={{
-            headerShown: false,
-            title: 'All Event',
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <MaterialCommunityIcons
-                  name="calendar-check"
-                  size={28}
-                  color={'#0B2347'}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="calendar-check-outline"
-                  size={28}
-                  color={'#5D7389'}
-                />
-              ),
-          }}
-          listeners={({route}) => ({
-            focus: () => {
-              setCurrentTab('Event');
-            },
-          })}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <MaterialIcons name="person" size={28} color={'#0B2347'} />
-              ) : (
-                <MaterialIcons
-                  name="person-outline"
-                  size={28}
-                  color={'#5D7389'}
-                />
-              ),
-          }}
-          listeners={({route}) => ({
-            focus: () => {
-              setCurrentTab('Profile');
-            },
-          })}
-        />
-      </Tab.Navigator>
-    </View>
+        })}
+      />
+      <Tab.Screen
+        name="Event"
+        component={EventScreen}
+        options={{
+          headerShown: false,
+          title: 'All Event',
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <MaterialCommunityIcons
+                name="calendar-check"
+                size={28}
+                color={'#0B2347'}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="calendar-check-outline"
+                size={28}
+                color={'#5D7389'}
+              />
+            ),
+        }}
+        listeners={({route}) => ({
+          focus: () => {
+            setCurrentTab('Event');
+          },
+        })}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <MaterialIcons name="person" size={28} color={'#0B2347'} />
+            ) : (
+              <MaterialIcons
+                name="person-outline"
+                size={28}
+                color={'#5D7389'}
+              />
+            ),
+        }}
+        listeners={({route}) => ({
+          focus: () => {
+            setCurrentTab('Profile');
+          },
+        })}
+      />
+    </Tab.Navigator>
   );
 }
 
