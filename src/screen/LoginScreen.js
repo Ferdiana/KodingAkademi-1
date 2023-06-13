@@ -10,11 +10,8 @@ import {
 } from 'native-base';
 import React, {useContext, useEffect, useState} from 'react';
 import {Btn_Icon, FormLogin} from '../components';
-import {Dimensions} from 'react-native';
 import Colors from '../theme/colors';
 import {AuthContext} from '../controller/AuthContext';
-
-const screenWidth = Dimensions.get('window').width;
 
 function LoginScreen({navigation}) {
   const [errorMsg, setErrorMsg] = useState('');

@@ -115,7 +115,7 @@ const FormRegister = ({onError, navigation}) => {
               p={2}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
-              placeholder={'Enter your chosen password'}
+              placeholder={'Re-Enter your chosen password'}
               type={showPassword1 ? 'text' : 'password'}
               InputRightElement={
                 <Button
