@@ -110,8 +110,20 @@ const AllCourse = ({searchText, selectedCategory}) => {
 
   if (filteredData.length === 0) {
     return (
-      <Stack flex={1} justifyContent="center" alignItems="center">
-        <Text>No courses available.</Text>
+      <Stack justifyContent="center" alignItems="center">
+        <Image
+          source={require('../../assets/image/NoResults.png')}
+          alt={'img'}
+          h={230}
+          w={208}
+        />
+        <Text textAlign={'center'} fontFamily={'Inter'} fontWeight={600}>
+          No Result
+        </Text>
+        <Text fontFamily={'Inter'} textAlign={'center'} px={10}>
+          Sorry, there are no results for this search. Please try another
+          phrase..
+        </Text>
       </Stack>
     );
   }

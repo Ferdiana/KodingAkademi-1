@@ -50,6 +50,8 @@ const AllMyEvent = ({searchText, selectedCategory}) => {
     const formattedDate = formatDate(item.end_date);
     const expired = isExpired(item.end_date);
 
+    console.log(myEvent);
+
     return (
       <Stack my={'5px'} mx={'18px'}>
         <Stack
@@ -87,6 +89,14 @@ const AllMyEvent = ({searchText, selectedCategory}) => {
                 Date {''}
                 {formattedDate}
               </Text>
+              {/* <Text
+                numberOfLines={2}
+                fontFamily={'Inter'}
+                fontSize={'12px'}
+                fontWeight={500}
+                color={Colors.neutral[900]}>
+                {item.custom_field_1}
+              </Text> */}
               <Text
                 color={Colors.primary[500]}
                 fontFamily={'Inter'}

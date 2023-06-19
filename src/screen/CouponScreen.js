@@ -120,7 +120,7 @@ const CouponScreen = ({route}) => {
             })
           ) : (
             <Center flex={1} mt={'20px'}>
-              <Text>Tidak ada kupon</Text>
+              <Text>No Coupons Available</Text>
             </Center>
           )}
         </Stack>

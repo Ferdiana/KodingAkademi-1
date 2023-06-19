@@ -223,7 +223,6 @@ const EventDetailScreen = ({route, navigation}) => {
         </Pressable>
         <Stack w={'82%'}>
           <Btn_Primary
-            disabled={convertedOptions ? true : false}
             w={'100%'}
             onPress={handleAddToCart}
             text={'Add to cart'}

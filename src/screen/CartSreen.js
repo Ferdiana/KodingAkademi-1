@@ -155,8 +155,7 @@ const CartScreen = ({route, navigation}) => {
               Your cart is empty
             </Text>
             <Text textAlign={'center'}>
-              Sorry, there are no results for this search. Please try another
-              phrase.
+              Looks like you haven’t added anything to your cart yet.
             </Text>
           </Stack>
         ) : (
