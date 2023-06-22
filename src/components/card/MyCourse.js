@@ -47,7 +47,7 @@ const MyCourse = ({mr}) => {
                 <Box
                   key={item.id}
                   w={'140px'}
-                  h={'170px'}
+                  h={'180px'}
                   px={'10px'}
                   pt={'5px'}
                   mr={2}
@@ -81,6 +81,15 @@ const MyCourse = ({mr}) => {
                     fontSize={'10px'}
                     color={Colors.neutral[900]}>
                     Until {formattedDate}
+                  </Text>
+                  <Text
+                    h={'38px'}
+                    fontFamily={'Inter'}
+                    fontSize={'12px'}
+                    fontWeight={600}
+                    color={Colors.neutral[900]}>
+                    Meeting Quota:
+                    {item.meeting_quota}
                   </Text>
                 </Box>
               </Stack>

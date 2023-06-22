@@ -106,7 +106,7 @@ function ProfileScreen({navigation}) {
               fontSize={'14px'}
               mt={'10px'}
               color={'neutral.700'}>
-              {user.email}
+              {profile.email}
             </Text>
           </Stack>
         </Box>
