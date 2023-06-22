@@ -6,6 +6,7 @@ import {useState} from 'react';
 import {register} from '../../controller/register';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AlertDialogg from '../Alert/AlertDialog';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -76,7 +77,7 @@ const FormRegister = ({onError, navigation}) => {
             onChangeText={setPhone_Number}
             placeholder={'Enter your phone number'}
           />
-          <Stack space={1}>
+          <Stack>
             <FormControl.Label>Password</FormControl.Label>
             <Input
               bgColor={'transparent'}
@@ -103,9 +104,12 @@ const FormRegister = ({onError, navigation}) => {
                 </Button>
               }
             />
+            <FormControl.HelperText>
+              Must contain letters and numbers and 8 characters.
+            </FormControl.HelperText>
           </Stack>
-          <Stack space={1}>
-            <FormControl.Label> Confirm Password</FormControl.Label>
+          <Stack>
+            <FormControl.Label>Confirm Password</FormControl.Label>
             <Input
               bgColor={'transparent'}
               borderColor={'neutral.100'}
@@ -131,6 +135,9 @@ const FormRegister = ({onError, navigation}) => {
                 </Button>
               }
             />
+            <FormControl.HelperText>
+              Both password must match.
+            </FormControl.HelperText>
           </Stack>
         </Stack>
         <Stack h={10} mt={5}>
