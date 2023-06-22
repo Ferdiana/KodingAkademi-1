@@ -7,11 +7,13 @@ import Colors from '../theme/colors';
 import {useEffect} from 'react';
 import {API_Profile} from '../controller/API_Profile';
 import {useState} from 'react';
+import formatDate from '../controller/formatDate';
 
-const QRDetailScreen = () => {
+const QRDetailScreen = ({route}) => {
   const {user} = useContext(AuthContext);
   const [profile, setProfile] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {expiredDate} = route.params;
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -36,6 +38,8 @@ const QRDetailScreen = () => {
       </Stack>
     );
   }
+
+  const expired_date = formatDate(expiredDate);
 
   return (
     <Stack alignItems={'center'} flex={1} bg={Colors.neutral[50]} py={'10px'}>
@@ -65,6 +69,17 @@ const QRDetailScreen = () => {
         <Stack background={'neutral.50'} p={2} borderRadius={8}>
           <QRComponent size={200} />
         </Stack>
+      </Stack>
+      <Stack justifyContent={'center'} alignItems={'center'} py={'8px'}>
+        <Text fontFamily={'Inter'} fontSize={'14px'}>
+          Status:{' '}
+          {expiredDate && expiredDate < new Date() ? (
+            <Text color={Colors.primary[600]}>Expired</Text>
+          ) : (
+            <Text color={Colors.primary[600]}>Active</Text>
+          )}
+        </Text>
+        {expiredDate && <Text>Expired Date: {expired_date}</Text>}
       </Stack>
     </Stack>
   );
